@@ -26,7 +26,6 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
        }
     });
     if (!user) {
-        console.log("WSH");
         throw new ForbiddenRequestException('Access denied');
     }
 
