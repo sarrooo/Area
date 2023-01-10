@@ -6,13 +6,13 @@ import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
 import Logging from "~/lib/logging";
 import Routes from "~/routes";
+import * as process from "process";
 dotenv.config();
 
 const app = express();
 
 // Cross Origin Resource Sharing
-//TODO: FIX and use env var
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.CORS_FRONT_URL, credentials: true }));
 
 // Middleware for cookies
 app.use(cookieParser());
@@ -32,6 +32,6 @@ app.all('*', UnknowRoutesHandler);
 app.use(ExceptionsHandler);
 
 //TODO: Fix and use env var
-app.listen(3000, () => {
-    Logging.success(`Server listening on port ${3000}`);
+app.listen(process.env.PORT, () => {
+    Logging.success(`Server listening on port ${process.env.PORT}`);
 });
