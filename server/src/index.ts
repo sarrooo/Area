@@ -1,12 +1,11 @@
 require('dotenv').config();
 
-import Logging from "~/lib/logging";
-import {ExceptionsHandler} from './middlewares/exception.handler';
-import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
-import config from 'config';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import {ExceptionsHandler} from './middlewares/exception.handler';
+import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
+import config from 'config';
 
 const port = config.get<string>("port");
 const app = express();
@@ -32,5 +31,5 @@ app.all('*', UnknowRoutesHandler);
 app.use(ExceptionsHandler);
 
 app.listen(port, () => {
-    Logging.success(`Server is running on port ${port}`);
+    console.log(`Server listening on port ${port}`);
 });
