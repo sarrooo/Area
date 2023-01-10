@@ -1,6 +1,12 @@
 export default {
     port: 'PORT',
-    frontUrl: 'FRONT_URL',
+    frontUrl: 'CORS_FRONT_URL',
+    jwtConfig: {
+        secret: 'JWT_SECRET',
+        refreshSecret: 'JWT_REFRESH_SECRET',
+        expiresInSecret: 'JWT_EXPIRES_IN_SECRET',
+        expiresInRefreshSecret: 'JWT_EXPIRES_IN_REFRESH_SECRET',
+    },
     postgresConfig: {
         host: 'POSTGRES_HOST',
         port: 'POSTGRES_PORT',
