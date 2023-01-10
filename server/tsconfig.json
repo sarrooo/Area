@@ -14,7 +14,10 @@
     "experimentalDecorators": true,
     "outDir": "./dist",
     "strictPropertyInitialization": false,
-    "typeRoots": ["./src/@types"],
+    "typeRoots": [
+      "@types",
+      "./node_modules/@types",
+    ],
     "paths": {
       "~/*": ["./src/*"],
       "~~/*": ["./*"]

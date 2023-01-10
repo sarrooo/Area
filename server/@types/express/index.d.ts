@@ -2,7 +2,7 @@ import { IUser } from "~/types/user";
 
 declare global {
     namespace Express {
-        export interface Request {
+        interface Request {
             user: Partial<IUser>
         }
     }
