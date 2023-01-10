@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
 import Logging from "~/lib/logging";
+import Routes from "~/routes";
 dotenv.config();
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
+app.use('/api', Routes);
 
 // ? Manage unknow routes, need to be the last route
 app.all('*', UnknowRoutesHandler);
