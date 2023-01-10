@@ -1,18 +1,42 @@
 {
-  "name": "server",
+  "name": "Trirea",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Trirea EPITECH project third year",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'Undefined tests' && exit 1",
+    "dev": "nodemon --watch src -e js,ts,json --exec \"ts-node src/index.ts\"",
+    "build": "tsup src/index.ts --format cjs --clean",
+    "start": "node dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-2-area-maxime.premont/.git"
+  },
+  "keywords": [
+    "trirea",
+    "epitech"
+  ],
+  "author": "Trirea Team",
+  "license": "?",
+  "bugs": {
+    "url": "https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-2-area-maxime.premont/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+  },
+  "homepage": "https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-2-area-maxime.premont#readme",
   "devDependencies": {
-    "prisma": "^4.8.1"
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.15",
+    "@types/node": "^18.11.17",
+    "nodemon": "^2.0.20",
+    "prisma": "^4.8.1",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.1.1",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@prisma/client": "^4.8.1"
+    "@prisma/client": "^4.8.1",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
   }
 }
