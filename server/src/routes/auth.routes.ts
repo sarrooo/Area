@@ -13,22 +13,30 @@ authRoutes.post('/login', validate(loginUserSchema), async (req, res) => {
 });
 
 authRoutes.post('/register', validate(registerUserSchema), async (req, res) => {
-    const { name, email, password }: RegisterUserInput = req.body;
+    const { first_name, last_name, email, password }: RegisterUserInput = req.body;
 
     const userAlreadyExist = await prisma.user.findUnique({
         where: {
             email: email
         }
     })
-
     if (userAlreadyExist) {
         throw new BadRequestException('User already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
+    const newUser = await prisma.user.create({
+       data: {
+           first_name: first_name,
+           last_name: last_name,
+           password: hashedPassword,
+           email: email
+       }
+    });
 
-    res.json({ message: 'Login' });
+    const { id } = newUser;
+
+    return res.status(201).json({ id: id });
 });
 
 
