@@ -1,18 +1,17 @@
-require('dotenv').config();
-
+import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
-import config from 'config';
+import Logging from "~/lib/logging";
+dotenv.config();
 
-const port = config.get<string>("port");
 const app = express();
 
 // Cross Origin Resource Sharing
-const frontUrl = config.get<string>("frontUrl");
-app.use(cors({ origin: frontUrl, credentials: true }));
+//TODO: FIX and use env var
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 // Middleware for cookies
 app.use(cookieParser());
@@ -30,6 +29,7 @@ app.all('*', UnknowRoutesHandler);
 // ? Handle exceptions, needs to be the last 'use' of Express
 app.use(ExceptionsHandler);
 
-app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+//TODO: Fix and use env var
+app.listen(3000, () => {
+    Logging.success(`Server listening on port ${3000}`);
 });
