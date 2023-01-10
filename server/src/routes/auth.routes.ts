@@ -5,6 +5,10 @@ import {prisma} from "~/lib/prisma";
 import {BadRequestException} from "~/utils/exceptions";
 import {compare, hash} from 'bcrypt'
 import {StatusCodes} from "http-status-codes";
+import {sign} from "jsonwebtoken";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const authRoutes = Router();
 
@@ -25,7 +29,7 @@ authRoutes.post('/login', validate(loginUserSchema), async (req, res) => {
         throw new BadRequestException('Invalid email or password');
     }
 
-    const refreshToken =
+    const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
 
     res.status(StatusCodes.OK).json({ message: 'Hello World' });
 });
