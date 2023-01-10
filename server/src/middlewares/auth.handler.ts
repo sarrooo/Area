@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import {verify} from "jsonwebtoken";
 import * as process from "process";
 import {prisma} from "~/lib/prisma";
+import * as console from "console";
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         throw new ForbiddenRequestException('No token provided');
     }
     const token = authorization && authorization.split(' ')[1] || '';
+    console.log(token);
     const payload: any = verify(token, process.env.JWT_SECRET as string);
     if (!payload) {
         throw new ForbiddenRequestException('Access denied');
@@ -24,6 +26,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
        }
     });
     if (!user) {
+        console.log("WSH");
         throw new ForbiddenRequestException('Access denied');
     }
 
