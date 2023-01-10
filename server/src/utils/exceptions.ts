@@ -16,3 +16,9 @@ export class BadRequestException extends Exception {
         super(error, StatusCodes.BAD_REQUEST)
     }
 }
+
+export class ForbiddenRequestException extends Exception {
+    constructor(error: any) {
+        super(error, StatusCodes.FORBIDDEN)
+    }
+}
