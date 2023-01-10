@@ -1,7 +1,8 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["deno"]
-  output = "../generated/client"
 }
 
 datasource db {
@@ -9,10 +10,136 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Service {
+  id     Int     @id @default(autoincrement())
+  name    String
+  description   String
+  logo String
+  users UserService[]
+  triggers Trigger[]
+  reactions Reaction[]
+
+  @@map("services")
+}
+
 model User {
+  id      Int      @id @default(autoincrement())
+  first_name   String
+  last_name String
+  password String
+  email    String @unique
+  services   UserService[]
+  trireas Trirea[]
+
+  @@map("users")
+}
+
+model Trigger {
   id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
+  name     String   @db.VarChar(255)
+  description   String?
+  service Service  @relation(fields: [serviceId], references: [id])
+  serviceId Int
+  triggerInputs TriggerInput[]
+  triggerOuputs TriggerOutput[]
+  trireas Trirea[]
+
+  @@map("triggers")
+}
+
+model Reaction {
+  id        Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  description   String?
+  service Service  @relation(fields: [serviceId], references: [id])
+  serviceId Int
+  reactionInputs ReactionInput[]
+  trireas Trirea[]
+
+  @@map("reactions")
+}
+
+model TriggerInput {
+  id        Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  type   String
+  description String?
+  trigger Trigger  @relation(fields: [triggerId], references: [id])
+  triggerId Int
+  trireaTriggerInputs TrireaTriggerInput[]
+
+  @@map("trigger_inputs")
+}
+
+model TriggerOutput {
+  id        Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  type   String
+  description String?
+  trigger Trigger  @relation(fields: [triggerId], references: [id])
+  triggerId Int
+  trireaReactionInput TrireaReactionInput[]
+
+  @@map("trigger_outputs")
+}
+
+model ReactionInput {
+  id        Int      @id @default(autoincrement())
+  name     String   @db.VarChar(255)
+  type   String
+  description String?
+  reaction Reaction  @relation(fields: [reactionId], references: [id])
+  reactionId Int
+
+  @@map("reaction_inputs")
+}
+
+model Trirea {
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  prevTriggerData     String?
+  user User  @relation(fields: [userId], references: [id])
+  userId Int
+  trigger Trigger  @relation(fields: [triggerId], references: [id])
+  triggerId Int
+  reaction Reaction  @relation(fields: [reactionId], references: [id])
+  reactionId Int
+  trireaTriggerInputs TrireaTriggerInput[]
+  trireaReactionInputs TrireaReactionInput[]
+
+  @@map("trireas")
+}
+
+model TrireaTriggerInput {
+  id        Int      @id @default(autoincrement())
+  value     String?
+  trirea Trirea  @relation(fields: [trireaId], references: [id])
+  trireaId Int
+  triggerInput TriggerInput  @relation(fields: [triggerInputId], references: [id])
+  triggerInputId Int
+
+  @@map("trirea_trigger_inputs")
+}
+
+model TrireaReactionInput {
+  id        Int      @id @default(autoincrement())
+  value     String?
+  trirea Trirea  @relation(fields: [trireaId], references: [id])
+  trireaId Int
+  triggerOutput TriggerOutput  @relation(fields: [triggerOutputId], references: [id])
+  triggerOutputId Int
+
+  @@map("trirea_reaction_inputs")
+}
+
+model UserService {
+  user      User @relation(fields: [userId], references: [id])
+  userId    Int
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId Int
+
+
+  @@id([userId, serviceId])
+  @@map("user_services")
 }
