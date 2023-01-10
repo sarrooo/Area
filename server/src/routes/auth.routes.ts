@@ -109,7 +109,6 @@ authRoutes.post('/logout', async (req: Request, res: Response) => {
         throw new ForbiddenRequestException('Already logout!');
     }
 
-    // @ts-ignore
     await prisma.token.delete({
         where: {
             token: refreshToken
