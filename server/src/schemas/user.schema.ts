@@ -1,4 +1,4 @@
-import { object, string, TypeOf, z } from "zod";
+import { object, string, TypeOf } from "zod";
 
 export const registerUserSchema = object({
     body: object({
