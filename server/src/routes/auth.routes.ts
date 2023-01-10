@@ -15,6 +15,7 @@ const authRoutes = Router();
 authRoutes.post('/login', validate(loginUserSchema), async (req, res) => {
     const { email, password }: LoginUserInput = req.body;
 
+    console.log("WSH")
     const user = await prisma.user.findUnique({
         where: {
             email: email
@@ -29,9 +30,23 @@ authRoutes.post('/login', validate(loginUserSchema), async (req, res) => {
         throw new BadRequestException('Invalid email or password');
     }
 
+    // Set maxAge at 7days.
     const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
+    res.cookie('refreshToken', refreshToken, {httpOnly: true, maxAge: 1000 * 60 * 60 * 24 * 7, secure: true});
 
-    res.status(StatusCodes.OK).json({ message: 'Hello World' });
+    const expiredAt = new Date();
+    expiredAt.setDate(expiredAt.getDate() + 7);
+
+    await prisma.token.create({
+        data: {
+            userId: user.id,
+            token: refreshToken,
+            expiredAt: expiredAt
+        }
+    })
+
+    const token = sign({ id: user.id, name: user.email }, process.env.JWT_REFRESH_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    res.status(StatusCodes.OK).json({ token });
 });
 
 authRoutes.post('/register', validate(registerUserSchema), async (req, res) => {
