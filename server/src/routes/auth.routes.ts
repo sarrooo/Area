@@ -4,12 +4,13 @@ import {validate} from "~/middlewares/validate";
 import {prisma} from "~/lib/prisma";
 import {BadRequestException} from "~/utils/exceptions";
 import bcrypt from 'bcrypt'
+import {StatusCodes} from "http-status-codes";
 
 const authRoutes = Router();
 
 authRoutes.post('/login', validate(loginUserSchema), async (req, res) => {
     const { email, password }: LoginUserInput = req.body;
-    res.json({ message: 'Hello World' });
+    res.status(StatusCodes.OK).json({ message: 'Hello World' });
 });
 
 authRoutes.post('/register', validate(registerUserSchema), async (req, res) => {
@@ -36,7 +37,7 @@ authRoutes.post('/register', validate(registerUserSchema), async (req, res) => {
 
     const { id } = newUser;
 
-    return res.status(201).json({ id: id });
+    return res.status(StatusCodes.CREATED).json({ id: id });
 });
 
 

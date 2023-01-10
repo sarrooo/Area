@@ -1,4 +1,5 @@
 import { ApiException } from "~/types/exceptions";
+import {StatusCodes} from "http-status-codes";
 
 class Exception implements ApiException {
     constructor(readonly error: any, readonly status: number) {}
@@ -6,12 +7,12 @@ class Exception implements ApiException {
 
 export class NotFoundException extends Exception {
     constructor(error: any) {
-        super(error, 404)
+        super(error, StatusCodes.NOT_FOUND)
     }
 }
 
 export class BadRequestException extends Exception {
     constructor(error: any) {
-        super(error, 400)
+        super(error, StatusCodes.BAD_REQUEST)
     }
 }
