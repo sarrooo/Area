@@ -1,5 +1,6 @@
-
 require('dotenv').config();
+
+import Logging from "~/lib/logging";
 import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
 import config from 'config';
@@ -20,11 +21,16 @@ app.use(cookieParser());
 // Built-in middleware for json
 app.use(express.json());
 
+// Built-in middleware to handle urlencoded form data
+app.use(express.urlencoded({ extended: false }));
+
+// Routes
+
 // ? Manage unknow routes, need to be the last route
 app.all('*', UnknowRoutesHandler);
 // ? Handle exceptions, needs to be the last 'use' of Express
 app.use(ExceptionsHandler);
 
 app.listen(port, () => {
-    console.log("Example app listening on port 3000!");
+    Logging.success(`Server is running on port ${port}`);
 });
