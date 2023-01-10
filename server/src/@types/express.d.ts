@@ -1,4 +1,4 @@
-import { IUser } from "./user";
+import { IUser } from "~/types/user";
 
 declare global {
     namespace Express {
