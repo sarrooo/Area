@@ -1,8 +1,10 @@
 import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
+import config from 'config';
 import cors from 'cors';
 import express from 'express';
 
+const port = config.get<string>("port");
 const app = express();
 
 // ? Manage unknow routes, need to be the last route
