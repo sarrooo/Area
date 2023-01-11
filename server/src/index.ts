@@ -1,5 +1,5 @@
+require('dotenv').config();
 import 'express-async-errors';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -8,7 +8,9 @@ import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
 import Logging from "~/lib/logging";
 import Routes from "~/routes";
 import * as process from "process";
-dotenv.config();
+import config from "config";
+
+const port = config.get<number>('port');
 
 const app = express();
 
@@ -33,6 +35,6 @@ app.all('*', UnknowRoutesHandler);
 app.use(ExceptionsHandler);
 
 //TODO: Fix and use env var
-app.listen(process.env.PORT, () => {
-    Logging.success(`Server listening on port ${process.env.PORT}`);
+app.listen(port, () => {
+    Logging.success(`Server listening on port ${port}`);
 });
