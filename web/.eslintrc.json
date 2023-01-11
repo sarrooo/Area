@@ -1,9 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "*.config.js",
-    "*.config.ts"
-  ],
+  "ignorePatterns": ["*.config.js", "*.config.ts", "*.config.cjs"],
   "env": {
     "browser": true,
     "es2021": true
@@ -18,9 +15,7 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": [
-      "tsconfig.json"
-    ],
+    "project": ["tsconfig.json"],
     "ecmaFeatures": {
       "jsx": true
     },
@@ -42,9 +37,7 @@
       "off",
       {
         "selector": "property",
-        "format": [
-          "snake_case"
-        ]
+        "format": ["snake_case"]
       }
     ],
     "@typescript-eslint/no-misused-promises": [
@@ -56,10 +49,7 @@
     "import/no-extraneous-dependencies": [
       "error",
       {
-        "devDependencies": [
-          "**/*.test.ts",
-          "**/*.test.tsx"
-        ]
+        "devDependencies": ["**/*.test.ts", "**/*.test.tsx"]
       }
     ],
     "import/prefer-default-export": "off",
@@ -75,9 +65,5 @@
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": "off"
   },
-  "plugins": [
-    "react",
-    "@typescript-eslint",
-    "ban"
-  ]
+  "plugins": ["react", "@typescript-eslint", "ban"]
 }
