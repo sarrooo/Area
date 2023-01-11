@@ -3,6 +3,9 @@
 type Input = {
     id: number;
     name: string;
+    description: string | undefined;
+    regex: string | undefined;
+    mandatory: boolean;
     type: string;
     value: string | number | boolean | undefined;
     linked: boolean;
@@ -11,22 +14,29 @@ type Input = {
 type Output = {
     id: number;
     name: string;
+    description: string | undefined;
+    regex: string | undefined;
     type: string;
     value: string | number | boolean | undefined;
 }
 type Trigger = {
     id: number;
     name: string;
+    description: string | undefined;
     inputs: Input[]
     outputs: Output[]
 }
 type Reaction = {
     id: number;
     name: string;
+    description: string | undefined;
     inputs: Input[]
 }
 type Service = {
     id: number;
+    name: string;
+    description: string | undefined;
+    image: string | undefined;
     triggers: Trigger[]
     reactions: Reaction[]
     required_subcription: boolean;
@@ -49,6 +59,9 @@ type Trirea = {
 }
 // ROUTE GET /trireas
 // <- | Returns a list of Trirea objects
+
+// ROUTE GET /trireas/:id
+// <- | Returns a Trirea object
 
 // ROUTE POST /trirea
 //  -> | Send a new Trirea object, the id can be undefined
