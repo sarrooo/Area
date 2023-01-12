@@ -1,29 +1,8 @@
-type Client = {
-    hostname: string;
-}
-
-type Action = {
-    name: string;
-    description: string;
-}
-
-type Reactions = {
-    name: string;
-    description: string;
-}
-
-type Service = {
-    name: string;
-    actions: Action[];
-    reactions: Reactions[];
-}
-
-type Server = {
+export type Server = {
     current_time: number;
-    services: Service[];
+    services: {name: string, triggers: {name: string, description: string | null}[], reactions: {name: string, description: string | null}[]}[]
 }
 
-export type About = {
-    client: Client;
-    server: Server;
+export type Client = {
+    host: string;
 }

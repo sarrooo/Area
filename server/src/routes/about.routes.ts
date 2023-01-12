@@ -1,25 +1,38 @@
 import {Request, Response, Router} from "express";
-import {About} from "~/types/about";
+import {Server, Client} from "~/types/about";
+import {prisma} from "~/lib/prisma";
 
 const aboutRoutes = Router();
 
 aboutRoutes.get('/about.json', async (req: Request, res: Response) => {
-    let about: About = {
-        client: {
-            hostname: req.ip
-        },
-        server: {
-            current_time: Date.now(),
-            services: [
-                {
-                    name: 'Facebook',
-                    actions: [],
-                    reactions: [],
+
+    const services = await prisma.service.findMany({
+        select: {
+            name: true,
+            triggers: {
+                select: {
+                    name: true,
+                    description: true,
                 }
-            ]
-        }
+            },
+            reactions: {
+                select: {
+                    name: true,
+                    description: true,
+                }
+            },
+        },
+    })
+
+    let client: Client = {
+            host: req.ip
     }
-    return res.status(200).json({ about });
+    let server: Server = {
+        current_time: Date.now(),
+        services: services,
+    }
+
+    return res.status(200).json({ client, server });
 });
 
 export default aboutRoutes;
