@@ -1,6 +1,6 @@
 import { ButtonProps } from '~/types/mainButton.type'
 
-export const mainButton = ({
+export const MainButton = ({
   text,
   callback,
   className = '',
