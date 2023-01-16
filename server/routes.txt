@@ -26,8 +26,12 @@ Epitech Project 2023
 = POST /trirea/delete/:id
 
 --- Search/List Trirea
--> Send search infos
+-> Send search infos, if admin all can be get, if user only his trireas
 <- List of Trirea objects
++ Search params :
+    | user_id : string
+    | max : number
+    | active : boolean
 = GET /trirea
 
 
@@ -57,6 +61,8 @@ Epitech Project 2023
 --- Search/List
 -> Send search infos
 <- List of Service Objects
++ Search params :
+    | max : number
 = GET /service
 
 
@@ -84,6 +90,8 @@ Epitech Project 2023
 --- Search/list
 -> Send search infos
 <- List of Trigger objects
++ Search params :
+    | max : number
 = GET /trigger
 
 
@@ -111,6 +119,8 @@ Epitech Project 2023
 --- Search/list
 -> Send search infos
 <- List of Reaction objects
++ Search params :
+    | max : number
 = GET /reaction
 
 
@@ -138,6 +148,8 @@ Epitech Project 2023
 --- Search/list Input Type
 -> Send search infos
 <- List of Input objects
++ Search params :
+    | max : number
 = GET /input
 
 
@@ -165,4 +177,6 @@ Epitech Project 2023
 --- Search/list Output Type
 -> Send search infos
 <- List of Output objects
++ Search params :
+    | max : number
 = GET /output
