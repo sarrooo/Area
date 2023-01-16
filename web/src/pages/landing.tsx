@@ -1,11 +1,12 @@
+import { MainButton } from 'components/MainButton'
 import React from 'react'
 import { HiArrowNarrowRight } from 'react-icons/hi'
-import { MainButton } from '~/components/mainButton'
 
-const Landing = () => {
-  function test() {
+export const Landing = () => {
+  const test = () => {
     console.log('test')
   }
+
   return (
     <div>
       <h1>Landing</h1>
