@@ -1,0 +1,182 @@
+Area Project, Routes Informations
+Epitech Project 2023
+
+(i) All objects mentioned here are defined in the ServerTypes.ts file.
+    It is necessary to define what the search informations are.
+
+=== TRIREA ===
+--- Create Trirea
+-> Send a new Trirea object, the ID can be undefined
+<- Returns the new object created
+= POST /trirea
+
+--- Read Trirea
+-> Send a trirea ID
+<- Returns the trirea object
+= GET /trirea/:id
+
+--- Update Trirea
+-> Send new Trira object with the ID
+<- OK
+= POST /trirea/:id
+
+--- Delete Trirea
+-> Send Trirea ID to delete
+<- OK
+= POST /trirea/delete/:id
+
+--- Search/List Trirea
+-> Send search infos, if admin all can be get, if user only his trireas
+<- List of Trirea objects
++ Search params :
+    | user_id : string
+    | max : number
+    | active : boolean
+= GET /trirea
+
+
+=== SERVICES ===
+--- Create Service
+-> Send a new Service object, the ID can be undefined
+<- Returns the new object created
+/!\ If the user if not connected, the "subscribed" value can be undefined
+= POST /service
+
+--- Read Service
+-> Send a service ID
+<- Returns the service object
+/!\ If the user if not connected, the "subscribed" value can be undefined
+= GET /service/:id
+
+--- Update service
+-> Send new Service object with the ID
+<- OK
+= POST /service/:id
+
+--- Delete Service
+-> Send Service ID to delete
+<- OK
+= POST /service/delete/:id
+
+--- Search/List
+-> Send search infos
+<- List of Service Objects
++ Search params :
+    | max : number
+= GET /service
+
+
+=== TRIGGERS ===
+--- Create Trigger
+-> Send a new Trigger object, the ID can be undefined
+<- Returns the new object created
+= POST /trigger
+
+--- Read Trigger
+-> Send a trigger ID
+-> Returns the trigger object
+= GET /trigger/:id
+
+--- Update Trigger
+-> Send new Trigger object with the ID
+-> OK
+= POST /trigger/:id
+
+--- Delete Trigger
+-> Send Trigger ID to delete
+<- OK
+= POST /trigger/delete/:id
+
+--- Search/list
+-> Send search infos
+<- List of Trigger objects
++ Search params :
+    | max : number
+= GET /trigger
+
+
+=== REACTIONS ===
+--- Create Reaction
+-> Send a new Reaction object, the ID can be undefined
+<- Returns the new object created
+= POST /reaction
+
+--- Read Reaction
+-> Send a reaction ID
+-> Returns the reaction object
+= GET /reaction/:id
+
+--- Update Reaction
+-> Send new Reaction object with the ID
+-> OK
+= POST /reaction/:id
+
+--- Delete Reaction
+-> Send Reaction ID to delete
+<- OK
+= POST /reaction/delete/:id
+
+--- Search/list
+-> Send search infos
+<- List of Reaction objects
++ Search params :
+    | max : number
+= GET /reaction
+
+
+=== INPUT TYPE ===
+--- Create Input Type
+-> Send a new Input object, the ID can be undefined
+<- Returns the new object created
+= POST /input
+
+--- Read Input Type
+-> Send a input ID
+-> Returns the input object
+= GET /input/:id
+
+--- Update Input Type
+-> Send new Input object with the ID
+-> OK
+= POST /input/:id
+
+--- Delete Input Type
+-> Send Input ID to delete
+<- OK
+= POST /input/delete/:id
+
+--- Search/list Input Type
+-> Send search infos
+<- List of Input objects
++ Search params :
+    | max : number
+= GET /input
+
+
+=== OUTPUT TYPE ===
+--- Create Output Type
+-> Send a new Output object, the ID can be undefined
+<- Returns the new object created
+= POST /output
+
+--- Read Output Type
+-> Send a Output ID
+-> Returns the output object
+= GET /output/:id
+
+--- Update Output Type
+-> Send new Output object with the ID
+-> OK
+= POST /output/:id
+
+--- Delete Output Type
+-> Send Output ID to delete
+<- OK
+= POST /output/delete/:id
+
+--- Search/list Output Type
+-> Send search infos
+<- List of Output objects
++ Search params :
+    | max : number
+= GET /output

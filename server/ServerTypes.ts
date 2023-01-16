@@ -1,7 +1,7 @@
 // ? CREATE TRIREA FORM 1
 // : Get list of possible services with triggers and reactions
 type Input = {
-    id: number;
+    id: number | undefined;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -12,7 +12,7 @@ type Input = {
     linked_to: number | undefined;
 }
 type Output = {
-    id: number;
+    id: number | undefined;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -20,20 +20,20 @@ type Output = {
     value: string | number | boolean | undefined;
 }
 type Trigger = {
-    id: number;
+    id: number | undefined;
     name: string;
     description: string | undefined;
     inputs: Input[]
     outputs: Output[]
 }
 type Reaction = {
-    id: number;
+    id: number | undefined;
     name: string;
     description: string | undefined;
     inputs: Input[]
 }
 type Service = {
-    id: number;
+    id: number | undefined;
     name: string;
     description: string | undefined;
     image: string | undefined;
