@@ -1,4 +1,4 @@
-import { ButtonProps } from 'types/mainButton.type'
+import { ButtonProps } from 'types/MainButton.type'
 
 export const MainButton = ({
   text,
@@ -10,7 +10,7 @@ export const MainButton = ({
   return (
     <button
       type={submitter ? 'submit' : 'button'}
-      className={`items-center bg-blue-300 text-white py-4 px-8 rounded-xl hover:bg-blue-400 shadow-md ${className}`}
+      className={`${className} items-center bg-blue-300 text-white py-4 px-8 rounded-xl hover:bg-blue-400 shadow-md`}
       onClick={callback}
     >
       <span>{text}</span>
