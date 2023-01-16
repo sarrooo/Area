@@ -1,6 +1,6 @@
 import React from 'react'
 import { HiArrowNarrowRight } from 'react-icons/hi'
-import { mainButton } from '../components/mainButton'
+import { MainButton } from 'components/mainButton'
 
 const Landing = () => {
   function test() {
@@ -9,9 +9,9 @@ const Landing = () => {
   return (
     <div>
       <h1>Landing</h1>
-      <mainButton text="text" callback={test} className="text-red" submitter={false}>
+      <MainButton text="text" callback={test} className="text-red" submitter={false}>
         <HiArrowNarrowRight />
-      </mainButton>
+      </MainButton>
     </div>
   )
 }
