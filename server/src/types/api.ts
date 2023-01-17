@@ -1,5 +1,6 @@
 export type Input = {
     id: number | undefined;
+    trigger_id: number;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -12,9 +13,9 @@ export type Input = {
 
 export type Output = {
     id: number | undefined;
+    trigger_id: number;
     name: string;
     description: string | undefined;
-    regex: string | undefined;
     type: string;
     value: string | number | boolean | undefined;
 }
