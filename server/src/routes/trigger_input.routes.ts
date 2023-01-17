@@ -34,4 +34,20 @@ triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeS
     return res.status(StatusCodes.CREATED).json(newTriggerInputType);
 });
 
+// Read Trigger Input Type : GET /input/trigger/:id
+triggerInputRoutes.get('/:id', async (req: Request, res: Response) => {
+    const {id} = req.params;
+    try {
+        const triggerInputType = await prisma.triggerInput.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Trigger Input Type ${id} read`);
+        return res.status(StatusCodes.OK).json(triggerInputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Output Type not found")
+    }
+});
+
 export default triggerInputRoutes;
