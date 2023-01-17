@@ -1,7 +1,7 @@
 import config from 'config';
 import axios from 'axios';
 import qs from 'qs';
-import {GoogleOauthToken} from "~/types/OAuth";
+import {GoogleOauthToken, GoogleUserResult} from "~/types/google";
 import Logging from "~/lib/logging";
 
 export const getGoogleOauthToken = async ({code}: { code: string }): Promise<GoogleOauthToken> => {
@@ -31,3 +31,26 @@ export const getGoogleOauthToken = async ({code}: { code: string }): Promise<Goo
         throw new Error(err);
     }
 };
+
+export async function getGoogleUser({
+    id_token,
+    access_token,}: {
+    id_token: string;
+    access_token: string;
+}): Promise<GoogleUserResult> {
+    try {
+        const { data } = await axios.get<GoogleUserResult>(
+            `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${access_token}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${id_token}`,
+                },
+            }
+        );
+
+        return data;
+    } catch (err: any) {
+        Logging.error('Failed to get Google User');
+        throw new Error(err);
+    }
+}
