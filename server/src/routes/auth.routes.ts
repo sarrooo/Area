@@ -41,7 +41,11 @@ authRoutes.post('/login', validate(loginUserSchema), async (req: Request, res: R
         where: {
           userId: user.id,
         },
-        data: {
+        update: {
+            token: refreshToken,
+            expiredAt: expiredAt
+        },
+        create: {
             userId: user.id,
             token: refreshToken,
             expiredAt: expiredAt
