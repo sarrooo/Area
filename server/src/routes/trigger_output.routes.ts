@@ -51,6 +51,9 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
 triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {trigger_id, name, description, type}: Output = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     try {
         const triggerOutputType = await prisma.triggerOutput.update({
             where: {
