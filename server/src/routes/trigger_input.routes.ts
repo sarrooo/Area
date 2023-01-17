@@ -5,13 +5,15 @@ import { BadRequestException } from '~/utils/exceptions';
 import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
+import {validate} from "~/middlewares/validate";
+import { createTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 
 dotenv.config();
 
 const triggerInputRoutes = Router();
 
 // Create Trigger Input Type : POST /input/trigger
-triggerInputRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) => {
+triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id, trigger_id, name, description, regex, mandatory, type}: Input = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
