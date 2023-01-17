@@ -72,6 +72,24 @@ triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async 
     }
 });
 
+// Delete Trigger Output Type : POST /output/trigger/delete/:id
+triggerOutputRoutes.post('/delete/:id', async (req: Request, res: Response) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const triggerOutputType = await prisma.triggerOutput.delete({
+            where: {
+                id: parseInt(id)
+            }
+        })
+        return res.status(StatusCodes.OK).json(triggerOutputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Output Type not found")
+    }
+});
+
 // Search Trigger Output Type : GET /output/trigger
 triggerOutputRoutes.get('/', validate(searchTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
