@@ -54,3 +54,7 @@ export type Trirea = {
     reaction: Reaction;
     enabled: boolean;
 }
+
+export type searchMax = {
+    max?: number;
+}

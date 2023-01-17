@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import {BadRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
-import { Output } from '~/types/api';
+import { Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
@@ -31,5 +31,14 @@ triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTyp
     Logging.info(`Trigger Output Type ${newTriggerOutputType.id} created`);
     return res.status(StatusCodes.CREATED).json(newTriggerOutputType);
 })
+
+// Search Trigger Output Type : GET /output/trigger
+triggerOutputRoutes.get('/', async (req: Request, res: Response) => {
+    const {max}: searchMax = req.query;
+    const triggerOutputTypes = await prisma.triggerOutput.findMany({
+        take: max
+    })
+    return res.status(StatusCodes.OK).json(triggerOutputTypes);
+});
 
 export default triggerOutputRoutes;
