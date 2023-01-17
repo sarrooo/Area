@@ -13,8 +13,7 @@ export const createTriggerOutputTypeSchema = object({
         description: string().optional(),
         type: string({
             required_error: "Type is required",
-        }),
-        value: string().optional()
+        })
     })
 });
 
@@ -23,6 +22,27 @@ export const readTriggerOutputTypeSchema = object({
     params: object({
         id: number({
             required_error: "Trigger Output Type id is required",
+        })
+    })
+});
+
+// Update Trigger Output Type : POST /output/trigger/:id
+export const updateTriggerOutputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger Output Type id is required",
+        }),
+    }),
+    body: object({
+        trigger_id: number({
+            required_error: "Trigger id is required",
+        }),
+        name: string({
+            required_error: "Name is required",
+        }),
+        description: string().optional(),
+        type: string({
+            required_error: "Type is required",
         })
     })
 });

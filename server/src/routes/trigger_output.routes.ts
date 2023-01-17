@@ -6,7 +6,7 @@ import { Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createTriggerOutputTypeSchema, readTriggerOutputTypeSchema, searchTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
+import { createTriggerOutputTypeSchema, readTriggerOutputTypeSchema, searchTriggerOutputTypeSchema, updateTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
 
 dotenv.config();
 
@@ -48,7 +48,7 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
 });
 
 // Update Trigger Output Type : POST /output/trigger/:id
-triggerOutputRoutes.post('/:id', async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {trigger_id, name, description, type}: Output = req.body;
     try {
