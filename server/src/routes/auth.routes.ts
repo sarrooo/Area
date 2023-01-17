@@ -18,13 +18,16 @@ authRoutes.post('/login', validate(loginUserSchema), async (req: Request, res: R
 
     const user = await prisma.user.findUnique({
         where: {
-            email: email
+            email: email,
         }
     });
     if (!user) {
         throw new BadRequestException('Invalid email or password');
     }
 
+    if (user.password === null) {
+        throw new BadRequestException('Password should be set');
+    }
     const verifyPassword = await compare(password, user.password);
     if (!verifyPassword) {
         throw new BadRequestException('Invalid email or password');
