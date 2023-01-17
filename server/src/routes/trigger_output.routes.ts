@@ -5,13 +5,15 @@ import {prisma} from "~/lib/prisma";
 import { Output } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
+import {validate} from "~/middlewares/validate";
+import { createTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
 
 dotenv.config();
 
 const triggerOutputRoutes = Router();
 
 // Create Trigger Output Type : POST /output/trigger
-triggerOutputRoutes.post('/', /*verifyToken, */async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id, trigger_id, name, description, type}: Output = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
