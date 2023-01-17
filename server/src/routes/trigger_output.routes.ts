@@ -48,7 +48,7 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
 });
 
 // Update Trigger Output Type : POST /output/trigger/:id
-triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {trigger_id, name, description, type}: Output = req.body;
     // TODO Check if user is admin
@@ -73,7 +73,7 @@ triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async 
 });
 
 // Delete Trigger Output Type : POST /output/trigger/delete/:id
-triggerOutputRoutes.post('/delete/:id', validate(deleteTriggerOutputTypeSchema), async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/delete/:id'/*, verifyToken*/, validate(deleteTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
