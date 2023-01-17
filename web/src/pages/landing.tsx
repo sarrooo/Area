@@ -1,28 +1,32 @@
 import React from 'react'
 import { FcGoogle } from 'react-icons/fc'
 
+import { useNavigate } from 'react-router-dom'
 import { MainButton } from '@/components/mainButton'
 import { LoginWithButton } from '@/components/loginWithButton'
 import { Input } from '@/components/input'
 
 export const Landing = () => {
-  const test = () => {
-    console.log('test')
+  const navigate = useNavigate()
+  const register = () => {
+    navigate('/signup')
   }
 
   return (
-    <div>
-      <h1>Landing</h1>
-      <MainButton
-        text="Sign in"
-        callback={test}
-        submitter={false}
-        disabled={false}
-      />
-      <LoginWithButton logged text="Github" callback={test}>
-        <FcGoogle />
-      </LoginWithButton>
-      <Input id="oueoue" placeholder="test" />
+    <div className="flex justify-between">
+      <div className="space-y-16 p-24">
+        <h1 className="text-6xl font-bold">Create your own universe</h1>
+        <MainButton text="Get started" callback={register} />
+        <p className="text-lg w-2/3">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          odio justo, eleifend vestibulum iaculis eget, ultrices ut dui. Etiam
+          in ante ac magna lobortis placerat ac at eros. Nulla iaculis imperdiet
+          augue nec auctor. Praesent posuere, orci in viverra eleifend, odio
+          ante vehicula dui, et cursus nibh nulla nec erat. In commodo
+          scelerisque mauris nec ultricies.
+        </p>
+      </div>
+      <img src="assets/circleWithLogos.png" alt="circle background" />
     </div>
   )
 }
