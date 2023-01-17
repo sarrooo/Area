@@ -1,5 +1,7 @@
 import React from 'react'
 import { MainButton } from '../components/mainButton'
+import { LoginWithButton } from '../components/loginWithButton'
+import { FcGoogle } from 'react-icons/fc'
 
 export const Landing = () => {
   const test = () => {
@@ -12,10 +14,12 @@ export const Landing = () => {
       <MainButton
         text="Sign in"
         callback={test}
-        className="text-red"
         submitter={false}
         disabled={false}
       />
+      <LoginWithButton logged text="Google" callback={test}>
+        <FcGoogle />
+      </LoginWithButton>
     </div>
   )
 }
