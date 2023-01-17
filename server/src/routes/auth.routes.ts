@@ -37,7 +37,10 @@ authRoutes.post('/login', validate(loginUserSchema), async (req: Request, res: R
 
     const expiredAt = new Date();
     expiredAt.setDate(expiredAt.getDate() + 7);
-    await prisma.token.create({
+    await prisma.token.upsert({
+        where: {
+          userId: user.id,
+        },
         data: {
             userId: user.id,
             token: refreshToken,

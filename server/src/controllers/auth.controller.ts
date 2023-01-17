@@ -3,6 +3,7 @@ import {BadRequestException} from "~/utils/exceptions";
 import {getGoogleOauthToken, getGoogleUser} from "~~/services/google-session.service";
 import Logging from "~/lib/logging";
 import {HttpStatusCode} from "axios";
+import {prisma} from "~/lib/prisma";
 
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
     const code = req.query.code as string;
@@ -25,5 +26,15 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
     }
 
     Logging.info('Google user' + { given_name, family_name, email, verified_email });
-    return res.status(HttpStatusCode.Accepted).json({ given_name, family_name, email, verified_email });
+    const user = await prisma.user.upsert({
+        where: {
+            email: email
+        },
+        data: {
+            first_name: given_name,
+            last_name: family_name,
+            email: email,
+            provider: 'google',
+        }
+    })
 }
