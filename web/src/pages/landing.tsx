@@ -1,7 +1,9 @@
 import React from 'react'
-import { MainButton } from '../components/mainButton'
-import { LoginWithButton } from '../components/loginWithButton'
 import { FcGoogle } from 'react-icons/fc'
+
+import { MainButton } from '@/components/mainButton'
+import { LoginWithButton } from '@/components/loginWithButton'
+import { Input } from '@/components/input'
 
 export const Landing = () => {
   const test = () => {
@@ -17,9 +19,10 @@ export const Landing = () => {
         submitter={false}
         disabled={false}
       />
-      <LoginWithButton logged text="Google" callback={test}>
+      <LoginWithButton logged text="Github" callback={test}>
         <FcGoogle />
       </LoginWithButton>
+      <Input id="oueoue" placeholder="test" />
     </div>
   )
 }
