@@ -47,6 +47,28 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
     }
 });
 
+// Update Trigger Output Type : POST /output/trigger/:id
+triggerOutputRoutes.post('/:id', async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {trigger_id, name, description, type}: Output = req.body;
+    try {
+        const triggerOutputType = await prisma.triggerOutput.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                type: type,
+                triggerId: trigger_id
+            }
+        })
+        return res.status(StatusCodes.OK).json(triggerOutputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Output Type not found")
+    }
+});
+
 // Search Trigger Output Type : GET /output/trigger
 triggerOutputRoutes.get('/', validate(searchTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
