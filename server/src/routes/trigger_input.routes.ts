@@ -6,7 +6,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
-import { createTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
+import { createTriggerInputTypeSchema, readTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeS
 });
 
 // Read Trigger Input Type : GET /input/trigger/:id
-triggerInputRoutes.get('/:id', async (req: Request, res: Response) => {
+triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const triggerInputType = await prisma.triggerInput.findUnique({

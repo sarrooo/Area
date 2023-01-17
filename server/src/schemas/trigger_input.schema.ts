@@ -18,3 +18,12 @@ export const createTriggerInputTypeSchema = object({
         })
     })
 })
+
+// Read Trigger Input Type : GET /input/trigger/:id
+export const readTriggerInputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger Input Type id is required",
+        })
+    })
+})
