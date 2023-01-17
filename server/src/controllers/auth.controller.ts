@@ -77,5 +77,9 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
 }
 
 export const githubOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send('github')
+}
 
+export const twitterOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
+    res.status(200).send('twitter')
 }
