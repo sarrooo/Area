@@ -76,39 +76,57 @@ All objects mentioned here are defined in the [ServerTypes.ts file](./server/Ser
 ➡️ Search params :  
 &nbsp;&nbsp;&nbsp;&nbsp;⚫️ `max` : `number`  
 ⬅️ List of Reaction objects
-### Input Types routes :
-- **Create Input Type** `POST /input`  
+### Trigger Input Types routes :
+- **Create Trigger Input Type** `POST /input/trigger`  
 ➡️ New Input object, the ID can be undefined  
 ⬅️ New Input object created  
 ⚠️ Admin right are required
-- **Read Input Type** `GET /input/:id`  
+- **Read Trigger Input Type** `GET /input/trigger/:id`  
 ➡️ Input ID  
 ⬅️ Input object
-- **Update Input Type** `POST /input/:id`  
+- **Update Trigger Input Type** `POST /input/trigger/:id`  
 ➡️ Updated Input object with the correct ID  
 ⚠️ Admin right are required
-- **Delete Input Type** `POST /input/delete/:id`  
+- **Delete Trigger Input Type** `POST /input/trigger/delete/:id`  
 ➡️ Input ID  
 ⚠️ Admin right are required
-- **Search Input Type** `GET /input`  
+- **Search Trigger Input Type** `GET /input/trigger`  
 ➡️ Search params :  
 &nbsp;&nbsp;&nbsp;&nbsp;⚫️ `max` : `number`  
 ⬅️ List of Input objects
-### Output Types routes :
-- **Create Output Type** `POST /output`  
+### Reaction Input Types routes :
+- **Create Trigger Input Type** `POST /input/reaction`  
+➡️ New Input object, the ID can be undefined  
+⬅️ New Input object created  
+⚠️ Admin right are required
+- **Read Reaction Input Type** `GET /input/reaction/:id`  
+➡️ Input ID  
+⬅️ Input object
+- **Update Reaction Input Type** `POST /input/reaction/:id`  
+➡️ Updated Input object with the correct ID  
+⚠️ Admin right are required
+- **Delete Reaction Input Type** `POST /input/reaction/delete/:id`  
+➡️ Input ID  
+⚠️ Admin right are required
+- **Search Reaction Input Type** `GET /input/reaction`  
+➡️ Search params :  
+&nbsp;&nbsp;&nbsp;&nbsp;⚫️ `max` : `number`  
+⬅️ List of Input objects
+### Trigger Output Types routes :
+- **Create Trigger Output Type** `POST /output/trigger`  
 ➡️ New Output object, the ID can be undefined  
 ⬅️ New Output object created  
 ⚠️ Admin right are required
-- **Read Output Type** `GET /output/:id`  
+- **Read Trigger Output Type** `GET /output/trigger/:id`  
 ➡️ Output ID  
 ⬅️ Output object
-- **Update Output Type** `POST /output/:id`  
+- **Update Trigger Output Type** `POST /output/trigger/:id`  
 ➡️ Updated Output object with the correct ID  
 ⚠️ Admin right are required
-- **Delete Output Type** `POST /output/delete/:id`  
+- **Delete Trigger Output Type** `POST /output/trigger/delete/:id`  
 ➡️ Output ID  
 ⚠️ Admin right are required
-- **Search Output Type** `GET /output`  
+- **Search Trigger Output Type** `GET /output/trigger`  
 ➡️ Search params :  
 &nbsp;&nbsp;&nbsp;&nbsp;⚫️ `max` : `number`  
 ⬅️ List of Output objects
