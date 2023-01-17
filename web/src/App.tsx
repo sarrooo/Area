@@ -1,10 +1,10 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
 
-import Landing from './pages/landing'
-import NotFound from './pages/notFound'
-import Login from './pages/login'
-import SignUp from './pages/signUp'
+import Landing from '@/pages/Landing'
+import NotFound from '@/pages/NotFound'
+import Login from '@/pages/Login'
+import SignUp from '@/pages/SignUp'
 
 function App() {
   return (

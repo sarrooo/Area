@@ -1,8 +1,10 @@
-export type InputProps = {
+type InputProps = {
   className?: string
   required?: boolean
   placeholder?: string
   id: string
+  label: string
+  typeInput?: 'text' | 'password'
 }
 
 export const Input = ({
@@ -10,19 +12,21 @@ export const Input = ({
   required = true,
   placeholder = 'input',
   id,
+  label,
+  typeInput = 'text',
 }: InputProps) => {
   return (
     <div className={`p-2 ${className}`}>
       <label
         htmlFor={id}
-        className="block pb-2 mb-2 text-sm font-medium text-gray-900 dark:text-white text-left"
+        className="block text-sm font-medium text-gray-900 text-left"
       >
-        Last name
+        {label}
         <input
-          type="text"
+          type={typeInput}
           id={id}
           required={required}
-          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="mt-1 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           placeholder={placeholder}
         />
       </label>
