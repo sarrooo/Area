@@ -22,7 +22,7 @@ export const Landing = () => {
       <LoginWithButton logged text="Github" callback={test}>
         <FcGoogle />
       </LoginWithButton>
-      <Input type="text" placeholder="test" />
+      <Input id="oueoue" placeholder="test" />
     </div>
   )
 }
