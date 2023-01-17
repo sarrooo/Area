@@ -32,6 +32,21 @@ triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTyp
     return res.status(StatusCodes.CREATED).json(newTriggerOutputType);
 })
 
+// Read Trigger Output Type : GET /output/trigger/:id
+triggerOutputRoutes.get('/:id', async (req: Request, res: Response) => {
+    const {id} = req.params;
+    try {
+        const triggerOutputType = await prisma.triggerOutput.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        })
+        return res.status(StatusCodes.OK).json(triggerOutputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Output Type not found")
+    }
+});
+
 // Search Trigger Output Type : GET /output/trigger
 triggerOutputRoutes.get('/', validate(searchTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
