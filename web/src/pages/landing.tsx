@@ -1,6 +1,5 @@
-import { MainButton } from '../components/mainButton'
 import React from 'react'
-import { HiArrowNarrowRight } from 'react-icons/hi'
+import { MainButton } from '../components/mainButton'
 
 export const Landing = () => {
   const test = () => {
@@ -15,6 +14,7 @@ export const Landing = () => {
         callback={test}
         className="text-red"
         submitter={false}
+        disabled={false}
       />
     </div>
   )

@@ -6,4 +6,6 @@ export type ButtonProps = {
   className?: string
   children?: React.ReactNode
   submitter?: boolean
+  disabled?: boolean
+  primary?: boolean
 }
