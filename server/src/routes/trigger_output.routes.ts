@@ -41,6 +41,7 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
                 id: parseInt(id)
             }
         })
+        Logging.info(`Trigger Output Type ${id} read`);
         return res.status(StatusCodes.OK).json(triggerOutputType);
     } catch (_) {
         throw new BadRequestException("Trigger Output Type not found")
@@ -66,6 +67,7 @@ triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTy
                 triggerId: trigger_id
             }
         })
+        Logging.info(`Trigger Output Type ${id} updated`);
         return res.status(StatusCodes.OK).json(triggerOutputType);
     } catch (_) {
         throw new BadRequestException("Trigger Output Type not found")
@@ -84,6 +86,7 @@ triggerOutputRoutes.post('/delete/:id'/*, verifyToken*/, validate(deleteTriggerO
                 id: parseInt(id)
             }
         })
+        Logging.info(`Trigger Output Type ${id} deleted`);
         return res.status(StatusCodes.OK).json(triggerOutputType);
     } catch (_) {
         throw new BadRequestException("Trigger Output Type not found")
@@ -96,6 +99,7 @@ triggerOutputRoutes.get('/', validate(searchTriggerOutputTypeSchema), async (req
     const triggerOutputTypes = await prisma.triggerOutput.findMany({
         take: max
     })
+    Logging.info(`Trigger Output Type searched`);
     return res.status(StatusCodes.OK).json(triggerOutputTypes);
 });
 
