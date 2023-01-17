@@ -6,7 +6,7 @@ import { Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
+import { createTriggerOutputTypeSchema, searchTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
 
 dotenv.config();
 
@@ -33,7 +33,7 @@ triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTyp
 })
 
 // Search Trigger Output Type : GET /output/trigger
-triggerOutputRoutes.get('/', async (req: Request, res: Response) => {
+triggerOutputRoutes.get('/', validate(searchTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
     const triggerOutputTypes = await prisma.triggerOutput.findMany({
         take: max

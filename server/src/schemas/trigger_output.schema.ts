@@ -17,3 +17,10 @@ export const createTriggerOutputTypeSchema = object({
         value: string().optional()
     })
 });
+
+// Search Trigger Output Type : GET /output/trigger
+export const searchTriggerOutputTypeSchema = object({
+    body: object({
+        max: number().optional()
+    })
+});
