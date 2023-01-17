@@ -30,7 +30,13 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
         where: {
             email: email
         },
-        data: {
+        update: {
+            first_name: given_name,
+            last_name: family_name,
+            email: email,
+            provider: 'google',
+        },
+        create: {
             first_name: given_name,
             last_name: family_name,
             email: email,
