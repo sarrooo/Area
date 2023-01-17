@@ -29,17 +29,6 @@
     "@typescript-eslint/no-unsafe-member-access": "error",
     "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/ban-ts-comment": "error",
-    "@typescript-eslint/no-floating-promises": "off",
-    "@typescript-eslint/unbound-method": "off",
-    "@typescript-eslint/require-await": "off",
-    "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/naming-convention": [
-      "off",
-      {
-        "selector": "property",
-        "format": ["snake_case"]
-      }
-    ],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
@@ -52,18 +41,29 @@
         "devDependencies": ["**/*.test.ts", "**/*.test.tsx"]
       }
     ],
+    "react-hooks/exhaustive-deps": "warn",
+    "import/extensions": ["off"],
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/naming-convention": [
+      "off",
+      {
+        "selector": "property",
+        "format": ["snake_case"]
+      }
+    ],
     "import/prefer-default-export": "off",
-    "@next/next/no-img-element": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/function-component-definition": "off",
     "react/require-default-props": [
       2,
       {
         "forbidDefaultForRequired": false,
         "ignoreFunctionalComponents": true
       }
-    ],
-    "react/react-in-jsx-scope": "off",
-    "react/function-component-definition": "off"
+    ]
   },
   "plugins": ["react", "@typescript-eslint", "ban"]
 }
