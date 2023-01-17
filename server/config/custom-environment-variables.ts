@@ -13,5 +13,10 @@ export default {
         username: 'POSTGRES_USER',
         password: 'POSTGRES_PASSWORD',
         database: 'POSTGRES_DB'
+    },
+    googleConfig: {
+        clientId: 'GOOGLE_OAUTH_CLIENT_ID',
+        clientSecret: 'GOOGLE_OAUTH_CLIENT_SECRET',
+        redirectUri: 'GOOGLE_OAUTH_REDIRECT_URL',
     }
 }
