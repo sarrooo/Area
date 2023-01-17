@@ -6,7 +6,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
-import { createTriggerInputTypeSchema, readTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
+import { createTriggerInputTypeSchema, readTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 
 dotenv.config();
 
@@ -51,7 +51,7 @@ triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req:
 });
 
 // Update Trigger Input Type : POST /input/trigger/:id
-triggerInputRoutes.post('/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {trigger_id, name, description, regex, mandatory, type}: Input = req.body;
     // TODO Check if user is admin
