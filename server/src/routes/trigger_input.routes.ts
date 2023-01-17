@@ -50,4 +50,32 @@ triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req:
     }
 });
 
+// Update Trigger Input Type : POST /input/trigger/:id
+triggerInputRoutes.post('/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {trigger_id, name, description, regex, mandatory, type}: Input = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const triggerInputType = await prisma.triggerInput.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                regex: regex,
+                mandatory: mandatory,
+                type: type,
+                triggerId: trigger_id
+            }
+        });
+        Logging.info(`Trigger Input Type ${id} updated`);
+        return res.status(StatusCodes.OK).json(triggerInputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Input Type not found")
+    }
+});
+
 export default triggerInputRoutes;
