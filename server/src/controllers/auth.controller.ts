@@ -75,3 +75,7 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
     Logging.info(`User ${user.email} logged in w/ google`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
+
+export const githubOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
+
+}
