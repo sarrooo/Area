@@ -18,9 +18,9 @@ const Login = () => {
       <div>
         <h1 className="text-6xl font-bold">Welcome back !</h1>
       </div>
-      <form className="p-8 bg-white shadow-xl rounded-lg w-1/3 text-center space-y-8">
+      <div className="p-8 bg-white shadow-xl rounded-lg w-1/3 text-center space-y-8">
         <h1 className="text-3xl font-bold">Login</h1>
-        <div className="space-y-4">
+        <form className="space-y-4">
           <Input id="email" placeholder="John.doe@email.com" />
           <Input id="password" />
           <div className="flex justify-around items-center">
@@ -32,7 +32,7 @@ const Login = () => {
             </p>
             <MainButton callback={test} text="Login" submitter />
           </div>
-        </div>
+        </form>
         <div className="h-[4px] w-full rounded-lg bg-gray-300" />
         <div className="flex flex-col justify-center items-center space-y-4">
           <LoginWithButton text="Google" callback={test} className="w-3/4">
@@ -42,7 +42,7 @@ const Login = () => {
             <BsGithub />
           </LoginWithButton>
         </div>
-      </form>
+      </div>
       <img
         src="assets/circle.png"
         alt="circle background"
