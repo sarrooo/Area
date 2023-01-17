@@ -18,6 +18,15 @@ export const createTriggerOutputTypeSchema = object({
     })
 });
 
+// Read Trigger Output Type : GET /output/trigger/:id
+export const readTriggerOutputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger Output Type id is required",
+        })
+    })
+});
+
 // Search Trigger Output Type : GET /output/trigger
 export const searchTriggerOutputTypeSchema = object({
     body: object({
