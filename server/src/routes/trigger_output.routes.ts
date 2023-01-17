@@ -6,7 +6,7 @@ import { Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createTriggerOutputTypeSchema, readTriggerOutputTypeSchema, searchTriggerOutputTypeSchema, updateTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
+import { createTriggerOutputTypeSchema, deleteTriggerOutputTypeSchema, readTriggerOutputTypeSchema, searchTriggerOutputTypeSchema, updateTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
 
 dotenv.config();
 
@@ -73,7 +73,7 @@ triggerOutputRoutes.post('/:id', validate(updateTriggerOutputTypeSchema), async 
 });
 
 // Delete Trigger Output Type : POST /output/trigger/delete/:id
-triggerOutputRoutes.post('/delete/:id', async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/delete/:id', validate(deleteTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

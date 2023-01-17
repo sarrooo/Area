@@ -47,6 +47,15 @@ export const updateTriggerOutputTypeSchema = object({
     })
 });
 
+// Delete Trigger Output Type : POST /output/trigger/delete/:id
+export const deleteTriggerOutputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger Output Type id is required",
+        }),
+    }),
+});
+
 // Search Trigger Output Type : GET /output/trigger
 export const searchTriggerOutputTypeSchema = object({
     body: object({
