@@ -2,11 +2,13 @@ import {NextFunction, Request, Response} from "express";
 import {BadRequestException} from "~/utils/exceptions";
 import {getGoogleOauthToken, getGoogleUser} from "~~/services/google-session.service";
 import Logging from "~/lib/logging";
-import {HttpStatusCode} from "axios";
 import {prisma} from "~/lib/prisma";
+import {sign} from "jsonwebtoken";
+import config from "config";
 
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
     const code = req.query.code as string;
+    const pathUrl = (req.query.state as string) || '/';
 
     if (!code) {
         Logging.warning("Google OAuth: No code provided");
@@ -25,7 +27,6 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
         throw new BadRequestException('Google Email not verified');
     }
 
-    Logging.info('Google user' + { given_name, family_name, email, verified_email });
     const user = await prisma.user.upsert({
         where: {
             email: email
@@ -43,4 +44,34 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
             provider: 'google',
         }
     })
+
+    if (!user) {
+        Logging.warning("Google OAuth: Failed to upsert user");
+        throw new BadRequestException("Google OAuth: Failed to upsert user");
+    }
+
+    const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
+    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
+
+    const expiredAt = new Date();
+    expiredAt.setDate(expiredAt.getDate() + 7);
+    await prisma.token.upsert({
+        where: {
+            userId: user.id,
+        },
+        update: {
+            token: refreshToken,
+            expiredAt: expiredAt
+        },
+        create: {
+            userId: user.id,
+            token: refreshToken,
+            expiredAt: expiredAt
+        }
+    })
+
+    const token = sign({ id: user.id, name: user.email }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
+    Logging.info(`User ${user.email} logged in w/ google`);
+    res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
