@@ -17,7 +17,7 @@ export const MainButton = ({
     <button
       disabled={disabled}
       type={submitter ? 'submit' : 'button'}
-      className={`${className} ${buttonColor} text-xl disabled:bg-gray-400 items-center flex space-x-4 font-bold py-4 px-8 transition ease-in-out rounded-xl shadow-md`}
+      className={`text-xl disabled:bg-gray-400 items-center flex space-x-4 font-bold py-4 px-8 transition ease-in-out rounded-xl shadow-md ${className} ${buttonColor}`}
       onClick={callback}
     >
       <span>{text}</span>
