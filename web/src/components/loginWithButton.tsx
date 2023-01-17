@@ -15,7 +15,7 @@ export const LoginWithButton = ({
     <button
       disabled={disabled}
       type="button"
-      className={`text-xl disabled:bg-gray-400 items-center flex space-x-4 font-bold py-2 px-16 transition ease-in-out rounded-xl shadow-md ${color} ${className}`}
+      className={`text-xl disabled:bg-gray-400 items-center flex justify-center space-x-4 font-bold py-2 px-16 transition ease-in-out rounded-xl shadow-md ${color} ${className}`}
       onClick={callback}
     >
       {children}
