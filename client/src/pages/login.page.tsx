@@ -4,6 +4,7 @@ import { ReactComponent as GoogleLogo } from '../assets/google.svg';
 import { ReactComponent as GithubLogo } from '../assets/github.svg';
 import { ReactComponent as TwitterLogo } from '../assets/twitter.svg';
 import { getGoogleUrl } from '../utils/getGoogleUrl';
+import {getGithubUrl} from "../utils/getGithubUrl";
 
 const LoginPage = () => {
     const location = useLocation();
@@ -86,7 +87,7 @@ const LoginPage = () => {
                     }}
                 >
                     <MuiLink
-                        href={getGoogleUrl(from)}
+                        href={getGithubUrl(from)}
                         sx={{
                             backgroundColor: '#f5f6f7',
                             borderRadius: 1,
