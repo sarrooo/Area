@@ -1,4 +1,4 @@
-import { MainButton } from 'components/MainButton'
+import { MainButton } from '../components/mainButton'
 import React from 'react'
 import { HiArrowNarrowRight } from 'react-icons/hi'
 
@@ -11,13 +11,11 @@ export const Landing = () => {
     <div>
       <h1>Landing</h1>
       <MainButton
-        text="text"
+        text="Sign in"
         callback={test}
         className="text-red"
         submitter={false}
-      >
-        <HiArrowNarrowRight />
-      </MainButton>
+      />
     </div>
   )
 }
