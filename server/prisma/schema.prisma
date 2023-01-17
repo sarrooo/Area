@@ -76,6 +76,8 @@ model TriggerInput {
   name     String   @db.VarChar(255)
   type   String
   description String?
+  regex String?
+  mandatory Boolean
   trigger Trigger  @relation(fields: [triggerId], references: [id])
   triggerId Int
   trireaTriggerInputs TrireaTriggerInput[]
