@@ -5,7 +5,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createReactionInputTypeSchema, readReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
+import { createReactionInputTypeSchema, readReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
 
 dotenv.config();
@@ -51,7 +51,7 @@ reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (re
 });
 
 // Update Trigger Input Type : POST /input/trigger/:id
-reactionInputRoutes.post('/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+reactionInputRoutes.post('/:id'/*, verifyToken */, validate(updateReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {name, type, description, regex, mandatory, reactionId}: ReactionInputType = req.body;
     // TODO Check if user is admin
