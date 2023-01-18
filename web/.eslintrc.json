@@ -42,6 +42,7 @@
       }
     ],
     "react-hooks/exhaustive-deps": "warn",
+    "no-param-reassign": ["off"],
     "import/extensions": ["off"],
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/unbound-method": "off",

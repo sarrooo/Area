@@ -27,7 +27,7 @@ const Register = () => {
       <div className="flex items-center justify-center mt-20 w-full h-full">
         <div className="h-min w-3/5 p-6 rounded-lg shadow-xl">
           <h1 className="text-3xl text-center font-bold">Register</h1>
-          <form className="space-y-2">
+          {/* <form className="space-y-2">
             <Input
               id="firstname"
               className=""
@@ -62,7 +62,7 @@ const Register = () => {
               </div>
               <MainButton callback={signin} text="Sign-in" />
             </div>
-          </form>
+          </form> */}
           <div className="my-8 h-[4px] w-full rounded-lg bg-gray-300" />
           <div className="flex flex-col justify-center items-center space-y-4">
             <LoginWithButton text="Google" callback={signin} className="w-3/4">
