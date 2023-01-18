@@ -18,7 +18,7 @@ export const MainButton = ({
   disabled,
 }: MainButtonProps) => {
   const buttonColor = primary
-    ? 'bg-blue-300 hover:bg-blue-400'
+    ? 'bg-primary-700 hover:bg-primary-900'
     : 'bg-white hover:bg-gray-100'
 
   return (

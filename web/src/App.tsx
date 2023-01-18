@@ -5,10 +5,12 @@ import Landing from '@/pages/Landing'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import { Navbar } from '@/components/Navbar'
 
 function App() {
   return (
     <div className="App">
+      <Navbar />
       <Routes>
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
