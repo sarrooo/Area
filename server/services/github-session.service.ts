@@ -3,6 +3,7 @@ import axios from 'axios';
 import qs from 'qs';
 import Logging from "~/lib/logging";
 import {GithubOauthToken, GithubUserResult} from "~/types/github";
+import * as console from "console";
 
 export const getGithubOauthToken = async ({code}: { code: string }): Promise<GithubOauthToken> => {
     const rootUrl = 'https://github.com/login/oauth/access_token?';
@@ -18,6 +19,12 @@ export const getGithubOauthToken = async ({code}: { code: string }): Promise<Git
         const { data } = await axios.post<GithubOauthToken>(
             rootUrl,
             qs.stringify(options),
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json'
+                },
+            }
         );
 
         return data;

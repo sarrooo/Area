@@ -6,6 +6,7 @@ import {prisma} from "~/lib/prisma";
 import {sign} from "jsonwebtoken";
 import config from "config";
 import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
+import * as console from "console";
 
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
     const code = req.query.code as string;
@@ -88,6 +89,7 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
     }
 
     const { access_token } = await getGithubOauthToken({code});
+    console.log(access_token);
     if (!access_token) {
         Logging.error("Github OAuth: getGithubOauthToken failed");
         throw new BadRequestException('No access_token provided');
