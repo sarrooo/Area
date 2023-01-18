@@ -1,10 +1,11 @@
-import './App.css'
+import '@/App.css'
 import { Routes, Route } from 'react-router-dom'
 
-import Landing from './pages/landing'
-import NotFound from './pages/notFound'
-import Login from './pages/Login'
-import SignUp from './pages/signUp'
+import Landing from '@/pages/landing'
+import Services from '@/pages/Services'
+import NotFound from '@/pages/notFound'
+import Login from '@/pages/Login'
+import SignUp from '@/pages/signUp'
 import { Navbar } from '@/components/Navbar'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/services" element={<Services />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

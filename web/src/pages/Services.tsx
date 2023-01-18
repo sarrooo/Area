@@ -1,19 +1,15 @@
-import React from 'react'
+import { ServiceCard } from '@/components/ServiceCard'
 
-import { useNavigate } from 'react-router-dom'
-import { MainButton } from '@/components/mainButton'
-
-const Landing = () => {
-  const navigate = useNavigate()
-  const register = () => {
-    navigate('/signup')
-  }
-
+const Services = () => {
   return (
     <div className="flex justify-between">
-      <div className="space-y-16 p-24">
-        <h1 className="text-6xl font-bold">Create your own universe</h1>
-        <MainButton text="Get started" callback={register} />
+      <div className="w-1/2 p-32  space-y-12">
+        <div className="space-y-4">
+          <h1 className="text-4xl font-bold">Services</h1>
+          <h2 className="text-xl font-bold">
+            We offer a wide variety of services
+          </h2>
+        </div>
         <p className="text-lg w-2/3">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
           odio justo, eleifend vestibulum iaculis eget, ultrices ut dui. Etiam
@@ -21,11 +17,14 @@ const Landing = () => {
           augue nec auctor. Praesent posuere, orci in viverra eleifend, odio
           ante vehicula dui, et cursus nibh nulla nec erat. In commodo
           scelerisque mauris nec ultricies.
-        </p>
+        </p>{' '}
       </div>
-      <img src="assets/circleWithLogos.png" alt="circle background" />
+      <div className="w-1/2 h-screen bg-primary-900">
+        <p>ouai</p>
+        <ServiceCard />
+      </div>
     </div>
   )
 }
 
-export default Landing
+export default Services
