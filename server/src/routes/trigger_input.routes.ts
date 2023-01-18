@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {Request, Response, Router} from 'express';
-import { Input } from '~/types/api';
+import { Input, searchMax } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
 import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
@@ -95,6 +95,16 @@ triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerI
     } catch (_) {
         throw new BadRequestException("Trigger Input Type not found")
     }
+});
+
+// Search Trigger Input Type : GET /input/trigger
+triggerInputRoutes.get('/', async (req: Request, res: Response) => {
+    const {max}: searchMax = req.query;
+    const triggerInputTypes = await prisma.triggerInput.findMany({
+        take: max
+    })
+    Logging.info(`Trigger Input Type searched`);
+    return res.status(StatusCodes.OK).json(triggerInputTypes);
 });
 
 export default triggerInputRoutes;
