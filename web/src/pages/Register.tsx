@@ -12,8 +12,8 @@ const Register = () => {
 
   return (
     <div className="w-full flex flex-rows">
-      <div className="flex flex-col items-center justify-between w-full h-screen">
-        <div className="h-full mt-28 ml-12">
+      <div className="flex flex-col items-center justify-between w-full h-full">
+        <div className="h-full mt-20 ml-12">
           <h1 className="text-6xl font-bold">
             Create an account to create your universe !
           </h1>
@@ -24,7 +24,7 @@ const Register = () => {
           className="absolute left-0 bottom-0"
         />
       </div>
-      <div className="flex items-center justify-center w-full h-screen">
+      <div className="flex items-center justify-center mt-20 w-full h-full">
         <div className="h-min w-3/5 p-6 rounded-lg shadow-xl">
           <h1 className="text-3xl text-center font-bold">Register</h1>
           <form className="space-y-2">
