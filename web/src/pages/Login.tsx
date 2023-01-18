@@ -26,7 +26,7 @@ const Login = () => {
           <div className="flex justify-around items-center">
             <p>
               Don&apos;t have an account{' '}
-              <Link to="/signup" className="underline hover:text-blue-500">
+              <Link to="/signup" className="underline hover:text-primary-900">
                 create one
               </Link>
             </p>
