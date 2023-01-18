@@ -1,5 +1,84 @@
 import { ServiceCard } from '@/components/ServiceCard'
 
+const services = [
+  {
+    name: 'Google',
+    isFollowing: true,
+    triggers: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+        outputs: ['time', 'attachement'],
+      },
+    ],
+    reactions: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+      },
+    ],
+  },
+  {
+    name: 'Twitter',
+    isFollowing: false,
+    triggers: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+        outputs: ['time', 'attachement'],
+      },
+    ],
+    reactions: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+      },
+    ],
+  },
+  {
+    name: 'Github',
+    isFollowing: true,
+    triggers: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+        outputs: ['time', 'attachement'],
+      },
+    ],
+    reactions: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+      },
+    ],
+  },
+  {
+    name: 'Time',
+    isFollowing: false,
+    triggers: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+        outputs: ['time', 'attachement'],
+      },
+    ],
+    reactions: [
+      {
+        name: 'get an email',
+        description: 'When you get an email',
+        arguments: ['from', 'time', 'attachement'],
+      },
+    ],
+  },
+]
+
 const Services = () => {
   return (
     <div className="flex justify-between">
@@ -19,12 +98,17 @@ const Services = () => {
           scelerisque mauris nec ultricies.
         </p>{' '}
       </div>
-      <div className="w-1/2 h-screen pt-32 bg-primary-900 flex flex-col space-y-8 items-center">
-        <ServiceCard />
-        <ServiceCard />
-        <ServiceCard />
-        <ServiceCard />
-        <ServiceCard />
+      <div className="w-1/2 py-32 bg-primary-900 flex flex-col space-y-8 items-center">
+        {services.map((service) => {
+          return (
+            <ServiceCard
+              name={service.name}
+              isFollowing={service.isFollowing}
+              triggers={service.triggers}
+              reactions={service.reactions}
+            />
+          )
+        })}
       </div>
     </div>
   )
