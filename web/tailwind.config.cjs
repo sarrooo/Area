@@ -17,9 +17,15 @@ module.exports = {
           900: '#A6EAFF',
         },
       },
+<<<<<<< HEAD
       fontFamily: {
         poppins: ['Poppins'],
       },
+=======
+    },
+    fontFamily: {
+      poppins: ['Poppins'],
+>>>>>>> 13-branch-web-master
     },
   },
   plugins: [],
