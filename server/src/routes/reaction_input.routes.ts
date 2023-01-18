@@ -14,7 +14,7 @@ const reactionInputRoutes = Router();
 
 // Create Reaction Input Type : POST /input/reaction
 reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTypeSchema), async (req: Request, res: Response) => {
-    const {id, reaction_id, name, description, regex, mandatory, type}: ReactionInput = req.body;
+    const {id, reactionId, name, description, regex, mandatory, type}: ReactionInput = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
@@ -27,7 +27,7 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
             regex: regex,
             mandatory: mandatory,
             type: type,
-            reactionId: reaction_id
+            reactionId: reactionId
         }
     });
     Logging.info(`Reaction Input Type ${newReactionInputType.id} created`);

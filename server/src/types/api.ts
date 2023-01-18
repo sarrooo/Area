@@ -1,6 +1,6 @@
 export type TriggerInput = {
     id: number | undefined;
-    trigger_id: number;
+    triggerId: number;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -13,7 +13,7 @@ export type TriggerInput = {
 
 export type ReactionInput = {
     id: number | undefined;
-    reaction_id: number;
+    reactionId: number;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -26,7 +26,7 @@ export type ReactionInput = {
 
 export type Output = {
     id: number | undefined;
-    trigger_id: number;
+    triggerId: number;
     name: string;
     description: string | undefined;
     type: string;

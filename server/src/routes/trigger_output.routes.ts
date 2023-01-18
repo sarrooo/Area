@@ -14,7 +14,7 @@ const triggerOutputRoutes = Router();
 
 // Create Trigger Output Type : POST /output/trigger
 triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTypeSchema), async (req: Request, res: Response) => {
-    const {id, trigger_id, name, description, type}: Output = req.body;
+    const {id, triggerId, name, description, type}: Output = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
@@ -25,7 +25,7 @@ triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTyp
             name: name,
             description: description,
             type: type,
-            triggerId: trigger_id
+            triggerId: triggerId
         }
     });
     Logging.info(`Trigger Output Type ${newTriggerOutputType.id} created`);
@@ -51,7 +51,7 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
 // Update Trigger Output Type : POST /output/trigger/:id
 triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
-    const {trigger_id, name, description, type}: Output = req.body;
+    const {triggerId, name, description, type}: Output = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
@@ -64,7 +64,7 @@ triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTy
                 name: name,
                 description: description,
                 type: type,
-                triggerId: trigger_id
+                triggerId: triggerId
             }
         })
         Logging.info(`Trigger Output Type ${id} updated`);
