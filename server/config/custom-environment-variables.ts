@@ -28,5 +28,7 @@ export default {
         clientId: 'TWITTER_OAUTH_CLIENT_ID',
         clientSecret: 'TWITTER_OAUTH_CLIENT_SECRET',
         redirectUri: 'TWITTER_OAUTH_REDIRECT_URL',
+        apiKey: 'TWITTER_OAUTH_API_KEY',
+        apiSecret: 'TWITTER_OAUTH_API_SECRET',
     }
 }
