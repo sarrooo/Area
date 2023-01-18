@@ -5,7 +5,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
+import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, searchReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
 import { searchMax } from '~/types/api';
 
@@ -99,7 +99,7 @@ reactionInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteReactio
 });
 
 // Search Reaction Input Type : GET /input/reaction
-reactionInputRoutes.get('/', async (req: Request, res: Response) => {
+reactionInputRoutes.get('/', validate(searchReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
     const reactionInputTypes: ReactionInputType[] = await prisma.reactionInputType.findMany({
         take: max

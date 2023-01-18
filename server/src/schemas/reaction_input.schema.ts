@@ -61,3 +61,10 @@ export const deleteReactionInputTypeSchema = object({
         }),
     }),
 });
+
+// Search Reaction Input Type : GET /intput/reaction
+export const searchReactionInputTypeSchema = object({
+    body: object({
+        max: number().optional()
+    }),
+});
