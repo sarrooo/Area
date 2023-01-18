@@ -5,6 +5,7 @@ import Logging from "~/lib/logging";
 import {prisma} from "~/lib/prisma";
 import {sign} from "jsonwebtoken";
 import config from "config";
+import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
 
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
     const code = req.query.code as string;
@@ -77,7 +78,23 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
 }
 
 export const githubOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send('github')
+
+    const code = req.query.code as string;
+    Logging.info(`Github OAuth: ${code}`);
+
+    if (!code) {
+        Logging.warning("Github OAuth: No code provided");
+        throw new BadRequestException('No code provided');
+    }
+
+    const { access_token } = await getGithubOauthToken({code});
+    if (!access_token) {
+        Logging.error("Github OAuth: getGithubOauthToken failed");
+        throw new BadRequestException('No access_token provided');
+    }
+    const { name, email } = await getGithubUser(access_token);
+
+    res.status(200).json({name, email})
 }
 
 export const twitterOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {

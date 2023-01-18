@@ -5,29 +5,24 @@ import Logging from "~/lib/logging";
 import {GithubOauthToken, GithubUserResult} from "~/types/github";
 
 export const getGithubOauthToken = async ({code}: { code: string }): Promise<GithubOauthToken> => {
-    const rootUrl = 'https://github.com/login/oauth/access_token';
+    const rootUrl = 'https://github.com/login/oauth/access_token?';
 
     const options = {
         code,
-        client_id: config.get<string>('googleConfig.clientId'),
-        client_secret: config.get<string>('googleConfig.clientSecret'),
-        redirect_uri: config.get<string>('googleConfig.redirectUri'),
-        grant_type: 'authorization_code',
+        client_id: config.get<string>('githubConfig.clientId'),
+        client_secret: config.get<string>('githubConfig.clientSecret'),
+        redirect_uri: config.get<string>('githubConfig.redirectUri'),
     };
+
     try {
         const { data } = await axios.post<GithubOauthToken>(
             rootUrl,
             qs.stringify(options),
-            {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            }
         );
 
         return data;
     } catch (err: any) {
-        Logging.error('Failed to get Google Oauth Token');
+        Logging.error('Failed to get Github Oauth Token');
         throw new Error(err);
     }
 };
