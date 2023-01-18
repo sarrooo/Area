@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { MainButton } from '@/components/mainButton'
+import { MainButton } from '@/components/MainButton'
 
 export const Navbar = () => {
   const navigate = useNavigate()
