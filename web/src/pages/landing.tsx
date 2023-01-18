@@ -2,9 +2,9 @@ import React from 'react'
 import { FcGoogle } from 'react-icons/fc'
 
 import { useNavigate } from 'react-router-dom'
-import { MainButton } from '@/components/mainButton'
-import { LoginWithButton } from '@/components/loginWithButton'
-import { Input } from '@/components/input'
+import { MainButton } from '@/components/MainButton'
+import { LoginWithButton } from '@/components/LoginWithButton'
+import { Input } from '@/components/Input'
 
 export const Landing = () => {
   const navigate = useNavigate()

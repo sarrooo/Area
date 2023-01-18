@@ -1,4 +1,11 @@
-import { LoginWithButtonPropsProps } from 'types/loginWithButton.type'
+export type LoginWithButtonPropsProps = {
+  text: string
+  callback: () => void
+  className?: string
+  children?: React.ReactNode
+  disabled?: boolean
+  logged?: boolean
+}
 
 export const LoginWithButton = ({
   text,
