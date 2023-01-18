@@ -2,11 +2,11 @@ import {Request, Response, Router} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import {BadRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
-import { ReactionInputType, Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
 import { createReactionInputTypeSchema, readReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
+import { ReactionInputType } from '@prisma/client';
 
 dotenv.config();
 
@@ -20,7 +20,7 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     if (id !== undefined)
         throw new BadRequestException("You cannot specify an id when creating a trigger output type");
-    const newReactionInputType: ReactionInputType = await prisma.reactionInput.create({
+    const newReactionInputType: ReactionInputType = await prisma.reactionInputType.create({
         data: {
             name: name,
             description: description,
@@ -38,7 +38,7 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
 reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
-        const reactionInputType = await prisma.reactionInput.findUnique({
+        const reactionInputType = await prisma.reactionInputType.findUnique({
             where: {
                 id: parseInt(id)
             }
