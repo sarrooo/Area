@@ -6,7 +6,7 @@ import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
 import { createReactionInputTypeSchema, readReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
-import { ReactionInputType } from '@prisma/client';
+import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ const reactionInputRoutes = Router();
 
 // Create Reaction Input Type : POST /input/reaction
 reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTypeSchema), async (req: Request, res: Response) => {
-    const {id, reactionId, name, description, regex, mandatory, type}: ReactionInputType = req.body;
+    const {id, name, type, description, regex, mandatory, reactionId}: ReactionInputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
@@ -47,6 +47,34 @@ reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (re
         return res.status(StatusCodes.OK).json(reactionInputType);
     } catch (_) {
         throw new BadRequestException("Reaction Output Type not found")
+    }
+});
+
+// Update Trigger Input Type : POST /input/trigger/:id
+reactionInputRoutes.post('/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {name, type, description, regex, mandatory, reactionId}: ReactionInputType = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const reactionInputType: ReactionInputType = await prisma.reactionInputType.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                regex: regex,
+                mandatory: mandatory,
+                type: type,
+                reactionId: reactionId
+            }
+        });
+        Logging.info(`Reaction Input Type ${id} updated`);
+        return res.status(StatusCodes.OK).json(reactionInputType);
+    } catch (_) {
+        throw new BadRequestException("Reaction Input Type not found")
     }
 });
 
