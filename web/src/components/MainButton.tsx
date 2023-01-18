@@ -1,6 +1,6 @@
 export type MainButtonProps = {
   text: string
-  callback: () => void
+  callback?: () => void
   className?: string
   children?: React.ReactNode
   submitter?: boolean

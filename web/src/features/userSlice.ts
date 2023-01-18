@@ -16,18 +16,18 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logout: (state) => {
+    logoutUser: (state) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       state = initialState
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    login: (state, action: PayloadAction<User>) => {
+    loginUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload
       state.isLogged = true
     },
   },
 })
 
-export const { login, logout } = userSlice.actions
+export const { loginUser, logoutUser } = userSlice.actions
 
 export const selectUser = (state: RootState) => state.user
 

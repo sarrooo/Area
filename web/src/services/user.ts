@@ -1,18 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { User } from '@/types/User'
-
-interface LoginResponse {
-  token: string
-}
-
-export interface LoginRequest {
-  email: string
-  password: string
-}
+import { LoginRequest, LoginResponse } from '@/types/Login'
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.API_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL }),
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (body) => ({
