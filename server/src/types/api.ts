@@ -1,71 +1,94 @@
-export type TriggerInput = {
-    id: number | undefined;
-    triggerId: number;
-    name: string;
-    description: string | undefined;
-    regex: string | undefined;
-    mandatory: boolean;
-    type: string;
-    value: string | number | boolean | undefined;
-    linked: boolean;
-    linked_to: number | undefined;
+export type TrireaTriggerInput = {
+    id?: number;
+    value?: string;
+    trireaId: number;
+    triggerInputTypeId: number;
 }
 
-export type ReactionInput = {
-    id: number | undefined;
+export type TriggerInputType = {
+    id?: number;
+    name: string;
+    type: string;
+    description?: string
+    regex?: string;
+    mandatory: boolean;
+    triggerId: number;
+}
+
+export type TrireaReactionInput = {
+    id?: number;
+    value?: string;
+    linkedToId?: number;
+    trireaId: number;
+    reactionInputTypeId: number;
+}
+
+export type ReactionInputType = {
+    id?: number;
+    name: string;
+    type: string;
+    description?: string;
+    regex?: string;
+    mandatory: boolean;
     reactionId: number;
-    name: string;
-    description: string | undefined;
-    regex: string | undefined;
-    mandatory: boolean;
-    type: string;
-    value: string | number | boolean | undefined;
-    linked: boolean;
-    linked_to: number | undefined;
 }
 
-export type Output = {
+export type TriggerOutput = {
     id: number | undefined;
     triggerId: number;
     name: string;
     description: string | undefined;
     type: string;
     value: string | number | boolean | undefined;
+}
+
+export type TriggerOutputType = {
+    id?: number;
+    name: string;
+    type: string;
+    description?: string;
+    triggerId: number;
 }
 
 export type Trigger = {
-    id: number | undefined;
+    id?: number;
     name: string;
-    description: string | undefined;
-    inputs: TriggerInput[]
-    outputs: Output[]
+    description?: string;
+    inputs?: TriggerInputType[]
+    outputs?: TriggerOutputType[]
+    serviceId: number;
 }
 
 export type Reaction = {
-    id: number | undefined;
+    id?: number;
     name: string;
-    description: string | undefined;
-    inputs: ReactionInput[]
+    description?: string;
+    inputs?: ReactionInputType[]
+    serviceId: number;
 }
 
 export type Service = {
-    id: number | undefined;
+    id?: number;
     name: string;
-    description: string | undefined;
-    image: string | undefined;
-    triggers: Trigger[]
-    reactions: Reaction[]
-    required_subcription: boolean;
-    subscribed: boolean | undefined;
+    description?: string;
+    image?: string;
+    triggers?: Trigger[]
+    reactions?: Reaction[]
+    requiredSubcription: boolean;
+    subscribed?: boolean;
 }
 
 export type Trirea = {
-    id: number | undefined;
-    trigger: Trigger;
-    trigger_service_name: string;
-    reaction_service_name: string;
-    reaction: Reaction;
+    id?: number;
+    createdAt?: Date;
+    updatedAt?: Date;
+    prevTriggerData?: string;
     enabled: boolean;
+    userId: number;
+    triggerId: number;
+    reactionId: number;
+    trigger?: Trigger;
+    reaction?: Reaction;
 }
 
 export type searchMax = {
