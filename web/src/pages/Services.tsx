@@ -19,8 +19,11 @@ const Services = () => {
           scelerisque mauris nec ultricies.
         </p>{' '}
       </div>
-      <div className="w-1/2 h-screen bg-primary-900">
-        <p>ouai</p>
+      <div className="w-1/2 h-screen pt-32 bg-primary-900 flex flex-col space-y-8 items-center">
+        <ServiceCard />
+        <ServiceCard />
+        <ServiceCard />
+        <ServiceCard />
         <ServiceCard />
       </div>
     </div>
