@@ -5,7 +5,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createReactionInputTypeSchema, readReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
+import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
 
 dotenv.config();
@@ -79,7 +79,7 @@ reactionInputRoutes.post('/:id'/*, verifyToken */, validate(updateReactionInputT
 });
 
 // Delete Reaction Input Type : POST /input/reaction/delete/:id
-reactionInputRoutes.post('/delete/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+reactionInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

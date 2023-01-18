@@ -52,3 +52,12 @@ export const updateReactionInputTypeSchema = object({
         }),
     })
 });
+
+// Delete Reaction Input Type : POST /input/reaction/delete/:id
+export const deleteReactionInputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Reaction Input Type id is required",
+        }),
+    }),
+});
