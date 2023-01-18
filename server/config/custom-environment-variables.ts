@@ -18,5 +18,10 @@ export default {
         clientId: 'GOOGLE_OAUTH_CLIENT_ID',
         clientSecret: 'GOOGLE_OAUTH_CLIENT_SECRET',
         redirectUri: 'GOOGLE_OAUTH_REDIRECT_URL',
+    },
+    githubConfig: {
+        clientId: 'GITHUB_OAUTH_CLIENT_ID',
+        clientSecret: 'GITHUB_OAUTH_CLIENT_SECRET',
+        redirectUri: 'GITGUB_OAUTH_REDIRECT_URL',
     }
 }
