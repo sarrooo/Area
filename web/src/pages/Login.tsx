@@ -7,8 +7,14 @@ import { BsGithub } from 'react-icons/bs'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
+import { useAppDispatch, useAppSelector } from '@/app/hooks'
 
 const Login = () => {
+  const user = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
+
+  // omit rendering logic
+
   const test = () => {
     console.log('test')
   }
