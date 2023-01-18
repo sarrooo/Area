@@ -7,16 +7,16 @@ import { BsGithub } from 'react-icons/bs'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
-import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { useLoginMutation } from '@/services/user'
 
 const Login = () => {
-  const user = useAppSelector((state) => state.user)
-  const dispatch = useAppDispatch()
+  const [login] = useLoginMutation()
 
-  // omit rendering logic
-
-  const test = () => {
-    console.log('test')
+  const submitLogin = () => {
+    login({
+      email: 'sajkzjso',
+      password: 'sknk',
+    })
   }
 
   return (
@@ -39,7 +39,7 @@ const Login = () => {
                 Create one
               </Link>
             </p>
-            <MainButton callback={test} text="Login" submitter />
+            <MainButton callback={submitLogin} text="Login" submitter />
           </div>
         </form>
         <div className="h-[4px] w-full rounded-lg bg-gray-300" />
