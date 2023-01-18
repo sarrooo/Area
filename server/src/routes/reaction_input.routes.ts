@@ -6,13 +6,14 @@ import { ReactionInput, Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
+import { createReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 
 dotenv.config();
 
 const reactionInputRoutes = Router();
 
 // Create Reaction Input Type : POST /input/reaction
-reactionInputRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) => {
+reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id, reaction_id, name, description, regex, mandatory, type}: ReactionInput = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
