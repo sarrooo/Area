@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
 import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
+import { searchMax } from '~/types/api';
 
 dotenv.config();
 
@@ -95,6 +96,16 @@ reactionInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteReactio
     } catch (_) {
         throw new BadRequestException("Reaction Input Type not found")
     }
+});
+
+// Search Reaction Input Type : GET /input/reaction
+reactionInputRoutes.get('/', async (req: Request, res: Response) => {
+    const {max}: searchMax = req.query;
+    const reactionInputTypes: ReactionInputType[] = await prisma.reactionInputType.findMany({
+        take: max
+    });
+    Logging.info(`Reaction Input Type searched`);
+    return res.status(StatusCodes.OK).json(reactionInputTypes);
 });
 
 export default reactionInputRoutes;
