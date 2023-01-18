@@ -7,6 +7,7 @@ import {sign} from "jsonwebtoken";
 import config from "config";
 import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
 import * as console from "console";
+import {getTwitterOauthToken, getTwitterUser} from "~~/services/twitter-session.service";
 
 //TODO: Refacto the duplicata code
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -144,5 +145,18 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
 }
 
 export const twitterOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).send('twitter')
+    const code = req.query.code as string;
+
+    if (!code) {
+        Logging.warning("Github OAuth: No code provided");
+        throw new BadRequestException('No code provided');
+    }
+
+    const { access_token } = await getTwitterOauthToken({code});
+    if (!access_token) {
+        Logging.error("Github OAuth: getGithubOauthToken failed");
+        throw new BadRequestException('No access_token provided');
+    }
+    const { name, email, verified  } = await getTwitterUser(access_token);
+    res.status(200).json({name, email, verified});
 }

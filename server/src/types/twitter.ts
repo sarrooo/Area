@@ -11,4 +11,5 @@ export interface TwitterUserResult {
     id: string;
     email: string;
     name: string;
+    verified: boolean;
 }
