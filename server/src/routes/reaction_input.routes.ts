@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import {StatusCodes} from 'http-status-codes';
 import {BadRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
-import { Input, Output, searchMax } from '~/types/api';
+import { ReactionInput, Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
@@ -13,7 +13,7 @@ const reactionInputRoutes = Router();
 
 // Create Reaction Input Type : POST /input/reaction
 reactionInputRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) => {
-    const {id, reaction_id, name, description, regex, mandatory, type}: Input = req.body;
+    const {id, reaction_id, name, description, regex, mandatory, type}: ReactionInput = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/

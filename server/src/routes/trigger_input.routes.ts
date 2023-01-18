@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import {Request, Response, Router} from 'express';
-import { Input, searchMax } from '~/types/api';
+import { TriggerInput, searchMax } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
 import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
@@ -14,7 +14,7 @@ const triggerInputRoutes = Router();
 
 // Create Trigger Input Type : POST /input/trigger
 triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeSchema), async (req: Request, res: Response) => {
-    const {id, trigger_id, name, description, regex, mandatory, type}: Input = req.body;
+    const {id, trigger_id, name, description, regex, mandatory, type}: TriggerInput = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
@@ -53,7 +53,7 @@ triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req:
 // Update Trigger Input Type : POST /input/trigger/:id
 triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
-    const {trigger_id, name, description, regex, mandatory, type}: Input = req.body;
+    const {trigger_id, name, description, regex, mandatory, type}: TriggerInput = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
