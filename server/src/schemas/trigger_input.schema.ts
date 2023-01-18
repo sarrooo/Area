@@ -52,3 +52,12 @@ export const updateTriggerInputTypeSchema = object({
         }),
     })
 })
+
+// Delete Trigger Input Type : POST /input/trigger/delete/:id
+export const deleteTriggerInputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger Input Type id is required",
+        })
+    })
+});

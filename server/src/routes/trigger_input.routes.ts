@@ -6,7 +6,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
-import { createTriggerInputTypeSchema, readTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
+import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 
 dotenv.config();
 
@@ -79,7 +79,7 @@ triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTyp
 });
 
 // Detele Trigger Input Type : POST /input/trigger/delete/:id
-triggerInputRoutes.post('/delete/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
