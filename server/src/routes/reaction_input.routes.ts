@@ -34,4 +34,20 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
     return res.status(StatusCodes.CREATED).json(newReactionInputType);
 });
 
+// Read Reaction Input Type : GET /input/reaction/:id
+reactionInputRoutes.get('/:id', async (req: Request, res: Response) => {
+    const {id} = req.params;
+    try {
+        const reactionInputType = await prisma.reactionInput.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Reaction Input Type ${id} read`);
+        return res.status(StatusCodes.OK).json(reactionInputType);
+    } catch (_) {
+        throw new BadRequestException("Reaction Output Type not found")
+    }
+});
+
 export default reactionInputRoutes;
