@@ -102,6 +102,8 @@ model ReactionInput {
   name     String   @db.VarChar(255)
   type   String
   description String?
+  regex String?
+  mandatory Boolean
   reaction Reaction  @relation(fields: [reactionId], references: [id])
   reactionId Int
 

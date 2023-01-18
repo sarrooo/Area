@@ -1,6 +1,19 @@
-export type Input = {
+export type TriggerInput = {
     id: number | undefined;
     trigger_id: number;
+    name: string;
+    description: string | undefined;
+    regex: string | undefined;
+    mandatory: boolean;
+    type: string;
+    value: string | number | boolean | undefined;
+    linked: boolean;
+    linked_to: number | undefined;
+}
+
+export type ReactionInput = {
+    id: number | undefined;
+    reaction_id: number;
     name: string;
     description: string | undefined;
     regex: string | undefined;
@@ -24,7 +37,7 @@ export type Trigger = {
     id: number | undefined;
     name: string;
     description: string | undefined;
-    inputs: Input[]
+    inputs: TriggerInput[]
     outputs: Output[]
 }
 
@@ -32,7 +45,7 @@ export type Reaction = {
     id: number | undefined;
     name: string;
     description: string | undefined;
-    inputs: Input[]
+    inputs: ReactionInput[]
 }
 
 export type Service = {
