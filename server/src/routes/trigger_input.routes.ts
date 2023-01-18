@@ -78,4 +78,23 @@ triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTyp
     }
 });
 
+// Detele Trigger Input Type : POST /input/trigger/delete/:id
+triggerInputRoutes.post('/delete/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const triggerInputType = await prisma.triggerInput.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Trigger Input Type ${id} deleted`);
+        return res.status(StatusCodes.OK).json(triggerInputType);
+    } catch (_) {
+        throw new BadRequestException("Trigger Input Type not found")
+    }
+});
+
 export default triggerInputRoutes;
