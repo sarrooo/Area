@@ -61,3 +61,10 @@ export const deleteTriggerInputTypeSchema = object({
         })
     })
 });
+
+// Search Trigger Input Type : GET /input/trigger
+export const searchTriggerInputTypeSchema = object({
+    body: object({
+        max: number().optional()
+    })
+});

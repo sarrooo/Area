@@ -6,7 +6,7 @@ import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
-import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
+import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, searchTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 
 dotenv.config();
 
@@ -98,7 +98,7 @@ triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerI
 });
 
 // Search Trigger Input Type : GET /input/trigger
-triggerInputRoutes.get('/', async (req: Request, res: Response) => {
+triggerInputRoutes.get('/', validate(searchTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
     const triggerInputTypes = await prisma.triggerInput.findMany({
         take: max
