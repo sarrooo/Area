@@ -78,4 +78,23 @@ reactionInputRoutes.post('/:id'/*, verifyToken */, validate(updateReactionInputT
     }
 });
 
+// Delete Reaction Input Type : POST /input/reaction/delete/:id
+reactionInputRoutes.post('/delete/:id'/*, verifyToken */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const reactionInputType: ReactionInputType = await prisma.reactionInputType.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Reaction Input Type ${id} deleted`);
+        return res.status(StatusCodes.OK).json(reactionInputType);
+    } catch (_) {
+        throw new BadRequestException("Reaction Input Type not found")
+    }
+});
+
 export default reactionInputRoutes;
