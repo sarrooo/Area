@@ -9,9 +9,9 @@ export const getTwitterOauthToken = async ({code}: { code: string }): Promise<Tw
 
     const options = {
         code,
-        client_id: config.get<string>('githubConfig.clientId'),
-        client_secret: config.get<string>('githubConfig.clientSecret'),
-        redirect_uri: config.get<string>('githubConfig.redirectUri'),
+        client_id: config.get<string>('twitterConfig.clientId'),
+        client_secret: config.get<string>('twitterConfig.clientSecret'),
+        redirect_uri: config.get<string>('twitterConfig.redirectUri'),
     };
 
     try {
