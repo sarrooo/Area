@@ -8,7 +8,7 @@ const services = [
       {
         name: 'get an email',
         description: 'When you get an email',
-        arguments: ['from', 'time', 'attachement'],
+        options: ['from', 'time', 'attachement'],
         outputs: ['time', 'attachement'],
       },
     ],
@@ -16,7 +16,7 @@ const services = [
       {
         name: 'get an email',
         description: 'When you get an email',
-        arguments: ['from', 'time', 'attachement'],
+        options: ['from', 'time', 'attachement'],
       },
     ],
   },
@@ -27,7 +27,7 @@ const services = [
       {
         name: 'get an email',
         description: 'When you get an email',
-        arguments: ['from', 'time', 'attachement'],
+        options: ['from', 'time', 'attachement'],
         outputs: ['time', 'attachement'],
       },
     ],
@@ -35,7 +35,7 @@ const services = [
       {
         name: 'get an email',
         description: 'When you get an email',
-        arguments: ['from', 'time', 'attachement'],
+        options: ['from', 'time', 'attachement'],
       },
     ],
   },
@@ -46,7 +46,7 @@ const services = [
       {
         name: 'get an email',
         description: 'When you get an email',
-        arguments: ['from', 'time', 'attachement'],
+        options: ['from', 'time', 'attachement'],
         outputs: ['time', 'attachement'],
       },
     ],

@@ -1,23 +1,23 @@
 import { FollowButton } from '@/components/FollowButton'
 import { ServiceCardDescription } from '@/components/ServiceCardDescription'
 
-type trigger = {
+export type triggerProps = {
   name: string
   description: string
-  arguments: string[]
-  outputs: string[]
+  options: string[]
+  outputs?: string[]
 }
 
 type reaction = {
   name: string
   description: string
-  arguments: string[]
+  options: string[]
 }
 
 export type ServiceCardProps = {
   name: string
   isFollowing: boolean
-  triggers: trigger[]
+  triggers: triggerProps[]
   reactions: reaction[]
 }
 
