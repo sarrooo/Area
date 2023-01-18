@@ -38,7 +38,7 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
 reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
-        const reactionInputType = await prisma.reactionInputType.findUnique({
+        const reactionInputType: ReactionInputType | null = await prisma.reactionInputType.findUnique({
             where: {
                 id: parseInt(id)
             }
