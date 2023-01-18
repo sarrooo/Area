@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
 import {Request, Response, Router} from 'express';
-import { TriggerInput, searchMax } from '~/types/api';
+import { searchMax } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
 import {prisma} from "~/lib/prisma";
 import Logging from '~/lib/logging';
 import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
 import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, searchTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
+import { TriggerInputType } from '@prisma/client';
 
 dotenv.config();
 
@@ -14,13 +15,13 @@ const triggerInputRoutes = Router();
 
 // Create Trigger Input Type : POST /input/trigger
 triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeSchema), async (req: Request, res: Response) => {
-    const {id, triggerId, name, description, regex, mandatory, type}: TriggerInput = req.body;
+    const {id, triggerId, name, description, regex, mandatory, type}: TriggerInputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     if (id !== undefined)
         throw new BadRequestException("You cannot specify an id when creating a trigger output type");
-    const newTriggerInputType = await prisma.triggerInput.create({
+    const newTriggerInputType: TriggerInputType = await prisma.triggerInputType.create({
         data: {
             name: name,
             description: description,
@@ -38,7 +39,7 @@ triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeS
 triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
-        const triggerInputType = await prisma.triggerInput.findUnique({
+        const triggerInputType: TriggerInputType | null = await prisma.triggerInputType.findUnique({
             where: {
                 id: parseInt(id)
             }
@@ -53,12 +54,12 @@ triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req:
 // Update Trigger Input Type : POST /input/trigger/:id
 triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
-    const {triggerId, name, description, regex, mandatory, type}: TriggerInput = req.body;
+    const {triggerId, name, description, regex, mandatory, type}: TriggerInputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     try {
-        const triggerInputType = await prisma.triggerInput.update({
+        const triggerInputType: TriggerInputType = await prisma.triggerInputType.update({
             where: {
                 id: parseInt(id)
             },
@@ -85,7 +86,7 @@ triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerI
     /*if (!is_Admin(id))
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     try {
-        const triggerInputType = await prisma.triggerInput.delete({
+        const triggerInputType: TriggerInputType = await prisma.triggerInputType.delete({
             where: {
                 id: parseInt(id)
             }
@@ -100,7 +101,7 @@ triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerI
 // Search Trigger Input Type : GET /input/trigger
 triggerInputRoutes.get('/', validate(searchTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {max}: searchMax = req.query;
-    const triggerInputTypes = await prisma.triggerInput.findMany({
+    const triggerInputTypes: TriggerInputType[] = await prisma.triggerInputType.findMany({
         take: max
     })
     Logging.info(`Trigger Input Type searched`);
