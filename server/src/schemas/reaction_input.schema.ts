@@ -18,3 +18,12 @@ export const createReactionInputTypeSchema = object({
         })
     })
 });
+
+// Read Reaction Input Type : GET /input/reaction/:id
+export const readReactionInputTypeSchema = object({
+    params: object({
+        id: number({
+            required_error: "Reaction Input Type id is required",
+        })
+    })
+});

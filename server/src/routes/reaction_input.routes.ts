@@ -6,7 +6,7 @@ import { ReactionInput, Output, searchMax } from '~/types/api';
 import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
-import { createReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
+import { createReactionInputTypeSchema, readReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTyp
 });
 
 // Read Reaction Input Type : GET /input/reaction/:id
-reactionInputRoutes.get('/:id', async (req: Request, res: Response) => {
+reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const reactionInputType = await prisma.reactionInput.findUnique({
