@@ -3,7 +3,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MainButton } from '@/components/MainButton'
 
-export const Landing = () => {
+const Landing = () => {
   const navigate = useNavigate()
   const register = () => {
     navigate('/signup')

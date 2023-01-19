@@ -17,9 +17,9 @@ module.exports = {
           900: '#A6EAFF',
         },
       },
-    },
-    fontFamily: {
-      poppins: ['Poppins'],
+      fontFamily: {
+        poppins: ['Poppins'],
+      },
     },
   },
   plugins: [],

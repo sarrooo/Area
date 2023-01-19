@@ -1,11 +1,13 @@
-import './App.css'
+import '@/App.css'
 import { Routes, Route } from 'react-router-dom'
 
 import Landing from '@/pages/Landing'
 import NotFound from '@/pages/NotFound'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
+import Services from '@/pages/Services'
 import { Navbar } from '@/components/Navbar'
+import { Service } from '@/pages/Service'
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/service" element={<Service />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
