@@ -8,6 +8,30 @@ const trireas = [
     reactionName: 'send email',
     isActive: true,
   },
+  {
+    name: 'test',
+    triggerName: 'get email',
+    reactionName: 'send email',
+    isActive: true,
+  },
+  {
+    name: 'test',
+    triggerName: 'get email',
+    reactionName: 'send email',
+    isActive: true,
+  },
+  {
+    name: 'test',
+    triggerName: 'get email',
+    reactionName: 'send email',
+    isActive: true,
+  },
+  {
+    name: 'test',
+    triggerName: 'get email',
+    reactionName: 'send email',
+    isActive: true,
+  },
 ]
 
 export const Dashboard = () => {
