@@ -8,6 +8,7 @@ import Register from '@/pages/Register'
 import Services from '@/pages/Services'
 import { Navbar } from '@/components/Navbar'
 import { Service } from '@/pages/Service'
+import { Dashboard } from '@/pages/Dashboard'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/services" element={<Services />} />
         <Route path="/service" element={<Service />} />
