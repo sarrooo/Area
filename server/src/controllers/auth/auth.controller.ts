@@ -1,13 +1,108 @@
-import {NextFunction, Request, Response} from "express";
-import {BadRequestException} from "~/utils/exceptions";
-import {getGoogleOauthToken, getGoogleUser} from "~~/services/google-session.service";
-import Logging from "~/lib/logging";
+import {Request, Response} from "express";
 import {prisma} from "~/lib/prisma";
-import {sign} from "jsonwebtoken";
-import config from "config";
-import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
-import {getTwitterOauthToken, getTwitterUser} from "~~/services/twitter-session.service";
+import {sign, verify} from "jsonwebtoken";
 import {User} from "@prisma/client";
+import {LoginUserInput, RegisterUserInput} from "~/schemas/user.schema";
+import {BadRequestException, ForbiddenRequestException} from "~/utils/exceptions";
+import {compare, hash} from "bcrypt";
+import Logging from "~/lib/logging";
+import {StatusCodes} from "http-status-codes";
+
+export const login =  async (req: Request, res: Response) => {
+    const { email, password }: LoginUserInput = req.body;
+
+    const user = await prisma.user.findUnique({
+        where: {
+            email: email,
+        }
+    });
+    if (!user) {
+        throw new BadRequestException('Invalid email or password');
+    }
+
+    if (user.password === null) {
+        throw new BadRequestException('Password should be set');
+    }
+    const verifyPassword = await compare(password, user.password);
+    if (!verifyPassword) {
+        throw new BadRequestException('Invalid email or password');
+    }
+
+    // Set maxAge at 7days.
+    // secure should be set to true in production, but it would work only in HTTPS
+    const token = await generateToken(user, res);
+    Logging.info(`User ${user.email} logged in`);
+    res.status(StatusCodes.OK).json({ token });
+}
+
+export const register = async (req: Request, res:Response) => {
+    const { first_name, last_name, email, password }: RegisterUserInput = req.body;
+
+    const userAlreadyExist = await prisma.user.findUnique({
+        where: {
+            email: email
+        }
+    })
+    if (userAlreadyExist) {
+        throw new BadRequestException('User already exists');
+    }
+
+    const hashedPassword = await hash(password, 10);
+    const newUser = await prisma.user.create({
+        data: {
+            first_name: first_name,
+            last_name: last_name,
+            password: hashedPassword,
+            email: email
+        }
+    });
+    const { id } = newUser;
+    Logging.info(`User ${email} register in`);
+    return res.status(StatusCodes.CREATED).json({ id: id });
+}
+
+export const refresh = async(req: Request, res: Response) => {
+    const refreshToken = req.cookies['refreshToken'];
+    if (!refreshToken) {
+        throw new ForbiddenRequestException('No refresh token');
+    }
+
+    const payload: any = await verify(refreshToken, process.env.JWT_REFRESH_SECRET as string);
+    if (!payload) {
+        throw new ForbiddenRequestException('Invalid refresh token');
+    }
+
+    const dbRefreshToken = await prisma.token.findFirst({
+        where: {
+            userId: payload.id,
+            expiredAt: {
+                gte: new Date()
+            }
+        }
+    });
+    if (!dbRefreshToken) {
+        throw new ForbiddenRequestException('Invalid refresh token');
+    }
+
+    const token = sign({ id: payload.id, name: payload.email }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    return res.status(StatusCodes.OK).json({ token });
+}
+
+export const logout = async (req: Request, res: Response) => {
+    const refreshToken = req.cookies['refreshToken'];
+    if (!refreshToken) {
+        throw new ForbiddenRequestException('Already logout!');
+    }
+
+    await prisma.token.delete({
+        where: {
+            token: refreshToken
+        }
+    });
+
+    res.clearCookie('refreshToken', { httpOnly: true, sameSite: 'none', maxAge: 0, secure: false });
+    return res.sendStatus(StatusCodes.NO_CONTENT);
+}
 
 export const generateToken = async (user: User, res: Response): Promise<string> => {
 
@@ -35,142 +130,4 @@ export const generateToken = async (user: User, res: Response): Promise<string> 
     res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
 
     return token;
-}
-
-//TODO: Refacto the duplicata code
-export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const code = req.query.code as string;
-    const pathUrl = (req.query.state as string) || '/';
-
-    if (!code) {
-        Logging.warning("Google OAuth: No code provided");
-        throw new BadRequestException('No code provided');
-    }
-
-    const { id_token, access_token } = await getGoogleOauthToken({code});
-
-    const { id, given_name, family_name, verified_email } = await getGoogleUser({
-        id_token,
-    access_token,
-    });
-
-    if (!verified_email) {
-        Logging.warning("Google OAuth: Email not verified");
-        throw new BadRequestException('Google Email not verified');
-    }
-
-    const user = await prisma.user.upsert({
-        where: {
-            google_id: id,
-        },
-        update: {
-            first_name: given_name,
-            last_name: family_name,
-            provider: 'google',
-            google_id: id,
-        },
-        create: {
-            first_name: given_name,
-            last_name: family_name,
-            provider: 'google',
-            google_id: id,
-        }
-    })
-
-    if (!user) {
-        Logging.warning("Google OAuth: Failed to upsert user");
-        throw new BadRequestException("Google OAuth: Failed to upsert user");
-    }
-
-    await generateToken(user, res);
-    Logging.info(`User ${user.first_name} logged in w/ google`);
-    res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
-}
-
-export const githubOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const code = req.query.code as string;
-    const pathUrl = (req.query.state as string) || '/';
-
-    if (!code) {
-        Logging.warning("Github OAuth: No code provided");
-        throw new BadRequestException('No code provided');
-    }
-
-    const { access_token } = await getGithubOauthToken({code});
-    if (!access_token) {
-        Logging.error("Github OAuth: getGithubOauthToken failed");
-        throw new BadRequestException('No access_token provided');
-    }
-    const { id, name } = await getGithubUser(access_token);
-
-    const names: string[] = name.split(" ", 2);
-    const first_name: string = names[0];
-    const last_name: string = names[1] || "";
-
-    const user = await prisma.user.upsert({
-        where: {
-            github_id: id.toString(),
-        },
-        update: {
-            first_name: first_name,
-            last_name: last_name,
-            provider: 'github',
-            github_id: id.toString(),
-        },
-        create: {
-            first_name: first_name,
-            last_name: last_name,
-            provider: 'github',
-            github_id: id.toString(),
-        }
-    })
-
-    await generateToken(user, res);
-    Logging.info(`User ${user.first_name} logged in w/ github`);
-    res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
-}
-
-export const twitterOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
-    const code = req.query.code as string;
-    const pathUrl = (req.query.state as string) || '/';
-
-    if (!code) {
-        Logging.warning("Twitter OAuth: No code provided");
-        throw new BadRequestException('No code provided');
-    }
-
-    const { access_token } = await getTwitterOauthToken({code});
-
-    if (!access_token) {
-        Logging.error("Twitter OAuth: getTwitterhubOauthToken failed");
-        throw new BadRequestException('No access_token provided');
-    }
-
-    const { id, name } = await getTwitterUser(access_token);
-
-    const names: string[] = name.split(" ", 2);
-    const first_name: string = names[0];
-    const last_name: string = names[1] || "";
-
-    const user = await prisma.user.upsert({
-        where: {
-            twitter_id: id,
-        },
-        update: {
-            first_name: first_name,
-            last_name: last_name,
-            provider: 'twitter',
-            twitter_id: id,
-        },
-        create: {
-            first_name: first_name,
-            last_name: last_name,
-            provider: 'twitter',
-            twitter_id: id,
-        }
-    })
-
-    await generateToken(user, res);
-    Logging.info(`User ${user.first_name} logged in w/ Twitter`);
-    res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }

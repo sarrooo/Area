@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
-import {Request, Response, Router} from "express";
-import {githubOAuthHandler, googleOAuthHandler, twitterOAuthHandler} from "~/controllers/auth/auth.controller";
+import {Router} from "express";
+import {githubOAuthHandler} from "~/controllers/auth/github.auth.controller";
+import {twitterOAuthHandler} from "~/controllers/auth/twitter.auth.controller";
+import {googleOAuthHandler} from "~/controllers/auth/google.auth.controller";
 
 dotenv.config();
 
