@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import {StatusCodes} from "http-status-codes";
+import Logging from "~/lib/logging";
 
 export const ExceptionsHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     if (res.headersSent) {

@@ -20,7 +20,7 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
 
     const { id_token, access_token } = await getGoogleOauthToken({code});
 
-    const { id, given_name, family_name, email, verified_email } = await getGoogleUser({
+    const { id, given_name, family_name, verified_email } = await getGoogleUser({
         id_token,
     access_token,
     });
@@ -53,7 +53,7 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
         throw new BadRequestException("Google OAuth: Failed to upsert user");
     }
 
-    const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
+    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
 
     const expiredAt = new Date();
@@ -73,9 +73,9 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
         }
     })
 
-    const token = sign({ id: user.id, name: user.email }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
     res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
-    Logging.info(`User ${user.email} logged in w/ google`);
+    Logging.info(`User ${user.first_name} logged in w/ google`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
 
@@ -93,31 +93,35 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
         Logging.error("Github OAuth: getGithubOauthToken failed");
         throw new BadRequestException('No access_token provided');
     }
-    const { id, name, email } = await getGithubUser(access_token);
+    const { id, name } = await getGithubUser(access_token);
 
     const names: string[] = name.split(" ", 2);
-    const first_name :string = names[0];
+    const first_name: string = names[0];
     const last_name: string = names[1] || "";
+
+    Logging.info(`Github OAuth: getGithubUser ${id} ${name} ${first_name} ${last_name}`);
 
     const user = await prisma.user.upsert({
         where: {
-            github_id: id,
+            github_id: id.toString(),
         },
         update: {
             first_name: first_name,
             last_name: last_name,
             provider: 'github',
-            github_id: id,
+            github_id: id.toString(),
         },
         create: {
             first_name: first_name,
             last_name: last_name,
             provider: 'github',
-            github_id: id,
+            github_id: id.toString(),
         }
     })
 
-    const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
+    Logging.info(`Github OAuth: user ${user.id} ${user.first_name} ${user.last_name}`);
+
+    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
 
     const expiredAt = new Date();
@@ -137,9 +141,9 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
         }
     })
 
-    const token = sign({ id: user.id, name: user.email }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
     res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
-    Logging.info(`User ${user.email} logged in w/ github`);
+    Logging.info(`User ${user.first_name} logged in w/ github`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
 
@@ -158,6 +162,6 @@ export const twitterOAuthHandler = async (req: Request, res: Response, next: Nex
         throw new BadRequestException('No access_token provided');
     }
 
-    const { id, name, email, verified  } = await getTwitterUser(access_token);
-    res.status(200).json({id, name, email, verified});
+    const { id, name, verified  } = await getTwitterUser(access_token);
+    res.status(200).json({id, name, verified});
 }

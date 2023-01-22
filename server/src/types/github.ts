@@ -8,7 +8,7 @@ export interface GithubOauthToken {
 }
 
 export interface GithubUserResult {
-    id: string;
+    id: number;
     email: string;
     name: string;
 }
