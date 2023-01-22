@@ -99,8 +99,6 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
     const first_name: string = names[0];
     const last_name: string = names[1] || "";
 
-    Logging.info(`Github OAuth: getGithubUser ${id} ${name} ${first_name} ${last_name}`);
-
     const user = await prisma.user.upsert({
         where: {
             github_id: id.toString(),
@@ -118,8 +116,6 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
             github_id: id.toString(),
         }
     })
-
-    Logging.info(`Github OAuth: user ${user.id} ${user.first_name} ${user.last_name}`);
 
     const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
     res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
@@ -162,6 +158,6 @@ export const twitterOAuthHandler = async (req: Request, res: Response, next: Nex
         throw new BadRequestException('No access_token provided');
     }
 
-    const { id, name, verified  } = await getTwitterUser(access_token);
-    res.status(200).json({id, name, verified});
+    const { id, username  } = await getTwitterUser(access_token);
+    res.status(200).json({id, username});
 }

@@ -45,7 +45,7 @@ export async function getTwitterUser(access_token : string): Promise<TwitterUser
     Logging.info('Token: ' + access_token);
     try {
         const { data } = await axios.get<TwitterUserResult>(
-            `https://api.twitter.com/1.1/account/verify_credentials.json`,
+            `https://api.twitter.com/2/users/me`,
             {
                 headers: {
                     "Content-type": "application/json",
