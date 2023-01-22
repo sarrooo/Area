@@ -148,15 +148,17 @@ export const twitterOAuthHandler = async (req: Request, res: Response, next: Nex
     const code = req.query.code as string;
 
     if (!code) {
-        Logging.warning("Github OAuth: No code provided");
+        Logging.warning("Twitter OAuth: No code provided");
         throw new BadRequestException('No code provided');
     }
 
     const { access_token } = await getTwitterOauthToken({code});
+
     if (!access_token) {
-        Logging.error("Github OAuth: getGithubOauthToken failed");
+        Logging.error("Twitter OAuth: getTwitterhubOauthToken failed");
         throw new BadRequestException('No access_token provided');
     }
+
     const { name, email, verified  } = await getTwitterUser(access_token);
     res.status(200).json({name, email, verified});
 }

@@ -8,7 +8,7 @@ export const getTwitterUrl = (from: string) => {
         response_type: "code",
         code_challenge: "challenge",
         code_challenge_method: "plain",
-        scope: "users.read offline.access",
+        scope: ["users.read", "offline.access"].join(" ")
     };
 
     const qs = new URLSearchParams(options);

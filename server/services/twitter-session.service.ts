@@ -3,29 +3,33 @@ import axios from 'axios';
 import qs from 'qs';
 import Logging from "~/lib/logging";
 import {TwitterOauthToken, TwitterUserResult} from "~/types/twitter";
-import * as console from "console";
 
 export const getTwitterOauthToken = async ({code}: { code: string }): Promise<TwitterOauthToken> => {
-    const rootUrl = 'https://api.twitter.com/2/oauth2/token?';
-    const API_KEY = config.get<string>('twitterConfig.clientId');
-    const API_SECRET = config.get<string>('twitterConfig.clientSecret');
+    const rootUrl = 'https://api.twitter.com/2/oauth2/token';
+    const TWITTER_OAUTH_CLIENT_ID = config.get<string>('twitterConfig.clientId');
+    const TWITTER_OAUTH_CLIENT_SECRET = config.get<string>('twitterConfig.clientSecret');
+    const TWITTER_OAUTH_REDIRECT_URL = config.get<string>('twitterConfig.redirectUri');
+
+    const BasicAuthToken = Buffer.from(`${TWITTER_OAUTH_CLIENT_ID}:${TWITTER_OAUTH_CLIENT_SECRET}`, "utf8").toString(
+        "base64"
+    );
 
     const options = {
-        code,
-        client_id: config.get<string>('twitterConfig.clientId'),
-        redirect_uri: config.get<string>('twitterConfig.redirectUri'),
+        client_id: TWITTER_OAUTH_CLIENT_ID,
+        code_verifier: "challenge",
+        redirect_uri: TWITTER_OAUTH_REDIRECT_URL,
         grant_type: 'authorization_code',
-        code_verifier: 'challenge',
+        code,
     };
-    console.log(rootUrl + qs.stringify(options));
     try {
         const { data } = await axios.post<TwitterOauthToken>(
             rootUrl,
             qs.stringify(options),
             {
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Basic ${BasicAuthToken}`,
+                },
             }
         );
 
@@ -35,6 +39,7 @@ export const getTwitterOauthToken = async ({code}: { code: string }): Promise<Tw
         throw new Error(err);
     }
 };
+
 
 export async function getTwitterUser(access_token : string): Promise<TwitterUserResult> {
     try {
