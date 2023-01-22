@@ -27,9 +27,11 @@ model User {
   first_name   String
   last_name String
   password String?
-  email    String @unique
+  email    String? @unique
   provider String @default("local")
-  provider_id String?
+  google_id String? @unique
+  twitter_id String? @unique
+  github_id String? @unique
   Token Token?
   services   UserService[]
   trireas Trirea[]

@@ -6,7 +6,6 @@ import {prisma} from "~/lib/prisma";
 import {sign} from "jsonwebtoken";
 import config from "config";
 import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
-import * as console from "console";
 import {getTwitterOauthToken, getTwitterUser} from "~~/services/twitter-session.service";
 
 //TODO: Refacto the duplicata code
@@ -21,7 +20,7 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
 
     const { id_token, access_token } = await getGoogleOauthToken({code});
 
-    const { given_name, family_name, email, verified_email } = await getGoogleUser({
+    const { id, given_name, family_name, email, verified_email } = await getGoogleUser({
         id_token,
     access_token,
     });
@@ -33,19 +32,19 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
 
     const user = await prisma.user.upsert({
         where: {
-            email: email
+            google_id: id,
         },
         update: {
             first_name: given_name,
             last_name: family_name,
-            email: email,
             provider: 'google',
+            google_id: id,
         },
         create: {
             first_name: given_name,
             last_name: family_name,
-            email: email,
             provider: 'google',
+            google_id: id,
         }
     })
 
@@ -94,7 +93,7 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
         Logging.error("Github OAuth: getGithubOauthToken failed");
         throw new BadRequestException('No access_token provided');
     }
-    const { name, email } = await getGithubUser(access_token);
+    const { id, name, email } = await getGithubUser(access_token);
 
     const names: string[] = name.split(" ", 2);
     const first_name :string = names[0];
@@ -102,19 +101,19 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
 
     const user = await prisma.user.upsert({
         where: {
-            email: email
+            github_id: id,
         },
         update: {
             first_name: first_name,
             last_name: last_name,
-            email: email,
             provider: 'github',
+            github_id: id,
         },
         create: {
             first_name: first_name,
             last_name: last_name,
-            email: email,
             provider: 'github',
+            github_id: id,
         }
     })
 
@@ -159,6 +158,6 @@ export const twitterOAuthHandler = async (req: Request, res: Response, next: Nex
         throw new BadRequestException('No access_token provided');
     }
 
-    const { name, email, verified  } = await getTwitterUser(access_token);
-    res.status(200).json({name, email, verified});
+    const { id, name, email, verified  } = await getTwitterUser(access_token);
+    res.status(200).json({id, name, email, verified});
 }
