@@ -8,6 +8,7 @@ import {StatusCodes} from "http-status-codes";
 import {sign, verify} from "jsonwebtoken";
 import dotenv from 'dotenv';
 import Logging from "~/lib/logging";
+import {generateToken} from "~/controllers/auth/auth.controller";
 
 dotenv.config();
 
@@ -35,27 +36,7 @@ authRoutes.post('/login', validate(loginUserSchema), async (req: Request, res: R
 
     // Set maxAge at 7days.
     // secure should be set to true in production, but it would work only in HTTPS
-    const refreshToken = sign({ id: user.id,  email: user.email}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
-
-    const expiredAt = new Date();
-    expiredAt.setDate(expiredAt.getDate() + 7);
-    await prisma.token.upsert({
-        where: {
-          userId: user.id,
-        },
-        update: {
-            token: refreshToken,
-            expiredAt: expiredAt
-        },
-        create: {
-            userId: user.id,
-            token: refreshToken,
-            expiredAt: expiredAt
-        }
-    })
-
-    const token = sign({ id: user.id, name: user.email }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    const token = await generateToken(user, res);
     Logging.info(`User ${user.email} logged in`);
     res.status(StatusCodes.OK).json({ token });
 });

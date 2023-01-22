@@ -7,6 +7,35 @@ import {sign} from "jsonwebtoken";
 import config from "config";
 import {getGithubOauthToken, getGithubUser} from "~~/services/github-session.service";
 import {getTwitterOauthToken, getTwitterUser} from "~~/services/twitter-session.service";
+import {User} from "@prisma/client";
+
+export const generateToken = async (user: User, res: Response): Promise<string> => {
+
+    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
+    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
+
+    const expiredAt = new Date();
+    expiredAt.setDate(expiredAt.getDate() + 7);
+    await prisma.token.upsert({
+        where: {
+            userId: user.id,
+        },
+        update: {
+            token: refreshToken,
+            expiredAt: expiredAt
+        },
+        create: {
+            userId: user.id,
+            token: refreshToken,
+            expiredAt: expiredAt
+        }
+    })
+
+    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
+    res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
+
+    return token;
+}
 
 //TODO: Refacto the duplicata code
 export const googleOAuthHandler = async (req: Request, res: Response, next: NextFunction) => {
@@ -53,28 +82,7 @@ export const googleOAuthHandler = async (req: Request, res: Response, next: Next
         throw new BadRequestException("Google OAuth: Failed to upsert user");
     }
 
-    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
-
-    const expiredAt = new Date();
-    expiredAt.setDate(expiredAt.getDate() + 7);
-    await prisma.token.upsert({
-        where: {
-            userId: user.id,
-        },
-        update: {
-            token: refreshToken,
-            expiredAt: expiredAt
-        },
-        create: {
-            userId: user.id,
-            token: refreshToken,
-            expiredAt: expiredAt
-        }
-    })
-
-    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
-    res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
+    await generateToken(user, res);
     Logging.info(`User ${user.first_name} logged in w/ google`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
@@ -117,28 +125,7 @@ export const githubOAuthHandler = async (req: Request, res: Response, next: Next
         }
     })
 
-    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
-
-    const expiredAt = new Date();
-    expiredAt.setDate(expiredAt.getDate() + 7);
-    await prisma.token.upsert({
-        where: {
-            userId: user.id,
-        },
-        update: {
-            token: refreshToken,
-            expiredAt: expiredAt
-        },
-        create: {
-            userId: user.id,
-            token: refreshToken,
-            expiredAt: expiredAt
-        }
-    })
-
-    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
-    res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
+    await generateToken(user, res);
     Logging.info(`User ${user.first_name} logged in w/ github`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
@@ -183,28 +170,7 @@ export const twitterOAuthHandler = async (req: Request, res: Response, next: Nex
         }
     })
 
-    const refreshToken = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name}, process.env.JWT_REFRESH_SECRET as string, {expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET});
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, sameSite: 'none', maxAge: 1000 * 60 * 60 * 24 * 7, secure: false});
-
-    const expiredAt = new Date();
-    expiredAt.setDate(expiredAt.getDate() + 7);
-    await prisma.token.upsert({
-        where: {
-            userId: user.id,
-        },
-        update: {
-            token: refreshToken,
-            expiredAt: expiredAt
-        },
-        create: {
-            userId: user.id,
-            token: refreshToken,
-            expiredAt: expiredAt
-        }
-    })
-
-    const token = sign({ id: user.id, first_name: user.first_name, last_name: user.last_name }, process.env.JWT_SECRET as string, { expiresIn: process.env.JWT_EXPIRES_IN_SECRET });
-    res.cookie('token', token, {httpOnly: false, sameSite: 'none', maxAge: 1000 * 60, secure: false});
+    await generateToken(user, res);
     Logging.info(`User ${user.first_name} logged in w/ Twitter`);
     res.redirect(`${config.get<string>('frontUrl')}${pathUrl}`)
 }
