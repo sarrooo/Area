@@ -14,7 +14,8 @@ model Service {
   id     Int     @id @default(autoincrement())
   name    String
   description   String
-  logo String
+  image String
+  requiredSubscription Boolean
   users UserService[]
   triggers Trigger[]
   reactions Reaction[]
@@ -56,8 +57,8 @@ model Trigger {
   description   String?
   service Service  @relation(fields: [serviceId], references: [id])
   serviceId Int
-  triggerInputs TriggerInput[]
-  triggerOuputs TriggerOutput[]
+  triggerInputs TriggerInputType[]
+  triggerOuputs TriggerOutputType[]
   trireas Trirea[]
 
   @@map("triggers")
@@ -69,25 +70,27 @@ model Reaction {
   description   String?
   service Service  @relation(fields: [serviceId], references: [id])
   serviceId Int
-  reactionInputs ReactionInput[]
+  reactionInputs ReactionInputType[]
   trireas Trirea[]
 
   @@map("reactions")
 }
 
-model TriggerInput {
+model TriggerInputType {
   id        Int      @id @default(autoincrement())
   name     String   @db.VarChar(255)
   type   String
   description String?
+  regex String?
+  mandatory Boolean
   trigger Trigger  @relation(fields: [triggerId], references: [id])
   triggerId Int
   trireaTriggerInputs TrireaTriggerInput[]
 
-  @@map("trigger_inputs")
+  @@map("trigger_inputs_types")
 }
 
-model TriggerOutput {
+model TriggerOutputType {
   id        Int      @id @default(autoincrement())
   name     String   @db.VarChar(255)
   type   String
@@ -96,18 +99,20 @@ model TriggerOutput {
   triggerId Int
   trireaReactionInput TrireaReactionInput[]
 
-  @@map("trigger_outputs")
+  @@map("trigger_outputs_types")
 }
 
-model ReactionInput {
+model ReactionInputType {
   id        Int      @id @default(autoincrement())
   name     String   @db.VarChar(255)
   type   String
   description String?
+  regex String?
+  mandatory Boolean
   reaction Reaction  @relation(fields: [reactionId], references: [id])
   reactionId Int
 
-  @@map("reaction_inputs")
+  @@map("reaction_inputs_types")
 }
 
 model Trirea {
@@ -115,6 +120,7 @@ model Trirea {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   prevTriggerData     String?
+  enabled Boolean
   user User  @relation(fields: [userId], references: [id])
   userId Int
   trigger Trigger  @relation(fields: [triggerId], references: [id])
@@ -132,7 +138,7 @@ model TrireaTriggerInput {
   value     String?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerInput TriggerInput  @relation(fields: [triggerInputId], references: [id])
+  triggerInput TriggerInputType  @relation(fields: [triggerInputId], references: [id])
   triggerInputId Int
 
   @@map("trirea_trigger_inputs")
@@ -141,9 +147,10 @@ model TrireaTriggerInput {
 model TrireaReactionInput {
   id        Int      @id @default(autoincrement())
   value     String?
+  linkedToId Int
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerOutput TriggerOutput  @relation(fields: [triggerOutputId], references: [id])
+  triggerOutput TriggerOutputType  @relation(fields: [triggerOutputId], references: [id])
   triggerOutputId Int
 
   @@map("trirea_reaction_inputs")

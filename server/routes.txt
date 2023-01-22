@@ -2,7 +2,6 @@ Area Project, Routes Informations
 Epitech Project 2023
 
 (i) All objects mentioned here are defined in the ServerTypes.ts file.
-    It is necessary to define what the search informations are.
 
 === TRIREA ===
 --- Create Trirea
@@ -124,59 +123,88 @@ Epitech Project 2023
 = GET /reaction
 
 
-=== INPUT TYPE ===
---- Create Input Type
+=== TRIGGER INPUT TYPE ===
+--- Create Trigger Input Type
 -> Send a new Input object, the ID can be undefined
 <- Returns the new object created
-= POST /input
+= POST /input/trigger
 
---- Read Input Type
+--- Read Trigger Input Type
 -> Send a input ID
 -> Returns the input object
-= GET /input/:id
+= GET /input/trigger/:id
 
---- Update Input Type
+--- Update Trigger Input Type
 -> Send new Input object with the ID
 -> OK
-= POST /input/:id
+= POST /input/trigger/:id
 
---- Delete Input Type
+--- Delete Trigger Input Type
 -> Send Input ID to delete
 <- OK
-= POST /input/delete/:id
+= POST /input/trigger/delete/:id
 
---- Search/list Input Type
+--- Search/list Trigger Input Type
 -> Send search infos
 <- List of Input objects
 + Search params :
     | max : number
-= GET /input
+= GET /input/trigger
 
 
-=== OUTPUT TYPE ===
---- Create Output Type
+=== REACTION INPUT TYPE ===
+--- Create Reaction Input Type
+-> Send a new Input object, the ID can be undefined
+<- Returns the new object created
+= POST /input/reaction
+
+--- Read Reaction Input Type
+-> Send a input ID
+-> Returns the input object
+= GET /input/reaction/:id
+
+--- Update Reaction Input Type
+-> Send new Input object with the ID
+-> OK
+= POST /input/reaction/:id
+
+--- Delete Reaction Input Type
+-> Send Input ID to delete
+<- OK
+= POST /input/reaction/delete/:id
+
+--- Search/list Reaction Input Type
+-> Send search infos
+<- List of Input objects
++ Search params :
+    | max : number
+= GET /input/reaction
+
+
+=== TRIGGER OUTPUT TYPE ===
+--- Create Trigger Output Type
 -> Send a new Output object, the ID can be undefined
 <- Returns the new object created
-= POST /output
+= POST /output/trigger
 
---- Read Output Type
+--- Read Trigger Output Type
 -> Send a Output ID
 -> Returns the output object
-= GET /output/:id
+= GET /output/trigger/:id
 
---- Update Output Type
+--- Update Trigger Output Type
 -> Send new Output object with the ID
 -> OK
-= POST /output/:id
+= POST /output/trigger/:id
 
 --- Delete Output Type
 -> Send Output ID to delete
 <- OK
-= POST /output/delete/:id
+= POST /output/trigger/delete/:id
 
---- Search/list Output Type
+--- Search/list Trigger Output Type
 -> Send search infos
 <- List of Output objects
 + Search params :
     | max : number
-= GET /output
+= GET /output/trigger
