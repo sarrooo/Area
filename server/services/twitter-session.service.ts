@@ -42,11 +42,13 @@ export const getTwitterOauthToken = async ({code}: { code: string }): Promise<Tw
 
 
 export async function getTwitterUser(access_token : string): Promise<TwitterUserResult> {
+    Logging.info('Token: ' + access_token);
     try {
         const { data } = await axios.get<TwitterUserResult>(
             `https://api.twitter.com/1.1/account/verify_credentials.json`,
             {
                 headers: {
+                    "Content-type": "application/json",
                     Authorization: `Bearer ${access_token}`,
                 },
             }
@@ -54,7 +56,7 @@ export async function getTwitterUser(access_token : string): Promise<TwitterUser
 
         return data;
     } catch (err: any) {
-        Logging.error('Failed to get Twitter User');
+        Logging.error('Failed to get Twitter User' + err);
         throw new Error(err);
     }
 }

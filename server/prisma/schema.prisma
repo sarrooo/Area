@@ -29,6 +29,7 @@ model User {
   password String?
   email    String @unique
   provider String @default("local")
+  provider_id String?
   Token Token?
   services   UserService[]
   trireas Trirea[]
