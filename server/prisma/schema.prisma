@@ -13,8 +13,8 @@ datasource db {
 model Service {
   id     Int     @id @default(autoincrement())
   name    String
-  description   String
-  image String
+  description   String?
+  image String?
   requiredSubscription Boolean
   users UserService[]
   triggers Trigger[]
