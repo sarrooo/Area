@@ -3,22 +3,17 @@ import Logging from "~/lib/logging";
 import * as console from "console";
 import {TrireaInputs} from "~/jobs/handler.job";
 
-export const start = async (inputs: TrireaInputs[]) => {
+export const start = async (inputs: TrireaInputs[]): Promise<boolean> => {
     const actualTime = Date.now();
     const atTimeInputs = await getInputs(inputs);
 
 
     if (!atTimeInputs.timer) {
         Logging.warning('Trigger time_at fail: No timer provided');
-        return;
+        return false;
     }
 
-    if (atTimeInputs.timer <= actualTime) {
-        Logging.info('Trigger time_at: The timer is in the future, the reaction will be executed ...');
-        return;
-    }
-
-    console.log('Execution of the action…');
+    return atTimeInputs.timer <= actualTime;
 };
 
 const getInputs = async (inputs: TrireaInputs[]): Promise<AtTimeInputs> => {
