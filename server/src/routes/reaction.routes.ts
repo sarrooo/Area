@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createReactionSchema, readReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
+import { createReactionSchema, deleteReactionSchema, readReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType } from '~/types/api';
 
@@ -107,7 +107,7 @@ reactionRoutes.post('/:id'/*, verifyToken, */, validate(updateReactionSchema), a
 });
 
 // Delete Reaction : POST /reaction/delete/:id
-reactionRoutes.post('/delete/:id'/*, verifyToken, */, async (req, res) => {
+reactionRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteReactionSchema), async (req, res) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

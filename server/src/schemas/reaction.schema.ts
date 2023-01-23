@@ -40,3 +40,12 @@ export const updateReactionSchema = object({
         }),
     }),
 });
+
+// Delete Reaction : POST /reaction/delete/:id
+export const deleteReactionSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+});
