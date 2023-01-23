@@ -4,6 +4,8 @@ import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
+import { validate } from '~/middlewares/validate';
+import { createTriggerSchema } from '~/schemas/trigger.schema';
 import { BadRequestException } from '~/utils/exceptions';
 
 dotenv.config();
@@ -11,7 +13,7 @@ dotenv.config();
 const triggerRoutes = Router();
 
 // Create Trigger : POST /trigger
-triggerRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) => {
+triggerRoutes.post('/'/*, verifyToken, */, validate(createTriggerSchema), async (req: Request, res: Response) => {
     const {id, name, description, serviceId}: Trigger = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
