@@ -17,8 +17,8 @@ function App() {
       <Routes>
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/services" element={<Services />} />
         <Route path="/service" element={<Service />} />
         <Route path="*" element={<NotFound />} />

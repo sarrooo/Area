@@ -9,6 +9,8 @@ import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
 import { RegisterRequest } from '@/types/Login'
 import { useRegisterMutation } from '@/services/user'
+import { getOauthGoogleUrl } from '@/utils/oauth/google'
+import { getOauthGithubUrl } from '@/utils/oauth/github'
 
 const Register = () => {
   const {
@@ -25,10 +27,6 @@ const Register = () => {
     } catch (error) {
       toast.error('Invalid email or password')
     }
-  }
-
-  const test = () => {
-    console.log('test')
   }
 
   return (
@@ -98,10 +96,18 @@ const Register = () => {
           </form>
           <div className="my-8 h-[4px] w-full rounded-lg bg-gray-300" />
           <div className="flex flex-col justify-center items-center space-y-4">
-            <LoginWithButton text="Google" callback={test} className="w-3/4">
+            <LoginWithButton
+              text="Google"
+              url={getOauthGoogleUrl()}
+              className="w-3/4"
+            >
               <FcGoogle />
             </LoginWithButton>
-            <LoginWithButton text="Github" callback={test} className="w-3/4">
+            <LoginWithButton
+              text="Github"
+              url={getOauthGithubUrl()}
+              className="w-3/4"
+            >
               <BsGithub />
             </LoginWithButton>
           </div>

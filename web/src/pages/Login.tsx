@@ -11,6 +11,8 @@ import { LoginWithButton } from '@/components/LoginWithButton'
 import { useLoginMutation } from '@/services/user'
 import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
+import { getOauthGoogleUrl } from '@/utils/oauth/google'
+import { getOauthGithubUrl } from '@/utils/oauth/github'
 
 const Login = () => {
   const {
@@ -27,10 +29,6 @@ const Login = () => {
     } catch (error) {
       toast.error('Invalid email or password')
     }
-  }
-
-  const test = () => {
-    console.log('test')
   }
 
   return (
@@ -83,10 +81,18 @@ const Login = () => {
         </form>
         <div className="h-[4px] w-full rounded-lg bg-gray-300" />
         <div className="flex flex-col justify-center items-center space-y-4">
-          <LoginWithButton text="Google" callback={test} className="w-3/4">
+          <LoginWithButton
+            text="Google"
+            url={getOauthGoogleUrl()}
+            className="w-3/4"
+          >
             <FcGoogle />
           </LoginWithButton>
-          <LoginWithButton text="Github" callback={test} className="w-3/4">
+          <LoginWithButton
+            text="Github"
+            url={getOauthGithubUrl()}
+            className="w-3/4"
+          >
             <BsGithub />
           </LoginWithButton>
         </div>
