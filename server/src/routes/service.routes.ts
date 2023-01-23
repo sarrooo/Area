@@ -1,4 +1,4 @@
-import { Service, Trigger, TriggerInputType, TriggerOutputType, User, UserService } from '@prisma/client';
+import { Reaction, ReactionInputType, Service, Trigger, TriggerInputType, TriggerOutputType, User, UserService } from '@prisma/client';
 import dotenv from 'dotenv';
 import {Request, Router} from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -10,7 +10,9 @@ import { BadRequestException } from '~/utils/exceptions';
 import { searchMax, Service as ApiService,
     Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
-    TriggerOutputType as ApiTriggerOutputType } from '~/types/api';
+    TriggerOutputType as ApiTriggerOutputType,
+    Reaction as ApiReaction,
+    ReactionInputType as ApiReactionInputType } from '~/types/api';
 import { isConnected } from '~/middlewares/auth.handler';
 
 dotenv.config();
@@ -109,6 +111,40 @@ async function buildService(service: Service, req: Request): Promise<ApiService>
             if (addTrigger.outputs === undefined)
                 addTrigger.outputs = [];
             addTrigger.outputs.push(addOutputType);
+        });
+        // Add reactions objects in service
+        const serviceReactions: Reaction[] = await prisma.reaction.findMany({
+            where: {
+                serviceId: service.id
+            },
+        });
+        serviceReactions.forEach(async (reaction: Reaction) => {
+            const addReaction: ApiReaction = {
+                id: reaction.id,
+                name: reaction.name,
+                description: reaction.description === null ? undefined : reaction.description,
+                serviceId: reaction.serviceId,
+            };
+            // Add reaction input type
+            const reactionInputTypes: ReactionInputType[] = await prisma.reactionInputType.findMany({
+                where: {
+                    reactionId: reaction.id
+                }
+            });
+            reactionInputTypes.forEach((reactionInputType: ReactionInputType) => {
+                const addInputType: ApiReactionInputType = {
+                    id: reactionInputType.id,
+                    name: reactionInputType.name,
+                    type: reactionInputType.type,
+                    description: reactionInputType.description === null ? undefined : reactionInputType.description,
+                    regex: reactionInputType.regex === null ? undefined : reactionInputType.regex,
+                    mandatory: reactionInputType.mandatory,
+                    reactionId: reactionInputType.reactionId,
+                };
+                if (addReaction.inputs === undefined)
+                    addReaction.inputs = [];
+                addReaction.inputs.push(addInputType);
+            });
         });
         // Finally add trigger to service
         if (retService.triggers === undefined)
