@@ -53,5 +53,6 @@ export const githubOAuthHandler = async (
 
   await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ github`);
+  Logging.info(`Redirecting to ${pathUrl}`);
   res.redirect(pathUrl);
 };

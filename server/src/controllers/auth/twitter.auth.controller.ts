@@ -55,5 +55,6 @@ export const twitterOAuthHandler = async (
 
   await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ Twitter`);
+  Logging.info(`Redirecting to ${pathUrl}`);
   res.redirect(pathUrl);
 };

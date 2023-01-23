@@ -59,5 +59,6 @@ export const googleOAuthHandler = async (
 
   await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ google`);
+  Logging.info(`Redirecting to ${pathUrl}`);
   res.redirect(pathUrl);
 };
