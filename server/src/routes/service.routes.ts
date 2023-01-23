@@ -157,4 +157,23 @@ serviceRoutes.post('/:id'/*, verifyToken, */, validate(updateServiceSchema), asy
     }
 });
 
+// Delete Service : POST /service/delete/:id
+serviceRoutes.post('/delete/:id'/*, verifyToken, */, async (req, res) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const service: Service = await prisma.service.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Service ${id} deleted`);
+        return res.status(StatusCodes.OK).json(service);
+    } catch (_) {
+        throw new BadRequestException("Service not found")
+    }
+});
+
 export default serviceRoutes;
