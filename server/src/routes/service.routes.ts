@@ -4,6 +4,8 @@ import {Router} from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
+import { validate } from '~/middlewares/validate';
+import { createServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
 
 dotenv.config();
@@ -11,7 +13,7 @@ dotenv.config();
 const serviceRoutes = Router();
 
 // Create Service : POST /service
-serviceRoutes.post('/'/*, verifyToken, */, async (req, res) => {
+serviceRoutes.post('/'/*, verifyToken, */, validate(createServiceSchema), async (req, res) => {
     const {id, name, description, image, requiredSubscription}: Service = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
