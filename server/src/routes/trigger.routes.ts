@@ -126,4 +126,23 @@ triggerRoutes.post('/:id'/*, verifyToken, */, validate(updateTriggerSchema), asy
     }
 });
 
+// Delete Trigger : POST /trigger/delete/:id
+triggerRoutes.post('/delete/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to delete a trigger output type");*/
+    try {
+        const deletedTrigger: Trigger = await prisma.trigger.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Trigger ${id} deleted`);
+        return res.status(StatusCodes.OK).json(deletedTrigger);
+    } catch (_) {
+        throw new BadRequestException("Trigger not found")
+    }
+});
+
 export default triggerRoutes; 
