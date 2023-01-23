@@ -19,12 +19,8 @@ cron.schedule('* * * * *', async () => {
     const trireas = await getTrireas();
 
     await each(trireas, async (trirea) => {
-        console.log(trirea.id);
+        console.log(trirea);
     });
-
-    const x = '~/jobs/triggers/time/at_time.trigger'
-    const trigger = await import(x);
-    trigger.start()
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
@@ -34,7 +30,29 @@ const getTrireas = () => {
         {
             where: {
                 enabled: true,
-            }
+            },
+            select: {
+                trigger: {
+                    select: {
+                        name: true,
+                        service: {
+                            select: {
+                                name: true,
+                            }
+                        }
+                    }
+                },
+                reaction: {
+                    select: {
+                        name: true,
+                        service: {
+                            select: {
+                                name: true,
+                            }
+                        }
+                    }
+                }
+            },
         }
     );
 }
