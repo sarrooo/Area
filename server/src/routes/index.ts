@@ -4,9 +4,8 @@ import userRoutes from "~/routes/user.routes";
 import triggerOutputRoutes from "~/routes/trigger_output.routes";
 import triggerInputRoutes from './trigger_input.routes';
 import reactionInputRoutes from './reaction_input.routes';
-import serviceRoutes from './service.routes';
 import sessionRoutes from "~/routes/session.routes";
-
+import serviceRoutes from './service.routes';
 
 const routes = Router();
 
