@@ -15,7 +15,6 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         throw new ForbiddenRequestException('No token provided');
     }
     const token = authorization && authorization.split(' ')[1] || '';
-    console.log(token);
     const payload: any = verify(token, process.env.JWT_SECRET as string);
     if (!payload) {
         throw new ForbiddenRequestException('Access denied');

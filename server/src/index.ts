@@ -1,3 +1,5 @@
+import aboutRoutes from "~/routes/about.routes";
+
 require('dotenv').config();
 import 'express-async-errors';
 import cors from 'cors';
@@ -27,6 +29,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
+app.use('/', aboutRoutes);
 app.use('/api', Routes);
 
 // ? Manage unknow routes, need to be the last route
