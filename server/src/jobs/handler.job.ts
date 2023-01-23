@@ -1,7 +1,21 @@
 import cron from 'node-cron';
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
+import * as console from "console";
 
+
+export const start = async () => {
+    const date = new Date();
+    const trireas = await getTrireas();
+
+    await each(trireas, async (trirea) => {
+        const trigger = await loadTrigger(trirea.trigger);
+        trigger.start(trirea.trireaTriggerInputs);
+    });
+
+
+    console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
+}
 
 //TODO: 1. Get all trireas
 //TODO: 1.2 Loop over each trigger
@@ -19,12 +33,18 @@ cron.schedule('* * * * *', async () => {
     const trireas = await getTrireas();
 
     await each(trireas, async (trirea) => {
-        console.log(trirea);
+        const trigger = await loadTrigger(trirea.trigger);
+        trigger.start(trirea.trireaTriggerInputs);
     });
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
+
+const loadTrigger = async (trigger: {name: string, service: {name: string}}) => {
+    const triggerPath = `~/jobs/triggers/${trigger.service.name}/${trigger.name}.trigger`;
+    return await import(triggerPath);
+}
 
 const getTrireas = () => {
     return prisma.trirea.findMany(
