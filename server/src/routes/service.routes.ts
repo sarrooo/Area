@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createServiceSchema, readServiceSchema } from '~/schemas/service.schema';
+import { createServiceSchema, readServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Service as ApiService,
     Trigger as ApiTrigger,
@@ -132,7 +132,7 @@ serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
 });
 
 // Update Service : POST /service/:id
-serviceRoutes.post('/:id'/*, verifyToken, */, async (req, res) => {
+serviceRoutes.post('/:id'/*, verifyToken, */, validate(updateServiceSchema), async (req, res) => {
     const {id} = req.params;
     const {name, description, image, requiredSubscription}: Service = req.body;
     // TODO Check if user is admin
