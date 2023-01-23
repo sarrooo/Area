@@ -1,4 +1,4 @@
-import { boolean, number, object, string } from "zod";
+import { number, object, string } from "zod";
 
 // Create Service : POST /service
 export const createServiceSchema = object({
