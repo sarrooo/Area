@@ -28,8 +28,9 @@ export const start = async () => {
 //TODO: 1.3 Get the inputs in an array forms :white_check_mark:
 //TODO: 1.4 Get the trigger function from the path :white_check_mark:
 //TODO: 1.5 Run the trigger function with the inputs :white_check_mark:
-//TODO: 1.6 If the trigger function return true, then run the reaction
-//TODO: 1.7 Get the reaction function from the path
+//TODO: 1.6 If the trigger function return true, then run the reaction :white_check_mark:
+//TODO: 1.7 Get the reaction function from the path :white_check_mark:
+//TODO: 1.7.1 Get the inputs in an array forms
 //TODO: 1.8 Run the reaction function with the inputs
 //TODO: 1.9 Save the result in the database
 //TODO: 2. Create a function to run each task
