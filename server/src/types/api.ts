@@ -74,7 +74,7 @@ export type Service = {
     image?: string;
     triggers?: Trigger[]
     reactions?: Reaction[]
-    requiredSubcription: boolean;
+    requiredSubscription: boolean;
     subscribed?: boolean;
 }
 
