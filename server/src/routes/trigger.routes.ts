@@ -7,7 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { createTriggerSchema, deleteTriggerSchema, readTriggerSchema, updateTriggerSchema } from '~/schemas/trigger.schema';
 import { BadRequestException } from '~/utils/exceptions';
-import { Trigger as ApiTrigger,
+import { searchMax, Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
     TriggerOutputType as ApiTriggerOutputType } from '~/types/api';
 
@@ -143,6 +143,20 @@ triggerRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteTriggerSchem
     } catch (_) {
         throw new BadRequestException("Trigger not found")
     }
+});
+
+// Search Triggers : GET /trigger
+triggerRoutes.get('/', async (req: Request, res: Response) => {
+    const {max}: searchMax = req.query;
+    const triggers: Trigger[] = await prisma.trigger.findMany({
+        take: max
+    });
+    const retTriggers: ApiTrigger[] = [];
+    triggers.forEach(async (trigger) => {
+        retTriggers.push(await buildTrigger(trigger));
+    });
+    Logging.info(`Triggers searched`);
+    return res.status(StatusCodes.OK).json(retTriggers);
 });
 
 export default triggerRoutes; 
