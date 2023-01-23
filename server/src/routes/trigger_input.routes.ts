@@ -103,7 +103,7 @@ triggerInputRoutes.get('/', validate(searchTriggerInputTypeSchema), async (req: 
     const {max}: searchMax = req.query;
     const triggerInputTypes: TriggerInputType[] = await prisma.triggerInputType.findMany({
         take: max
-    })
+    });
     Logging.info(`Trigger Input Type searched`);
     return res.status(StatusCodes.OK).json(triggerInputTypes);
 });

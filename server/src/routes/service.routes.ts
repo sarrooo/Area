@@ -1,13 +1,13 @@
 import { Service, Trigger, TriggerInputType, TriggerOutputType, User, UserService } from '@prisma/client';
 import dotenv from 'dotenv';
-import {Router} from 'express';
+import {Request, Router} from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { createServiceSchema, deleteServiceSchema, readServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
-import { Service as ApiService,
+import { searchMax, Service as ApiService,
     Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
     TriggerOutputType as ApiTriggerOutputType } from '~/types/api';
@@ -37,6 +37,87 @@ serviceRoutes.post('/'/*, verifyToken, */, validate(createServiceSchema), async 
     return res.status(StatusCodes.CREATED).json(newService);
 });
 
+async function buildService(service: Service, req: Request): Promise<ApiService> {
+    const retService : ApiService = {
+        id: service.id,
+        name: service.name,
+        description: service.description === null ? undefined : service.description,
+        image: service.image === null ? undefined : service.image,
+        requiredSubscription: service.requiredSubscription,
+        subscribed: undefined
+    };
+    const user: User | null = await isConnected(req);
+    if (user !== null) {
+        // Check if user is subscribed to service
+        const userService: UserService | null = await prisma.userService.findUnique({
+            where: {
+                userId_serviceId: {
+                    userId: user.id,
+                    serviceId: service.id
+                }
+            }
+        });
+        retService.subscribed = userService === null ? false : true;
+    }
+    // Add triggers objects in service
+    const serviceTriggers: Trigger[] = await prisma.trigger.findMany({
+        where: {
+            serviceId: service.id
+        }
+    });
+    serviceTriggers.forEach(async (trigger: Trigger) => {
+        const addTrigger: ApiTrigger = {
+            id: trigger.id,
+            name: trigger.name,
+            description: trigger.description === null ? undefined : trigger.description,
+            serviceId: trigger.serviceId,
+        };
+        // Add trigger input type
+        const triggerInputTypes: TriggerInputType[] = await prisma.triggerInputType.findMany({
+            where: {
+                triggerId: trigger.id
+            },
+        });
+        triggerInputTypes.forEach((triggerInputType: TriggerInputType) => {
+            const addInputType: ApiTriggerInputType = {
+                id: triggerInputType.id,
+                name: triggerInputType.name,
+                type: triggerInputType.type,
+                description: triggerInputType.description === null ? undefined : triggerInputType.description,
+                regex: triggerInputType.regex === null ? undefined : triggerInputType.regex,
+                mandatory: triggerInputType.mandatory,
+                triggerId: triggerInputType.triggerId,
+            };
+            if (addTrigger.inputs === undefined)
+                addTrigger.inputs = [];
+            addTrigger.inputs.push(addInputType);
+        });
+        // Add trigger output type to trigger
+        const triggerOutputTypes: TriggerOutputType[] = await prisma.triggerOutputType.findMany({
+            where: {
+                triggerId: trigger.id
+            }
+        });
+        triggerOutputTypes.forEach((triggerOutputType: TriggerOutputType) => {
+            const addOutputType: ApiTriggerOutputType = {
+                id: triggerOutputType.id,
+                name: triggerOutputType.name,
+                type: triggerOutputType.type,
+                description: triggerOutputType.description === null ? undefined : triggerOutputType.description,
+                triggerId: triggerOutputType.triggerId,
+            };
+            if (addTrigger.outputs === undefined)
+                addTrigger.outputs = [];
+            addTrigger.outputs.push(addOutputType);
+        });
+        // Finally add trigger to service
+        if (retService.triggers === undefined)
+            retService.triggers = [];
+        retService.triggers.push(addTrigger);
+    });
+    return retService;
+}
+
 // Read Service : GET /service/:id
 serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
     const {id} = req.params;
@@ -47,83 +128,8 @@ serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
             }
         });
         if (service === null)
-            throw new BadRequestException("Service not found")
-        const retService : ApiService = {
-            id: service.id,
-            name: service.name,
-            description: service.description,
-            image: service.image,
-            requiredSubscription: service.requiredSubscription
-        };
-        const user: User | null = await isConnected(req);
-        if (user !== null) {
-            const userService: UserService | null = await prisma.userService.findUnique({
-                where: {
-                    userId_serviceId: {
-                        userId: user.id,
-                        serviceId: service.id
-                    }
-                }
-            });
-            if (userService !== null)
-                retService.subscribed = true;
-            // Add triggers objects in service
-            const serviceTriggers: Trigger[] = await prisma.trigger.findMany({
-                where: {
-                    serviceId: service.id
-                },
-            });
-            await serviceTriggers.map(async (trigger: Trigger) => {
-                const addTrigger: ApiTrigger = {
-                    id: trigger.id,
-                    name: trigger.name,
-                    description: trigger.description === null ? undefined : trigger.description,
-                    serviceId: trigger.serviceId,
-                };
-                // Add trigger input type to trigger
-                const triggerInputTypes: TriggerInputType[] = await prisma.triggerInputType.findMany({
-                    where: {
-                        triggerId: trigger.id
-                    },
-                });
-                await triggerInputTypes.map(async (triggerInputType: TriggerInputType) => {
-                    const linkInputType: ApiTriggerInputType = {
-                        id: triggerInputType.id,
-                        name: triggerInputType.name,
-                        type: triggerInputType.type,
-                        description: triggerInputType.description === null ? undefined : triggerInputType.description,
-                        regex: triggerInputType.regex === null ? undefined : triggerInputType.regex,
-                        mandatory: triggerInputType.mandatory,
-                        triggerId: triggerInputType.triggerId,
-                    };
-                    if (addTrigger.inputs === undefined)
-                        addTrigger.inputs = [];
-                    addTrigger.inputs.push(linkInputType);
-                });
-                // Add trigger output type to trigger
-                const triggerOutputTypes: TriggerOutputType[] = await prisma.triggerOutputType.findMany({
-                    where: {
-                        triggerId: trigger.id
-                    },
-                });
-                await triggerOutputTypes.map(async (triggerOutputType: TriggerOutputType) => {
-                    const linkOutputType: ApiTriggerOutputType = {
-                        id: triggerOutputType.id,
-                        name: triggerOutputType.name,
-                        type: triggerOutputType.type,
-                        description: triggerOutputType.description === null ? undefined : triggerOutputType.description,
-                        triggerId: triggerOutputType.triggerId,
-                    };
-                    if (addTrigger.outputs === undefined)
-                        addTrigger.outputs = [];
-                    addTrigger.outputs.push(linkOutputType);
-                });
-                // Final add
-                if (retService.triggers === undefined)
-                    retService.triggers = [];
-                retService.triggers.push(addTrigger);
-            });
-        }
+            throw new BadRequestException("Service not found");
+        const retService: ApiService = await buildService(service, req);
         Logging.info(`Service ${id} read`);
         return res.status(StatusCodes.OK).json(retService);
     } catch (_) {
@@ -174,6 +180,20 @@ serviceRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteServiceSchem
     } catch (_) {
         throw new BadRequestException("Service not found")
     }
+});
+
+// Search Service : GET /service
+serviceRoutes.get('/', async (req, res) => {
+    const {max}: searchMax = req.query;
+    const services: Service[] = await prisma.service.findMany({
+        take: max
+    });
+    const retServices: ApiService[] = [];
+    services.forEach(async (service: Service) => {
+        retServices.push(await buildService(service, req));
+    });
+    Logging.info(`Services searched`);
+    return res.status(StatusCodes.OK).json(retServices);
 });
 
 export default serviceRoutes;
