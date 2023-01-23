@@ -22,7 +22,7 @@ cron.schedule('* * * * *', async () => {
         console.log(trirea.id);
     });
 
-    const x = '~/jobs/action/time/at_time'
+    const x = '~/jobs/triggers/time/at_time.trigger'
     const trigger = await import(x);
     trigger.start()
 
