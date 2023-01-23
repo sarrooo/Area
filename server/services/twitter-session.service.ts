@@ -5,11 +5,11 @@ import Logging from "~/lib/logging";
 import {TwitterOauthToken, TwitterUserResult} from "~/types/twitter";
 
 export const getTwitterOauthToken = async ({code}: { code: string }): Promise<TwitterOauthToken> => {
-    const rootUrl = 'https://api.twitter.com/2/oauth2/token';
-    const TWITTER_OAUTH_CLIENT_ID = config.get<string>('twitterConfig.clientId');
-    const TWITTER_OAUTH_CLIENT_SECRET = config.get<string>('twitterConfig.clientSecret');
+    const rootUrl: string = 'https://api.twitter.com/2/oauth2/token';
+    const TWITTER_OAUTH_CLIENT_ID: string = config.get<string>('twitterConfig.clientId');
+    const TWITTER_OAUTH_CLIENT_SECRET: string = config.get<string>('twitterConfig.clientSecret');
 
-    const BasicAuthToken = Buffer.from(`${TWITTER_OAUTH_CLIENT_ID}:${TWITTER_OAUTH_CLIENT_SECRET}`, "utf8").toString(
+    const BasicAuthToken: string = Buffer.from(`${TWITTER_OAUTH_CLIENT_ID}:${TWITTER_OAUTH_CLIENT_SECRET}`, "utf8").toString(
         "base64"
     );
 

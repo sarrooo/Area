@@ -5,7 +5,7 @@ import {GoogleOauthToken, GoogleUserResult} from "~/types/google";
 import Logging from "~/lib/logging";
 
 export const getGoogleOauthToken = async ({code}: { code: string }): Promise<GoogleOauthToken> => {
-    const rootUrl = 'https://oauth2.googleapis.com/token';
+    const rootUrl: string = 'https://oauth2.googleapis.com/token';
 
     const options = {
         code,
