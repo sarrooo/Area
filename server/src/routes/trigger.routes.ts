@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createTriggerSchema, readTriggerSchema, updateTriggerSchema } from '~/schemas/trigger.schema';
+import { createTriggerSchema, deleteTriggerSchema, readTriggerSchema, updateTriggerSchema } from '~/schemas/trigger.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
@@ -127,7 +127,7 @@ triggerRoutes.post('/:id'/*, verifyToken, */, validate(updateTriggerSchema), asy
 });
 
 // Delete Trigger : POST /trigger/delete/:id
-triggerRoutes.post('/delete/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+triggerRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteTriggerSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

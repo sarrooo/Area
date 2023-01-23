@@ -40,3 +40,12 @@ export const updateTriggerSchema = object({
         }),
     }),
 });
+
+// Delete Trigger : POST /trigger/delete/:id
+export const deleteTriggerSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger id is required",
+        }),
+    }),
+});
