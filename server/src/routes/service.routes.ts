@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createServiceSchema, readServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
+import { createServiceSchema, deleteServiceSchema, readServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Service as ApiService,
     Trigger as ApiTrigger,
@@ -158,7 +158,7 @@ serviceRoutes.post('/:id'/*, verifyToken, */, validate(updateServiceSchema), asy
 });
 
 // Delete Service : POST /service/delete/:id
-serviceRoutes.post('/delete/:id'/*, verifyToken, */, async (req, res) => {
+serviceRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteServiceSchema), async (req, res) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

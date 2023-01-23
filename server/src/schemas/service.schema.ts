@@ -46,3 +46,12 @@ export const updateServiceSchema = object({
         }),
     }),
 });
+
+// Delete Service : POST /service/delete/:id
+export const deleteServiceSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+});
