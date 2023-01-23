@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createTriggerSchema, readTriggerSchema } from '~/schemas/trigger.schema';
+import { createTriggerSchema, readTriggerSchema, updateTriggerSchema } from '~/schemas/trigger.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
@@ -102,7 +102,7 @@ triggerRoutes.get('/:id', validate(readTriggerSchema), async (req: Request, res:
 });
 
 // Update Trigger : POST /trigger/:id
-triggerRoutes.post('/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+triggerRoutes.post('/:id'/*, verifyToken, */, validate(updateTriggerSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {name, description, serviceId}: Trigger = req.body;
     // TODO Check if user is admin

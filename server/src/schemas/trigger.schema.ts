@@ -22,3 +22,21 @@ export const readTriggerSchema = object({
         }),
     }),
 });
+
+// Update Trigger : POST /trigger/:id
+export const updateTriggerSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger id is required",
+        }),
+    }),
+    body: object({
+        name: string({
+            required_error: "Name is required",
+        }),
+        description: string().optional(),
+        serviceId: number({
+            required_error: "Service id is required",
+        }),
+    }),
+});
