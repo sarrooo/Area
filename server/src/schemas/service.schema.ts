@@ -18,3 +18,12 @@ export const createServiceSchema = object({
         })
     })
 });
+
+// Read Service : GET /service/:id
+export const readServiceSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+});

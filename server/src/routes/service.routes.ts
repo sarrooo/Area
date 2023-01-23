@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createServiceSchema } from '~/schemas/service.schema';
+import { createServiceSchema, readServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Service as ApiService,
     Trigger as ApiTrigger,
@@ -38,7 +38,7 @@ serviceRoutes.post('/'/*, verifyToken, */, validate(createServiceSchema), async 
 });
 
 // Read Service : GET /service/:id
-serviceRoutes.get('/:id', async (req, res) => {
+serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
     const {id} = req.params;
     try {
         const service: Service | null = await prisma.service.findUnique({
