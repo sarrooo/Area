@@ -27,9 +27,13 @@ model User {
   id      Int      @id @default(autoincrement())
   first_name   String
   last_name String
-  password String
-  email    String @unique
-  Token Token[]
+  password String?
+  email    String? @unique
+  provider String @default("local")
+  google_id String? @unique
+  twitter_id String? @unique
+  github_id String? @unique
+  Token Token?
   services   UserService[]
   trireas Trirea[]
 
@@ -42,7 +46,7 @@ model Token {
   createdAt DateTime @default(now())
   expiredAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
-  userId Int
+  userId Int @unique
 
   @@map("tokens")
 }

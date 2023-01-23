@@ -6,7 +6,7 @@ import Logging from '~/lib/logging';
 import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
 import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, searchReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
-import { ReactionInputType, TrireaReactionInput } from '@prisma/client';
+import { ReactionInputType } from '@prisma/client';
 import { searchMax } from '~/types/api';
 
 dotenv.config();
