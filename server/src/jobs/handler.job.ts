@@ -22,6 +22,7 @@ cron.schedule('* * * * *', async () => {
         console.log(trirea);
     });
 
+
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
 
@@ -48,6 +49,17 @@ const getTrireas = () => {
                         service: {
                             select: {
                                 name: true,
+                            }
+                        }
+                    }
+                },
+                trireaTriggerInputs: {
+                    select: {
+                        value: true,
+                        triggerInput: {
+                            select: {
+                                name: true,
+                                type: true,
                             }
                         }
                     }
