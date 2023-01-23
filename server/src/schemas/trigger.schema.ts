@@ -49,3 +49,10 @@ export const deleteTriggerSchema = object({
         }),
     }),
 });
+
+// Search Trigger : GET /trigger
+export const searchTriggerSchema = object({
+    body: object({
+        max: number().optional(),
+    }),
+});
