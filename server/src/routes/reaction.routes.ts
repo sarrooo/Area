@@ -4,6 +4,8 @@ import { Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
+import { validate } from '~/middlewares/validate';
+import { createReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
 
 dotenv.config();
@@ -11,7 +13,7 @@ dotenv.config();
 const reactionRoutes = Router();
 
 // Create Reaction : POST /reaction
-reactionRoutes.post('/'/*, verifyToken, */, async (req, res) => {
+reactionRoutes.post('/'/*, verifyToken, */, validate(createReactionSchema), async (req, res) => {
     const {id, name, description, serviceId}: Reaction = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))

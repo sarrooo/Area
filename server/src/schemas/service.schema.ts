@@ -7,12 +7,8 @@ export const createServiceSchema = object({
         name: string({
             required_error: "Name is required",
         }),
-        description: string({
-            required_error: "Description is required",
-        }),
-        image: string({
-            required_error: "Image is required",
-        }),
+        description: string().optional(),
+        image: string().optional(),
         requiredSubscription: string({
             required_error: "Required Subscription is required",
         })
