@@ -101,4 +101,29 @@ triggerRoutes.get('/:id', validate(readTriggerSchema), async (req: Request, res:
     }
 });
 
+// Update Trigger : POST /trigger/:id
+triggerRoutes.post('/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {name, description, serviceId}: Trigger = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to update a trigger output type");*/
+    try {
+        const updatedTrigger: Trigger = await prisma.trigger.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                serviceId: serviceId
+            }
+        });
+        Logging.info(`Trigger ${id} updated`);
+        return res.status(StatusCodes.OK).json(updatedTrigger);
+    } catch (_) {
+        throw new BadRequestException("Trigger not found")
+    }
+});
+
 export default triggerRoutes; 
