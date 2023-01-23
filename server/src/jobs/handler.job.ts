@@ -28,6 +28,8 @@ export const start = async () => {
 //TODO: 1.9 Save the result in the database
 //TODO: 2. Create a function to run each task
 //TODO: 3. If a trigger return true, then run the reaction
+
+/*
 cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
@@ -40,6 +42,7 @@ cron.schedule('* * * * *', async () => {
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
+*/
 
 const loadTrigger = async (trigger: {name: string, service: {name: string}}) => {
     const triggerPath = `~/jobs/triggers/${trigger.service.name}/${trigger.name}.trigger`;
