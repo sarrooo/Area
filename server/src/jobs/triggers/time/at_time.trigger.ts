@@ -1,29 +1,36 @@
 import {each} from "async";
 import Logging from "~/lib/logging";
 import * as console from "console";
+import {TrireaInputs} from "~/jobs/handler.job";
 
-//TODO: Make a function to parse the params into an interface
-export const start = async (trireaTriggerInputs: {value: string | null, triggerInput: {name: string, type: string}}[]) => {
-    let timer: number = NaN;
+export const start = async (inputs: TrireaInputs[]) => {
     const actualTime = Date.now();
+    const atTimeInputs = await getInputs(inputs);
 
-    await each(trireaTriggerInputs, async (input) => {
-        console.log("Timer: " + input.value + " - " + input.triggerInput.name);
-       if (input.triggerInput.name === 'at_time.timer' && input.value) {
-           console.log("Timer: " + input.value);
-           timer = Date.parse(input.value);
-       }
-    });
 
-    if (!timer) {
+    if (!atTimeInputs.timer) {
         Logging.warning('Trigger time_at fail: No timer provided');
         return;
     }
 
-    if (timer <= actualTime) {
+    if (atTimeInputs.timer <= actualTime) {
         Logging.info('Trigger time_at: The timer is in the future, the reaction will be executed ...');
         return;
     }
 
     console.log('Execution of the action…');
 };
+
+const getInputs = async (inputs: TrireaInputs[]): Promise<AtTimeInputs> => {
+    let atTimeInputs : AtTimeInputs = {timer: NaN};
+    await each(inputs, async (input) => {
+        if (input.triggerInput.name === 'at_time.timer' && input.value) {
+            atTimeInputs.timer = Date.parse(input.value);
+        }
+    });
+    return atTimeInputs;
+}
+
+type AtTimeInputs = {
+    timer: number;
+}

@@ -91,3 +91,11 @@ const getTrireas = () => {
         }
     );
 }
+
+export type TrireaInputs = {
+    value: string | null;
+    triggerInput: {
+        name: string;
+        type: string;
+    }
+}
