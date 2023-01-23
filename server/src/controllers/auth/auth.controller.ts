@@ -115,7 +115,7 @@ export const logout = async (req: Request, res: Response) => {
     httpOnly: true,
     sameSite: "none",
     maxAge: 0,
-    secure: false,
+    secure: true,
   });
   return res.sendStatus(StatusCodes.NO_CONTENT);
 };
@@ -133,7 +133,7 @@ export const generateToken = async (
     httpOnly: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 7,
-    secure: false,
+    secure: true,
   });
 
   const expiredAt = new Date();
