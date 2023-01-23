@@ -8,7 +8,7 @@ import {prisma} from "~/lib/prisma";
 dotenv.config();
 
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
-    const { authorization } = req.headers;
+    const {authorization} = req.headers;
     if (!authorization) {
         throw new ForbiddenRequestException('No token provided');
     }
@@ -19,9 +19,9 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     }
 
     const user = await prisma.user.findFirst({
-       where: {
-           id: payload.id
-       }
+        where: {
+            id: payload.id
+        }
     });
     if (!user) {
         throw new ForbiddenRequestException('Access denied');
