@@ -22,3 +22,21 @@ export const readReactionSchema = object({
         }),
     }),
 });
+
+// Update Reaction : POST /reaction/:id
+export const updateReactionSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+    body: object({
+        name: string({
+            required_error: "Name is required",
+        }),
+        description: string().optional(),
+        serviceId: number({
+            required_error: "Service Id is required",
+        }),
+    }),
+});

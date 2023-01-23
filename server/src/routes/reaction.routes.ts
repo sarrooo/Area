@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createReactionSchema, readReactionSchema } from '~/schemas/reaction.schema';
+import { createReactionSchema, readReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType } from '~/types/api';
 
@@ -82,7 +82,7 @@ reactionRoutes.get('/:id', validate(readReactionSchema), async (req, res) => {
 });
 
 // Update Reaction : POST /reaction/:id
-reactionRoutes.post('/:id'/*, verifyToken, */, validate(createReactionSchema), async (req, res) => {
+reactionRoutes.post('/:id'/*, verifyToken, */, validate(updateReactionSchema), async (req, res) => {
     const {id} = req.params;
     const {name, description, serviceId}: Reaction = req.body;
     // TODO Check if user is admin
