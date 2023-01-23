@@ -55,3 +55,10 @@ export const deleteServiceSchema = object({
         }),
     }),
 });
+
+// Search Service : GET /service
+export const searchServiceSchema = object({
+    body: object({
+        max: number().optional()
+    })
+});

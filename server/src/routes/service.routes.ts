@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createServiceSchema, deleteServiceSchema, readServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
+import { createServiceSchema, deleteServiceSchema, readServiceSchema, searchServiceSchema, updateServiceSchema } from '~/schemas/service.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { searchMax, Service as ApiService,
     Trigger as ApiTrigger,
@@ -183,7 +183,7 @@ serviceRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteServiceSchem
 });
 
 // Search Service : GET /service
-serviceRoutes.get('/', async (req, res) => {
+serviceRoutes.get('/', validate(searchServiceSchema), async (req, res) => {
     const {max}: searchMax = req.query;
     const services: Service[] = await prisma.service.findMany({
         take: max
