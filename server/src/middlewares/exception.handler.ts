@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import {StatusCodes} from "http-status-codes";
 
 export const ExceptionsHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     if (res.headersSent) {
@@ -12,6 +13,6 @@ export const ExceptionsHandler = (err: any, req: Request, res: Response, next: N
     }
 
     return res
-        .status(500)
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
         .json({ error: 'Internal error' })
 }
