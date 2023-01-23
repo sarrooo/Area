@@ -6,7 +6,7 @@ import { MainButton } from '@/components/MainButton'
 const Landing = () => {
   const navigate = useNavigate()
   const register = () => {
-    navigate('/signup')
+    navigate('/register')
   }
 
   return (

@@ -9,6 +9,7 @@ import Services from '@/pages/Services'
 import { Navbar } from '@/components/Navbar'
 import { Service } from '@/pages/Service'
 import { Dashboard } from '@/pages/Dashboard'
+import ProtectedRoute from '@/components/ProtectedRoutes'
 
 function App() {
   return (
@@ -18,10 +19,33 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/service" element={<Service />} />
         <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/services"
+          element={
+            <ProtectedRoute>
+              <Services />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/service"
+          element={
+            <ProtectedRoute>
+              <Service />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   )

@@ -23,7 +23,7 @@ export const Navbar = () => {
   const isLogged =
     loc.pathname.includes('/dashboard') || loc.pathname.includes('/services')
   const isConnecting =
-    loc.pathname.includes('/login') || loc.pathname.includes('/signup')
+    loc.pathname.includes('/login') || loc.pathname.includes('/register')
 
   return (
     <header className="w-full flex justify-between body-font items-center px-8 py-4 border-b-2 border-black">
@@ -39,7 +39,7 @@ export const Navbar = () => {
       )}
       {!isLogged && !isConnecting && (
         <div className="flex justify-around w-1/3">
-          <MainButton callback={login} text="Sign in" />
+          <MainButton callback={login} text="Register" />
         </div>
       )}
     </header>

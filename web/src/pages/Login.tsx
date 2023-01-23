@@ -1,10 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { BsGithub } from 'react-icons/bs'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { useCookies } from 'react-cookie'
+import axios from 'axios'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
@@ -13,6 +15,7 @@ import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
+import { loginUser } from '@/features/userSlice'
 
 const Login = () => {
   const {
@@ -20,12 +23,25 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginRequest>({ reValidateMode: 'onSubmit' })
+  const navigate = useNavigate()
   const [login] = useLoginMutation()
+  const [cookies] = useCookies(['token'])
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      toast.error(error.replace(/"|'/g, ''))
+    }
+    if (cookies.token) {
+      navigate('/dashboard')
+    }
+  }, [])
 
   const submitLogin = async (data: LoginRequest) => {
     try {
       await login(data).unwrap()
-      // TODO: slice loginUser(payload)
+      navigate('/dashboard')
     } catch (error) {
       toast.error('Invalid email or password')
     }

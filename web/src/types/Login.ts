@@ -12,8 +12,13 @@ export interface RegisterRequest {
   last_name: string
   email: string
   password: string
+  password_confirmation: string
 }
 
 export interface RegisterResponse {
   id: number
+}
+
+export interface RefreshRequest {
+  token: string
 }

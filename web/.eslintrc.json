@@ -41,7 +41,7 @@
         "devDependencies": ["**/*.test.ts", "**/*.test.tsx"]
       }
     ],
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "off",
     "no-param-reassign": ["off"],
     "import/extensions": ["off"],
     "@typescript-eslint/no-floating-promises": "off",

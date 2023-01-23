@@ -1,9 +1,11 @@
 import { BsGithub } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { useEffect } from 'react'
+import { useCookies } from 'react-cookie'
 import { Input } from '@/components/Input'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
@@ -18,14 +20,21 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterRequest>({ reValidateMode: 'onSubmit' })
+  const navigate = useNavigate()
   const [registerMutation] = useRegisterMutation()
+  const [cookies] = useCookies(['token'])
+
+  useEffect(() => {
+    if (cookies.token) {
+      navigate('/dashboard')
+    }
+  }, [])
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
       await registerMutation(data).unwrap()
-      // TODO: slice registerUser(payload)
     } catch (error) {
-      toast.error('Invalid email or password')
+      toast.error('Error while registering')
     }
   }
 
@@ -81,6 +90,16 @@ const Register = () => {
               placeholder="**********"
               register={register}
               fieldName="password"
+              rules={{ required: 'Required field' }}
+              errors={errors}
+            />
+            <Input<RegisterRequest>
+              id="password_confirmation"
+              label="Password Confirmation"
+              inputType="password"
+              placeholder="**********"
+              register={register}
+              fieldName="password_confirmation"
               rules={{ required: 'Required field' }}
               errors={errors}
             />
