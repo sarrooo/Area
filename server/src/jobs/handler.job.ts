@@ -14,9 +14,8 @@ export const start = async () => {
         const trigger = await loadTrigger(trirea.trigger);
         triggered = await trigger.start(trirea.trireaTriggerInputs);
         if (triggered) {
-            /*const reaction = await loadReaction(trirea.reaction);
-            reaction.start(trirea.trireaReactionInputs);*/
-            Logging.info('Trigger time_at: The timer is in the future, the reaction will be executed ...');
+            const reaction = await loadReaction(trirea.reaction);
+            await reaction.start(trirea);
         }
     });
 
@@ -50,6 +49,11 @@ cron.schedule('* * * * *', async () => {
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
 */
+
+const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
+    const reactionPath = `~/jobs/reactions/${reaction.service.name}/${reaction.name}.reaction`;
+    return await import(reactionPath);
+}
 
 const loadTrigger = async (trigger: {name: string, service: {name: string}}) => {
     const triggerPath = `~/jobs/triggers/${trigger.service.name}/${trigger.name}.trigger`;
