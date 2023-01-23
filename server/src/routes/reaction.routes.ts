@@ -106,4 +106,23 @@ reactionRoutes.post('/:id'/*, verifyToken, */, validate(updateReactionSchema), a
     }
 });
 
+// Delete Reaction : POST /reaction/delete/:id
+reactionRoutes.post('/delete/:id'/*, verifyToken, */, async (req, res) => {
+    const {id} = req.params;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const deletedReaction: Reaction = await prisma.reaction.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Reaction ${id} deleted`);
+        return res.status(StatusCodes.OK).json(deletedReaction);
+    } catch (_) {
+        throw new BadRequestException("Reaction not found");
+    }
+});
+
 export default reactionRoutes;
