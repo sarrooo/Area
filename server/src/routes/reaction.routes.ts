@@ -7,6 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { createReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
+import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType } from '~/types/api';
 
 dotenv.config();
 
@@ -29,6 +30,55 @@ reactionRoutes.post('/'/*, verifyToken, */, validate(createReactionSchema), asyn
     });
     Logging.info(`Reaction ${newReaction.id} created`);
     return res.status(StatusCodes.CREATED).json(newReaction);
+});
+
+async function buildReaction(reaction: Reaction) {
+    const retReaction: ApiReaction = {
+        id: reaction.id,
+        name: reaction.name,
+        description: reaction.description === null ? undefined : reaction.description,
+        serviceId: reaction.serviceId,
+    };
+    // Add inputs types
+    const reactionInputTypes = await prisma.reactionInputType.findMany({
+        where: {
+            reactionId: reaction.id
+        },
+    });
+    reactionInputTypes.forEach(async (reactionInputType) => {
+        const addInputType: ApiReactionInputType = {
+            id: reactionInputType.id,
+            name: reactionInputType.name,
+            type: reactionInputType.type,
+            description: reactionInputType.description === null ? undefined : reactionInputType.description,
+            regex: reactionInputType.regex === null ? undefined : reactionInputType.regex,
+            mandatory: reactionInputType.mandatory,
+            reactionId: reactionInputType.reactionId
+        };
+        if (retReaction.inputs === undefined)
+            retReaction.inputs = [];
+        retReaction.inputs.push(addInputType);
+    });
+    return retReaction;
+}
+
+// Read Service : GET /reaction/:id
+reactionRoutes.get('/:id', async (req, res) => {
+    const {id} = req.params;
+    try {
+        const reaction: Reaction | null = await prisma.reaction.findUnique({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        if (reaction === null)
+            throw new BadRequestException("Reaction not found");
+        const retReaction = await buildReaction(reaction);
+        Logging.info(`Reaction ${id} read`);
+        return res.status(StatusCodes.OK).json(retReaction);
+    } catch (_) {
+        throw new BadRequestException("Reaction not found");
+    }
 });
 
 export default reactionRoutes;
