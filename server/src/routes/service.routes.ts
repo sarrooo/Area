@@ -131,4 +131,30 @@ serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
     }
 });
 
+// Update Service : POST /service/:id
+serviceRoutes.post('/:id'/*, verifyToken, */, async (req, res) => {
+    const {id} = req.params;
+    const {name, description, image, requiredSubscription}: Service = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const service: Service = await prisma.service.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                image: image,
+                requiredSubscription: requiredSubscription
+            }
+        });
+        Logging.info(`Service ${id} updated`);
+        return res.status(StatusCodes.OK).json(service);
+    } catch (_) {
+        throw new BadRequestException("Service not found")
+    }
+});
+
 export default serviceRoutes;
