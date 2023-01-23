@@ -5,6 +5,7 @@ import {verify} from "jsonwebtoken";
 import * as process from "process";
 import {prisma} from "~/lib/prisma";
 import * as console from "console";
+import { User } from '@prisma/client';
 
 dotenv.config();
 
@@ -32,4 +33,22 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
     const {password, ...UserWithoutPassword} = user;
     req.user = UserWithoutPassword;
     next();
+}
+
+export const isConnected: (req: Request) => Promise<User | null> = async (req: Request) => {
+    const { authorization } = req.headers;
+    if (!authorization)
+        return null;
+    const token = authorization && authorization.split(' ')[1] || '';
+    console.log(token);
+    const payload: any = verify(token, process.env.JWT_SECRET as string);
+    if (!payload)
+        return null;
+
+    const user: User | null = await prisma.user.findFirst({
+        where: {
+            id: payload.id
+        }
+    });
+    return user;
 }
