@@ -81,4 +81,29 @@ reactionRoutes.get('/:id', validate(readReactionSchema), async (req, res) => {
     }
 });
 
+// Update Reaction : POST /reaction/:id
+reactionRoutes.post('/:id'/*, verifyToken, */, validate(createReactionSchema), async (req, res) => {
+    const {id} = req.params;
+    const {name, description, serviceId}: Reaction = req.body;
+    // TODO Check if user is admin
+    /*if (!is_Admin(id))
+        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
+    try {
+        const updatedReaction: Reaction = await prisma.reaction.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                name: name,
+                description: description,
+                serviceId: serviceId
+            }
+        });
+        Logging.info(`Reaction ${id} updated`);
+        return res.status(StatusCodes.OK).json(updatedReaction);
+    } catch (_) {
+        throw new BadRequestException("Reaction not found");
+    }
+});
+
 export default reactionRoutes;
