@@ -13,3 +13,12 @@ export const createTriggerSchema = object({
         }),
     })
 });
+
+// Read Trigger : GET /trigger/:id
+export const readTriggerSchema = object({
+    params: object({
+        id: number({
+            required_error: "Trigger id is required",
+        }),
+    }),
+});

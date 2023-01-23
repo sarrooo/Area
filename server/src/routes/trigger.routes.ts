@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createTriggerSchema } from '~/schemas/trigger.schema';
+import { createTriggerSchema, readTriggerSchema } from '~/schemas/trigger.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
@@ -83,7 +83,7 @@ async function buildTrigger(trigger: Trigger) {
 }
 
 // Read Service : GET /service/:id
-triggerRoutes.get('/:id', async (req: Request, res: Response) => {
+triggerRoutes.get('/:id', validate(readTriggerSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const trigger: Trigger | null = await prisma.trigger.findUnique({
