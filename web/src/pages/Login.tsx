@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { BsGithub } from 'react-icons/bs'
 import { useForm } from 'react-hook-form'
@@ -8,9 +8,11 @@ import { toast } from 'react-toastify'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
-import { useLoginMutation } from '@/services/user'
+import { useLoginMutation } from '@/redux/services/user'
 import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
+import { getOauthGoogleUrl } from '@/utils/oauth/google'
+import { getOauthGithubUrl } from '@/utils/oauth/github'
 
 const Login = () => {
   const {
@@ -18,19 +20,24 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginRequest>({ reValidateMode: 'onSubmit' })
-  const [login] = useLoginMutation()
+  const navigate = useNavigate()
+  const [loginMutation] = useLoginMutation()
+  const [searchParams] = useSearchParams()
+
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      toast.error(error.replace(/"|'/g, ''))
+    }
+  }, [])
 
   const submitLogin = async (data: LoginRequest) => {
     try {
-      await login(data).unwrap()
-      // TODO: slice loginUser(payload)
+      await loginMutation(data).unwrap()
+      navigate('/dashboard')
     } catch (error) {
       toast.error('Invalid email or password')
     }
-  }
-
-  const test = () => {
-    console.log('test')
   }
 
   return (
@@ -83,10 +90,18 @@ const Login = () => {
         </form>
         <div className="h-[4px] w-full rounded-lg bg-gray-300" />
         <div className="flex flex-col justify-center items-center space-y-4">
-          <LoginWithButton text="Google" callback={test} className="w-3/4">
+          <LoginWithButton
+            text="Google"
+            url={getOauthGoogleUrl()}
+            className="w-3/4"
+          >
             <FcGoogle />
           </LoginWithButton>
-          <LoginWithButton text="Github" callback={test} className="w-3/4">
+          <LoginWithButton
+            text="Github"
+            url={getOauthGithubUrl()}
+            className="w-3/4"
+          >
             <BsGithub />
           </LoginWithButton>
         </div>
