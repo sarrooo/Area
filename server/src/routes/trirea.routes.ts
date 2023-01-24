@@ -7,7 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
-import { createTrireaSchema, readTrireaSchema } from '~/schemas/trirea.schema';
+import { createTrireaSchema, readTrireaSchema, updateTrireaSchema } from '~/schemas/trirea.schema';
 import { verifyToken } from '~/middlewares/auth.handler';
 dotenv.config();
 
@@ -154,7 +154,7 @@ trireaRoutes.get('/:id', verifyToken, validate(readTrireaSchema), async (req: Re
 });
 
 // Update Trirea : POST /trirea/:id
-trireaRoutes.post('/:id', verifyToken, async (req: Request, res: Response) => {
+trireaRoutes.post('/:id', verifyToken, validate(updateTrireaSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {enabled, userId, triggerId, reactionId, triggerInputs, reactionInputs}: ApiTrirea = req.body;
     try {
