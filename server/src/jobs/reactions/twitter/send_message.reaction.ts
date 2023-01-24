@@ -11,7 +11,7 @@ export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserS
     const sendMessageInputs = await getInputs(inputs);
     const twitterToken = userServicesReaction[0].RefreshToken;
     console.log(twitterToken)
-    const targetID = '1288164266823098368';
+    const targetID = '1222243064825204742';
 
     const dataToSend = JSON.stringify({text: sendMessageInputs.message})
 
