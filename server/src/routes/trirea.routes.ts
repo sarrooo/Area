@@ -1,4 +1,4 @@
-import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '@prisma/client';
+import { Trirea, TrireaReactionInput, TrireaTriggerInput, User } from '@prisma/client';
 import dotenv from 'dotenv';
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -8,23 +8,23 @@ import { validate } from '~/middlewares/validate';
 import { Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
 import { createTrireaSchema, readTrireaSchema } from '~/schemas/trirea.schema';
+import { verifyToken } from '~/middlewares/auth.handler';
 dotenv.config();
 
 const trireaRoutes = Router();
 
 // Create Trirea : POST /trirea
-trireaRoutes.post('/'/*, verifyToken, */, validate(createTrireaSchema), async (req: Request, res: Response) => {
+trireaRoutes.post('/', verifyToken, validate(createTrireaSchema), async (req: Request, res: Response) => {
     const {id, enabled, userId, triggerId, reactionId, triggerInputs, reactionInputs}: ApiTrirea = req.body;
     if (id !== undefined)
         throw new BadRequestException("You cannot specify an id when creating a trirea");
     if (userId !== undefined)
         throw new BadRequestException("You cannot specify a user id when creating a trirea");
-    // TODO GET real user id with the token
-    const realUserId = 0;
+    const realUserId = req.user.id;
     const newTrirea: Trirea = await prisma.trirea.create({
         data: {
             enabled: enabled,
-            userId: realUserId,
+            userId: realUserId === undefined ? -1 : realUserId,
             triggerId: triggerId,
             reactionId: reactionId,
         }
@@ -130,7 +130,7 @@ async function buildTrirea(trirea: Trirea) {
 }
 
 // Read Trirea : GET /trirea/:id
-trireaRoutes.get('/:id'/*, verifyToken, */, validate(readTrireaSchema), async (req: Request, res: Response) => {
+trireaRoutes.get('/:id', verifyToken, validate(readTrireaSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const trirea: Trirea | null = await prisma.trirea.findUnique({
@@ -142,7 +142,7 @@ trireaRoutes.get('/:id'/*, verifyToken, */, validate(readTrireaSchema), async (r
             throw new BadRequestException("Trirea not found");
         // ? Check if user can access to this trirea
         // TODO GET real user id with the token
-        const realUserId = 0;
+        const realUserId = req.user.id;
         if (/*!isAdmin(user) && */ realUserId !== trirea.userId)
             throw new BadRequestException("You cannot access this trirea");
         const retTrirea = await buildTrirea(trirea);
