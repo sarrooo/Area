@@ -8,13 +8,14 @@ import { validate } from '~/middlewares/validate';
 import { createReactionSchema, deleteReactionSchema, readReactionSchema, searchReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType, searchMax } from '~/types/api';
+import { verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const reactionRoutes = Router();
 
 // Create Reaction : POST /reaction
-reactionRoutes.post('/'/*, verifyToken, */, validate(createReactionSchema), async (req, res) => {
+reactionRoutes.post('/', verifyToken, validate(createReactionSchema), async (req, res) => {
     const {id, name, description, serviceId}: Reaction = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -82,7 +83,7 @@ reactionRoutes.get('/:id', validate(readReactionSchema), async (req, res) => {
 });
 
 // Update Reaction : POST /reaction/:id
-reactionRoutes.post('/:id'/*, verifyToken, */, validate(updateReactionSchema), async (req, res) => {
+reactionRoutes.post('/:id', verifyToken, validate(updateReactionSchema), async (req, res) => {
     const {id} = req.params;
     const {name, description, serviceId}: Reaction = req.body;
     // TODO Check if user is admin
@@ -107,7 +108,7 @@ reactionRoutes.post('/:id'/*, verifyToken, */, validate(updateReactionSchema), a
 });
 
 // Delete Reaction : POST /reaction/delete/:id
-reactionRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteReactionSchema), async (req, res) => {
+reactionRoutes.post('/delete/:id', verifyToken, validate(deleteReactionSchema), async (req, res) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
