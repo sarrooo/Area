@@ -1,22 +1,21 @@
 import { number, object, string } from "zod";
 
-// Create Service : POST /service
-export const createServiceSchema = object({
+// Create Reaction : POST /reaction
+export const createReactionSchema = object({
     body: object({
         id: number().optional(),
         name: string({
             required_error: "Name is required",
         }),
         description: string().optional(),
-        image: string().optional(),
-        requiredSubscription: string({
-            required_error: "Required Subscription is required",
-        })
-    })
+        serviceId: number({
+            required_error: "Service Id is required",
+        }),
+    }),
 });
 
-// Read Service : GET /service/:id
-export const readServiceSchema = object({
+// Read Reaction : GET /reaction/:id
+export const readReactionSchema = object({
     params: object({
         id: number({
             required_error: "Id is required",
@@ -24,8 +23,8 @@ export const readServiceSchema = object({
     }),
 });
 
-// Update Service : POST /service/:id
-export const updateServiceSchema = object({
+// Update Reaction : POST /reaction/:id
+export const updateReactionSchema = object({
     params: object({
         id: number({
             required_error: "Id is required",
@@ -36,15 +35,14 @@ export const updateServiceSchema = object({
             required_error: "Name is required",
         }),
         description: string().optional(),
-        image: string().optional(),
-        requiredSubscription: number({
-            required_error: "Required Subscription is required",
+        serviceId: number({
+            required_error: "Service Id is required",
         }),
     }),
 });
 
-// Delete Service : POST /service/delete/:id
-export const deleteServiceSchema = object({
+// Delete Reaction : POST /reaction/delete/:id
+export const deleteReactionSchema = object({
     params: object({
         id: number({
             required_error: "Id is required",
@@ -52,9 +50,9 @@ export const deleteServiceSchema = object({
     }),
 });
 
-// Search Service : GET /service
-export const searchServiceSchema = object({
+// Search Reaction : GET /reaction
+export const searchReactionSchema = object({
     body: object({
-        max: number().optional()
-    })
+        max: number().optional(),
+    }),
 });
