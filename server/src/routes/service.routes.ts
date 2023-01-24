@@ -13,14 +13,14 @@ import { searchMax, Service as ApiService,
     TriggerOutputType as ApiTriggerOutputType,
     Reaction as ApiReaction,
     ReactionInputType as ApiReactionInputType } from '~/types/api';
-import { isConnected } from '~/middlewares/auth.handler';
+import { isConnected, verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const serviceRoutes = Router();
 
 // Create Service : POST /service
-serviceRoutes.post('/'/*, verifyToken, */, validate(createServiceSchema), async (req, res) => {
+serviceRoutes.post('/', verifyToken, validate(createServiceSchema), async (req, res) => {
     const {id, name, description, image, requiredSubscription}: Service = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -174,7 +174,7 @@ serviceRoutes.get('/:id', validate(readServiceSchema), async (req, res) => {
 });
 
 // Update Service : POST /service/:id
-serviceRoutes.post('/:id'/*, verifyToken, */, validate(updateServiceSchema), async (req, res) => {
+serviceRoutes.post('/:id', verifyToken, validate(updateServiceSchema), async (req, res) => {
     const {id} = req.params;
     const {name, description, image, requiredSubscription}: Service = req.body;
     // TODO Check if user is admin
@@ -200,7 +200,7 @@ serviceRoutes.post('/:id'/*, verifyToken, */, validate(updateServiceSchema), asy
 });
 
 // Delete Service : POST /service/delete/:id
-serviceRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteServiceSchema), async (req, res) => {
+serviceRoutes.post('/delete/:id', verifyToken, validate(deleteServiceSchema), async (req, res) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
