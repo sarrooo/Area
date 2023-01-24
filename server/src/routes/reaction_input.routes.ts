@@ -8,13 +8,14 @@ import {validate} from "~/middlewares/validate";
 import { createReactionInputTypeSchema, deleteReactionInputTypeSchema, readReactionInputTypeSchema, searchReactionInputTypeSchema, updateReactionInputTypeSchema } from '~/schemas/reaction_input.schema';
 import { ReactionInputType } from '@prisma/client';
 import { searchMax } from '~/types/api';
+import { verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const reactionInputRoutes = Router();
 
 // Create Reaction Input Type : POST /input/reaction
-reactionInputRoutes.post('/'/*, verifyToken, */, validate(createReactionInputTypeSchema), async (req: Request, res: Response) => {
+reactionInputRoutes.post('/', verifyToken, validate(createReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id, name, type, description, regex, mandatory, reactionId}: ReactionInputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -52,7 +53,7 @@ reactionInputRoutes.get('/:id', validate(readReactionInputTypeSchema), async (re
 });
 
 // Update Trigger Input Type : POST /input/trigger/:id
-reactionInputRoutes.post('/:id'/*, verifyToken */, validate(updateReactionInputTypeSchema), async (req: Request, res: Response) => {
+reactionInputRoutes.post('/:id', verifyToken, validate(updateReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {name, type, description, regex, mandatory, reactionId}: ReactionInputType = req.body;
     // TODO Check if user is admin
@@ -80,7 +81,7 @@ reactionInputRoutes.post('/:id'/*, verifyToken */, validate(updateReactionInputT
 });
 
 // Delete Reaction Input Type : POST /input/reaction/delete/:id
-reactionInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteReactionInputTypeSchema), async (req: Request, res: Response) => {
+reactionInputRoutes.post('/delete/:id', verifyToken, validate(deleteReactionInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
