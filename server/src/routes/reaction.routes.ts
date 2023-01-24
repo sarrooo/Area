@@ -1,17 +1,8 @@
-import { Reaction } from '@prisma/client';
-import dotenv from 'dotenv';
 import { Router } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import Logging from '~/lib/logging';
-import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { createReactionSchema, deleteReactionSchema, readReactionSchema, searchReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
-import { BadRequestException } from '~/utils/exceptions';
-import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType, searchMax } from '~/types/api';
 import { verifyToken } from '~/middlewares/auth.handler';
 import { createReaction, deleteReaction, readReaction, searchReaction, updateReaction } from '~/controllers/reaction.controller';
-
-dotenv.config();
 
 const reactionRoutes = Router();
 
