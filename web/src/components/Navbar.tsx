@@ -39,7 +39,7 @@ export const Navbar = () => {
       )}
       {!isLogged && !isConnecting && (
         <div className="flex justify-around w-1/3">
-          <MainButton callback={login} text="Register" />
+          <MainButton callback={login} text="Login" />
         </div>
       )}
     </header>

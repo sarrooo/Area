@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { User } from '@/types/User'
 import { RootState } from '@/app/store'
+import { userApi } from '@/services/user'
 
 interface UserState {
   user: User | null
@@ -20,14 +21,18 @@ export const userSlice = createSlice({
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       state = initialState
     },
-    loginUser: (state, action: PayloadAction<User>) => {
-      state.user = action.payload
+  },
+  extraReducers: (builder) => {
+    builder.addMatcher(userApi.endpoints.login.matchFulfilled, (state) => {
       state.isLogged = true
-    },
+    })
+    builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state) => {
+      state.isLogged = false
+    })
   },
 })
 
-export const { loginUser, logoutUser } = userSlice.actions
+export const { logoutUser } = userSlice.actions
 
 export const selectUser = (state: RootState) => state.user
 

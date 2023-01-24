@@ -15,7 +15,7 @@ import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
-import { loginUser } from '@/features/userSlice'
+import { useAppSelector } from '@/app/hooks'
 
 const Login = () => {
   const {
@@ -24,12 +24,14 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginRequest>({ reValidateMode: 'onSubmit' })
   const navigate = useNavigate()
-  const [login] = useLoginMutation()
+  const [loginMutation] = useLoginMutation()
   const [cookies] = useCookies(['token'])
   const [searchParams] = useSearchParams()
+  const isLogged = useAppSelector((state) => state.user.isLogged)
 
   useEffect(() => {
     const error = searchParams.get('error')
+    console.log(isLogged)
     if (error) {
       toast.error(error.replace(/"|'/g, ''))
     }
@@ -40,7 +42,7 @@ const Login = () => {
 
   const submitLogin = async (data: LoginRequest) => {
     try {
-      await login(data).unwrap()
+      await loginMutation(data).unwrap()
       navigate('/dashboard')
     } catch (error) {
       toast.error('Invalid email or password')

@@ -1,4 +1,3 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {
   LoginRequest,
   LoginResponse,
@@ -6,28 +5,33 @@ import {
   RegisterRequest,
   RegisterResponse,
 } from '@/types/Login'
+import { api } from '@/services/api'
 
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL,
-  }),
-  endpoints: (builder) => ({
-    login: builder.mutation<LoginResponse, LoginRequest>({
+export const userApi = api.injectEndpoints({
+  endpoints: (build) => ({
+    login: build.mutation<LoginResponse, LoginRequest>({
       query: (body) => ({
         url: `/auth/login`,
         method: 'POST',
         body,
+        providesTags: ['User'],
       }),
     }),
-    register: builder.mutation<RegisterResponse, RegisterRequest>({
+    register: build.mutation<RegisterResponse, RegisterRequest>({
       query: (body) => ({
         url: `/auth/register`,
         method: 'POST',
         body,
       }),
     }),
-    refresh: builder.mutation<RefreshRequest, void>({
+    logout: build.mutation<LoginResponse, LoginRequest>({
+      query: (body) => ({
+        url: `/auth/logout`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    refresh: build.mutation<RefreshRequest, void>({
       query: (body) => ({
         url: `/auth/refresh`,
         method: 'POST',

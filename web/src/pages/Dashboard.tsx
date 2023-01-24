@@ -1,5 +1,6 @@
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
+import { useAppSelector } from '@/app/hooks'
 
 const trireas = [
   {
@@ -35,6 +36,10 @@ const trireas = [
 ]
 
 export const Dashboard = () => {
+  const isLogged = useAppSelector((state) => state.user.isLogged)
+
+  console.log(isLogged)
+
   return (
     <div className="px-32 py-16 space-y-16">
       <h1 className="font-bold text-4xl">Dashboard</h1>

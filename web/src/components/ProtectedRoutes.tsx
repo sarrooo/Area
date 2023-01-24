@@ -7,9 +7,13 @@ type ProtectedRoutesProps = {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRoutesProps) => {
+  const token = (getState() as RootState).user.isLogged
+  console.log("token: ", token)
+
   const isLogged = useAppSelector((state) => state.user.isLogged)
   const location = useLocation()
 
+  console.log("sksk: ", isLogged)
   if (!isLogged) {
     return Navigate({
       to: '/login?error="Must be authenticated"',
