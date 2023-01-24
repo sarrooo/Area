@@ -4,10 +4,11 @@ import * as console from "console";
 import {TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 
-export const start = async (inputs: TrireaInputs[], userServices: UserService[]): Promise<boolean> => {
+export const start = async (inputs: TrireaInputs[], userServicesTrigger: UserService[]): Promise<boolean> => {
     const actualTime = Date.now();
     const atTimeInputs = await getInputs(inputs);
 
+    console.log(userServicesTrigger);
 
     if (!atTimeInputs.timer) {
         Logging.warning('Trigger time_at fail: No timer provided');

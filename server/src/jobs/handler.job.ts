@@ -13,12 +13,13 @@ export const start = async () => {
     await each(trireas, async (trirea) => {
 
         const trigger = await loadTrigger(trirea.trigger);
-        const userServices = await getUserService(trirea.userId, trirea.trigger.service.name, trirea.reaction.service.name);
+        const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
+        const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
 
-        triggered = await trigger.start(trirea.trireaTriggerInputs);
+        triggered = await trigger.start(trirea.trireaTriggerInputs, userServiceTrigger);
         if (triggered) {
             const reaction = await loadReaction(trirea.reaction);
-            await reaction.start(trirea.trireaReactionInputs);
+            await reaction.start(trirea.trireaReactionInputs, userServiceReaction);
         }
     });
 
@@ -120,22 +121,24 @@ const getTrireas = async () => {
     );
 }
 
-const getUserService = async (userId: number, triggerService: string, reactionService: string) => {
+const getUserServiceTrigger = async (userId: number, triggerService: string) => {
     return prisma.userService.findMany({
         where: {
             userId: userId,
-            OR: [
-                {
-                    service: {
-                        name: triggerService,
-                    }
-                },
-                {
-                    service: {
-                        name: reactionService,
-                    }
-                }
-            ],
+            service: {
+                name: triggerService,
+            }
+        }
+    })
+}
+
+const getUserServiceReaction = async (userId: number, reactionService: string) => {
+    return prisma.userService.findMany({
+        where: {
+            userId: userId,
+            service: {
+                name: reactionService,
+            }
         }
     })
 }

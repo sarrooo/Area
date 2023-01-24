@@ -3,9 +3,10 @@ import * as console from "console";
 import {each} from "async";
 import {UserService} from "@prisma/client";
 
-export const start = async (inputs: TrireaOutputs[], userServices: UserService[]) => {
+export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
     const sendMessageInputs = await getInputs(inputs);
     console.log(sendMessageInputs.message);
+    console.log(userServicesReaction);
 };
 
 const getInputs = async (inputs: TrireaOutputs[]): Promise<SendMessageInputs> => {
