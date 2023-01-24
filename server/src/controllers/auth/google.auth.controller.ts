@@ -57,8 +57,10 @@ export const googleOAuthHandler = async (
     throw new BadRequestException("Google OAuth: Failed to upsert user");
   }
 
-  await generateToken(user, res);
+  const token = await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ google`);
   Logging.info(`Redirecting to ${pathUrl}`);
-  res.redirect(pathUrl);
+  res.redirect(
+    `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
+  );
 };

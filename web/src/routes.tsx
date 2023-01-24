@@ -5,12 +5,14 @@ import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import { Service } from '@/pages/Service'
 import Services from '@/pages/Services'
+import OauthCallback from '@/pages/OauthCallback'
 
 const routes = (isLoggedIn: boolean) => [
   {
     path: '/',
     children: [
       { path: '/', element: <Landing /> },
+      { path: '/oauth_callback', element: <OauthCallback /> },
       {
         path: '/',
         element: isLoggedIn ? <Navigate to="/dashboard" /> : <Outlet />,

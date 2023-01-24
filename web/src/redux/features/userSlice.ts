@@ -16,10 +16,21 @@ const initialState: UserState = {
   isLogged: false,
 }
 
+const loginReducer = (
+  state: UserState,
+  action: PayloadAction<{ token: string }>
+) => {
+  const decoded = jwtDecode<User>(action.payload.token)
+  state.user = decoded
+  state.accessToken = action.payload.token
+  state.isLogged = true
+}
+
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    login: loginReducer,
     logout: () => {
       return initialState
     },
@@ -30,24 +41,14 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
-        const decoded = jwtDecode<User>(action.payload.token)
-        state.user = decoded
-        state.accessToken = action.payload.token
-        state.isLogged = true
+        loginReducer(state, action)
       })
       .addMatcher(
         userApi.endpoints.register.matchFulfilled,
         (state, action) => {
-          const decoded = jwtDecode<User>(action.payload.token)
-          state.user = decoded
-          state.accessToken = action.payload.token
-          state.isLogged = true
+          loginReducer(state, action)
         }
       )
-      .addMatcher(userApi.endpoints.refresh.matchPending, (state, action) => {
-        console.log('refresh pending')
-        state.accessToken = action.payload.token
-      })
       .addMatcher(userApi.endpoints.logout.matchFulfilled, () => {
         return initialState
       })
@@ -57,7 +58,7 @@ export const userSlice = createSlice({
   },
 })
 
-export const { logout, refreshToken } = userSlice.actions
+export const { login, logout, refreshToken } = userSlice.actions
 
 export const selectUser = (state: RootState) => state.user
 

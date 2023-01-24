@@ -173,12 +173,5 @@ export const generateToken = async (
       "jwtConfig.expiresInSecret"
     )}`
   );
-  res.cookie("token", token, {
-    httpOnly: false,
-    sameSite: "none",
-    maxAge: 1000 * config.get<number>("jwtConfig.expiresInSecret"),
-    secure: true,
-  });
-
   return token;
 };
