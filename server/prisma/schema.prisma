@@ -138,8 +138,8 @@ model TrireaTriggerInput {
   value     String?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerInput TriggerInputType  @relation(fields: [triggerInputId], references: [id])
-  triggerInputId Int
+  triggerInputType TriggerInputType  @relation(fields: [triggerInputTypeId], references: [id])
+  triggerInputTypeId Int
 
   @@map("trirea_trigger_inputs")
 }
@@ -150,8 +150,8 @@ model TrireaReactionInput {
   linkedToId Int
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerOutput TriggerOutputType  @relation(fields: [triggerOutputId], references: [id])
-  triggerOutputId Int
+  triggerOutputType TriggerOutputType  @relation(fields: [triggerOutputTypeId], references: [id])
+  triggerOutputTypeId Int
 
   @@map("trirea_reaction_inputs")
 }

@@ -84,11 +84,11 @@ export type Trirea = {
     updatedAt?: Date;
     prevTriggerData?: string;
     enabled: boolean;
-    userId: number;
+    userId?: number;
     triggerId: number;
     reactionId: number;
-    trigger?: Trigger;
-    reaction?: Reaction;
+    triggerInputs: TrireaTriggerInput[];
+    reactionInputs: TrireaReactionInput[];
 }
 
 export type searchMax = {
