@@ -35,6 +35,7 @@ export const start = async () => {
 //TODO: 1.9 Save the result in the database
 //TODO: 2. Create a function to run each task
 //TODO: 3. If a trigger return true, then run the reaction
+//TODO 4: Create a function to sanitize the name of the trigger and reaction
 
 /*
 cron.schedule('* * * * *', async () => {
