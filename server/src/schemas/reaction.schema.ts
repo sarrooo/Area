@@ -49,3 +49,10 @@ export const deleteReactionSchema = object({
         }),
     }),
 });
+
+// Search Reaction : GET /reaction
+export const searchReactionSchema = object({
+    body: object({
+        max: number().optional(),
+    }),
+});

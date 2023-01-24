@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { createReactionSchema, deleteReactionSchema, readReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
+import { createReactionSchema, deleteReactionSchema, readReactionSchema, searchReactionSchema, updateReactionSchema } from '~/schemas/reaction.schema';
 import { BadRequestException } from '~/utils/exceptions';
 import { Reaction as ApiReaction, ReactionInputType as ApiReactionInputType, searchMax } from '~/types/api';
 
@@ -126,7 +126,7 @@ reactionRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteReactionSch
 });
 
 // Search Reaction : GET /reaction
-reactionRoutes.get('/', async (req, res) => {
+reactionRoutes.get('/', validate(searchReactionSchema), async (req, res) => {
     const {max}: searchMax = req.query;
     const reactions: Reaction[] = await prisma.reaction.findMany({
         take: max
