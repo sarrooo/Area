@@ -39,3 +39,12 @@ export const createTrireaSchema = object({
         }))
     }),
 });
+
+// Read Trirea : GET /trirea/:id
+export const readTrireaSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+});

@@ -7,7 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
-import { createTrireaSchema } from '~/schemas/trirea.schema';
+import { createTrireaSchema, readTrireaSchema } from '~/schemas/trirea.schema';
 dotenv.config();
 
 const trireaRoutes = Router();
@@ -89,7 +89,7 @@ async function buildTrirea(trirea: Trirea) {
         id: trirea.id,
         createdAt: trirea.createdAt,
         updatedAt: trirea.updatedAt,
-        prevTriggerData: trirea.prevTriggerData === null ? undefined : newTrirea.prevTriggerData,
+        prevTriggerData: trirea.prevTriggerData === null ? undefined : trirea.prevTriggerData,
         enabled: trirea.enabled,
         userId: trirea.userId,
         triggerId: trirea.triggerId,
@@ -130,7 +130,7 @@ async function buildTrirea(trirea: Trirea) {
 }
 
 // Read Trirea : GET /trirea/:id
-trireaRoutes.get('/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+trireaRoutes.get('/:id'/*, verifyToken, */, validate(readTrireaSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const trirea: Trirea | null = await prisma.trirea.findUnique({
