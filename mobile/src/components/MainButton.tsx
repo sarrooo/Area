@@ -6,15 +6,18 @@ type MainButtonProps = {
   title: string;
   backgroundColor?: string;
   textColor?: string;
+  onPress?: () => void;
 };
 
 export const MainButton = ({
   title,
   backgroundColor = '#A6EAFF',
   textColor = '#000',
+  onPress,
 }: MainButtonProps) => {
   return (
     <TouchableOpacity
+      onPress={onPress}
       style={[styles.button, {backgroundColor: backgroundColor}]}>
       <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
     </TouchableOpacity>
