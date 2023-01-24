@@ -1,4 +1,12 @@
-import { ButtonProps } from 'types/mainButton.type'
+export type MainButtonProps = {
+  text: string
+  callback?: () => void
+  className?: string
+  children?: React.ReactNode
+  submitter?: boolean
+  disabled?: boolean
+  primary?: boolean
+}
 
 export const MainButton = ({
   text,
@@ -8,9 +16,9 @@ export const MainButton = ({
   primary = true,
   submitter,
   disabled,
-}: ButtonProps) => {
+}: MainButtonProps) => {
   const buttonColor = primary
-    ? 'bg-blue-300 hover:bg-blue-400'
+    ? 'bg-primary-700 hover:bg-primary-900'
     : 'bg-white hover:bg-gray-100'
 
   return (
