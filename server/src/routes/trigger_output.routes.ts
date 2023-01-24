@@ -8,13 +8,14 @@ import dotenv from 'dotenv';
 import {validate} from "~/middlewares/validate";
 import { createTriggerOutputTypeSchema, deleteTriggerOutputTypeSchema, readTriggerOutputTypeSchema, searchTriggerOutputTypeSchema, updateTriggerOutputTypeSchema } from '~/schemas/trigger_output.schema';
 import { TriggerOutputType } from '@prisma/client';
+import { verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const triggerOutputRoutes = Router();
 
 // Create Trigger Output Type : POST /output/trigger
-triggerOutputRoutes.post('/'/*, verifyToken, */, validate(createTriggerOutputTypeSchema), async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/', verifyToken, validate(createTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id, triggerId, name, description, type}: TriggerOutputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -50,7 +51,7 @@ triggerOutputRoutes.get('/:id', validate(readTriggerOutputTypeSchema), async (re
 });
 
 // Update Trigger Output Type : POST /output/trigger/:id
-triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/:id', verifyToken, validate(updateTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {triggerId, name, description, type}: TriggerOutputType = req.body;
     // TODO Check if user is admin
@@ -76,7 +77,7 @@ triggerOutputRoutes.post('/:id'/*, verifyToken */,validate(updateTriggerOutputTy
 });
 
 // Delete Trigger Output Type : POST /output/trigger/delete/:id
-triggerOutputRoutes.post('/delete/:id'/*, verifyToken*/, validate(deleteTriggerOutputTypeSchema), async (req: Request, res: Response) => {
+triggerOutputRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerOutputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
