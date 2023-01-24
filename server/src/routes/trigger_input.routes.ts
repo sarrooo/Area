@@ -8,13 +8,14 @@ import {StatusCodes} from 'http-status-codes';
 import {validate} from "~/middlewares/validate";
 import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, searchTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 import { TriggerInputType } from '@prisma/client';
+import { verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const triggerInputRoutes = Router();
 
 // Create Trigger Input Type : POST /input/trigger
-triggerInputRoutes.post('/'/*, verifyToken, */, validate(createTriggerInputTypeSchema), async (req: Request, res: Response) => {
+triggerInputRoutes.post('/', verifyToken, validate(createTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id, triggerId, name, description, regex, mandatory, type}: TriggerInputType = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -52,7 +53,7 @@ triggerInputRoutes.get('/:id', validate(readTriggerInputTypeSchema), async (req:
 });
 
 // Update Trigger Input Type : POST /input/trigger/:id
-triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTypeSchema), async (req: Request, res: Response) => {
+triggerInputRoutes.post('/:id', verifyToken, validate(updateTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {triggerId, name, description, regex, mandatory, type}: TriggerInputType = req.body;
     // TODO Check if user is admin
@@ -80,7 +81,7 @@ triggerInputRoutes.post('/:id'/*, verifyToken */, validate(updateTriggerInputTyp
 });
 
 // Detele Trigger Input Type : POST /input/trigger/delete/:id
-triggerInputRoutes.post('/delete/:id'/*, verifyToken */, validate(deleteTriggerInputTypeSchema), async (req: Request, res: Response) => {
+triggerInputRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerInputTypeSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
