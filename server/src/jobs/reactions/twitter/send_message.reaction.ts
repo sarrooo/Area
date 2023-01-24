@@ -7,43 +7,81 @@ import {TwitterUserResult} from "~/types/twitter";
 import Logging from "~/lib/logging";
 
 export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
-    try {
+
     const sendMessageInputs = await getInputs(inputs);
+    if (!sendMessageInputs.message || !sendMessageInputs.username) {
+        Logging.warning('Reaction twitter_send_message fail: No message or username provided');
+        return;
+    }
+
+    if (userServicesReaction.length === 0 || !userServicesReaction[0].RefreshToken) {
+        Logging.warning('Reaction twitter_send_message fail: No user service token provided');
+        return;
+    }
+
     const twitterToken = userServicesReaction[0].RefreshToken;
-    console.log(twitterToken)
-    const targetID = '1222243064825204742';
+    const targetID = await getUserID(sendMessageInputs.username, twitterToken);
 
-    const dataToSend = JSON.stringify({text: sendMessageInputs.message})
+    await sendMessageToUser(sendMessageInputs.message, targetID.username, twitterToken);
+};
 
+const sendMessageToUser = async (message: string, userID: string, twitterToken: string): Promise<any> => {
+    const dataToSend = JSON.stringify({text: message})
+
+    try {
         const { data } = await axios.post(
-            `https://api.twitter.com/2/dm_conversations/with/${targetID}/messages`,
+            `https://api.twitter.com/2/dm_conversations/with/${userID}/messages`,
             dataToSend,
             {
                 headers: {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${twitterToken}`,
                 },
-            }
-        );
-
-
-        return data.data;
+            });
+        return data;
     } catch (err: any) {
-        Logging.error('Failed to get Twitter User' + err);
-        throw new Error(err);
+        return
     }
-};
+}
+
+const getUserID = async (username: string, twitterToken: string): Promise<TwitterUserResult> => {
+
+    try {
+        const {data} = await axios.get<TwitterUserResult>(
+            `https://api.twitter.com/2/users/by/username/${username}`,
+            {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${twitterToken}`,
+                }
+            });
+
+        return data;
+    } catch (err: any) {
+        return err;
+    }
+}
 
 const getInputs = async (inputs: TrireaOutputs[]): Promise<SendMessageInputs> => {
-    let sendMessageInputs : SendMessageInputs = {message: ""};
+    let sendMessageInputs : SendMessageInputs = {message: "", username: ""};
     await each(inputs, async (input) => {
         if (input.triggerOutput.name === 'send_message.message' && input.value) {
             sendMessageInputs.message = input.value;
+        }
+        if (input.triggerOutput.name === 'send_message.username' && input.value) {
+            sendMessageInputs.username = input.value;
         }
     });
     return sendMessageInputs;
 }
 
+type TwitterUserResult = {
+    id: string;
+    name: string;
+    username: string;
+}
+
 type SendMessageInputs = {
     message: string;
+    username: string;
 }
