@@ -13,8 +13,8 @@ datasource db {
 model Service {
   id     Int     @id @default(autoincrement())
   name    String
-  description   String
-  image String
+  description   String?
+  image String?
   requiredSubscription Boolean
   users UserService[]
   triggers Trigger[]
@@ -97,7 +97,6 @@ model TriggerOutputType {
   description String?
   trigger Trigger  @relation(fields: [triggerId], references: [id])
   triggerId Int
-  trireaReactionInput TrireaReactionInput[]
 
   @@map("trigger_outputs_types")
 }
@@ -111,6 +110,7 @@ model ReactionInputType {
   mandatory Boolean
   reaction Reaction  @relation(fields: [reactionId], references: [id])
   reactionId Int
+  trireaReactionInput TrireaReactionInput[]
 
   @@map("reaction_inputs_types")
 }
@@ -138,8 +138,8 @@ model TrireaTriggerInput {
   value     String?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerInput TriggerInputType  @relation(fields: [triggerInputId], references: [id])
-  triggerInputId Int
+  triggerInputType TriggerInputType  @relation(fields: [triggerInputTypeId], references: [id])
+  triggerInputTypeId Int
 
   @@map("trirea_trigger_inputs")
 }
@@ -147,11 +147,11 @@ model TrireaTriggerInput {
 model TrireaReactionInput {
   id        Int      @id @default(autoincrement())
   value     String?
-  linkedToId Int
+  linkedToId Int?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerOutput TriggerOutputType  @relation(fields: [triggerOutputId], references: [id])
-  triggerOutputId Int
+  reactionInputType ReactionInputType  @relation(fields: [reactionInputTypeId], references: [id])
+  reactionInputTypeId Int
 
   @@map("trirea_reaction_inputs")
 }

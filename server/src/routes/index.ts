@@ -6,6 +6,8 @@ import triggerInputRoutes from './trigger_input.routes';
 import reactionInputRoutes from './reaction_input.routes';
 import sessionRoutes from "~/routes/session.routes";
 import serviceRoutes from './service.routes';
+import triggerRoutes from './trigger.routes';
+import trireaRoutes from './trirea.routes';
 
 const routes = Router();
 
@@ -16,5 +18,7 @@ routes.use('/input/trigger', triggerInputRoutes);
 routes.use('/input/reaction', reactionInputRoutes);
 routes.use('/sessions', sessionRoutes);
 routes.use('/service', serviceRoutes);
+routes.use('/trigger', triggerRoutes);
+routes.use('/trirea', trireaRoutes);
 
 export default routes;
