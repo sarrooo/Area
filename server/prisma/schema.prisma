@@ -160,6 +160,7 @@ model UserService {
   userId    Int
   service   Service @relation(fields: [serviceId], references: [id])
   serviceId Int
+  RefreshToken String?
 
 
   @@id([userId, serviceId])
