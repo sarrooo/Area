@@ -34,36 +34,16 @@ export const Section: React.FC<
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    paddingVertical: 32,
   },
   sectionTitle: {
     fontSize: 48,
-    fontWeight: '400',
+    fontWeight: '900',
     fontFamily: 'Poppins',
   },
   sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
+    paddingTop: 8,
+    fontSize: 24,
     fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: '#A6EAFF',
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'black',
   },
 });
