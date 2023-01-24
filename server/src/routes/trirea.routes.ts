@@ -19,6 +19,7 @@ trireaRoutes.post('/'/*, verifyToken, */, validate(createTrireaSchema), async (r
         throw new BadRequestException("You cannot specify an id when creating a trirea");
     if (userId !== undefined)
         throw new BadRequestException("You cannot specify a user id when creating a trirea");
+    // TODO GET real user id with the token
     const realUserId = 0;
     const newTrirea: Trirea = await prisma.trirea.create({
         data: {
