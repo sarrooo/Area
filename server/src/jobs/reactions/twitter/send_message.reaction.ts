@@ -1,10 +1,9 @@
-import {TrireaInputs, TrireaOutputs} from "~/jobs/handler.job";
-import * as console from "console";
+import {TrireaOutputs} from "~/jobs/handler.job";
 import {each} from "async";
 import {UserService} from "@prisma/client";
 import axios from "axios";
-import {TwitterUserResult} from "~/types/twitter";
 import Logging from "~/lib/logging";
+import {TwitterUserResult} from "~/types/twitter";
 
 export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
 
@@ -22,7 +21,7 @@ export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserS
     const twitterToken = userServicesReaction[0].RefreshToken;
     const targetID = await getUserID(sendMessageInputs.username, twitterToken);
 
-    await sendMessageToUser(sendMessageInputs.message, targetID.username, twitterToken);
+    await sendMessageToUser(sendMessageInputs.message, targetID.id, twitterToken);
 };
 
 const sendMessageToUser = async (message: string, userID: string, twitterToken: string): Promise<any> => {
@@ -73,12 +72,6 @@ const getInputs = async (inputs: TrireaOutputs[]): Promise<SendMessageInputs> =>
         }
     });
     return sendMessageInputs;
-}
-
-type TwitterUserResult = {
-    id: string;
-    name: string;
-    username: string;
 }
 
 type SendMessageInputs = {
