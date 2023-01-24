@@ -62,7 +62,8 @@ export const register = async (req: Request, res: Response) => {
   });
   const { id } = newUser;
   Logging.info(`User ${email} register in`);
-  return res.status(StatusCodes.CREATED).json({ id: id });
+  const token = await generateToken(newUser, res);
+  return res.status(StatusCodes.CREATED).json({ token: token, id: id });
 };
 
 export const refresh = async (req: Request, res: Response) => {
