@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 
 import App from './App'
-import { store } from '@/app/store'
+import { store } from '@/redux/store'
 import './index.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 

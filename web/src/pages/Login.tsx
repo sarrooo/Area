@@ -10,12 +10,12 @@ import axios from 'axios'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
-import { useLoginMutation } from '@/services/user'
+import { useLoginMutation } from '@/redux/services/user'
 import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
-import { useAppSelector } from '@/app/hooks'
+import { useAppSelector } from '@/redux/hooks'
 
 const Login = () => {
   const {

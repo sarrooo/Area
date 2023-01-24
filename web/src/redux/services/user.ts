@@ -5,7 +5,7 @@ import {
   RegisterRequest,
   RegisterResponse,
 } from '@/types/Login'
-import { api } from '@/services/api'
+import { api } from '@/redux/services/api'
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({

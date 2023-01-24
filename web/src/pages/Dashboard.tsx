@@ -1,6 +1,6 @@
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
-import { useAppSelector } from '@/app/hooks'
+import { useAppSelector } from '@/redux/hooks'
 
 const trireas = [
   {

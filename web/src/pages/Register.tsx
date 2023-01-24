@@ -10,7 +10,7 @@ import { Input } from '@/components/Input'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
 import { RegisterRequest } from '@/types/Login'
-import { useRegisterMutation } from '@/services/user'
+import { useRegisterMutation } from '@/redux/services/user'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
 
