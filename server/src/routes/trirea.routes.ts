@@ -1,4 +1,4 @@
-import { Trirea, TrireaTriggerInput } from '@prisma/client';
+import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '@prisma/client';
 import dotenv from 'dotenv';
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -61,9 +61,10 @@ trireaRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) =>
     reactionInputs.forEach(async (reaction) => {
         if (reaction.id !== undefined)
             throw new BadRequestException("You cannot specify an id when creating a trirea reaction input");
-        const newInput: TrireaTriggerInput = await prisma.trireaTriggerInput.create({
+        const newInput: TrireaReactionInput = await prisma.trireaReactionInput.create({
             data: {
                 value: reaction.value,
+                linkedToId: reaction.linkedToId,
                 trireaId: newTrirea.id,
                 reactionInputTypeId: reaction.reactionInputTypeId
             }
@@ -72,6 +73,7 @@ trireaRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) =>
             id: newInput.id,
             value: newInput.value === null ? undefined : newInput.value,
             trireaId: newInput.trireaId,
+            linkedToId: newInput.linkedToId === null ? undefined : newInput.linkedToId,
             reactionInputTypeId: newInput.reactionInputTypeId
         });
     });
