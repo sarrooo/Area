@@ -10,16 +10,19 @@ export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserS
     try {
     const sendMessageInputs = await getInputs(inputs);
     const twitterToken = userServicesReaction[0].RefreshToken;
+    console.log(twitterToken)
     const targetID = '1288164266823098368';
+
+    const dataToSend = JSON.stringify({text: sendMessageInputs.message})
 
         const { data } = await axios.post(
             `https://api.twitter.com/2/dm_conversations/with/${targetID}/messages`,
+            dataToSend,
             {
                 headers: {
                     "Content-type": "application/json",
                     Authorization: `Bearer ${twitterToken}`,
                 },
-                text: sendMessageInputs.message,
             }
         );
 
