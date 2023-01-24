@@ -1,163 +1,23 @@
-import { Trigger } from '@prisma/client';
 import dotenv from 'dotenv';
-import { Request, Response, Router } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import Logging from '~/lib/logging';
-import { prisma } from '~/lib/prisma';
+import { Router } from 'express';
 import { validate } from '~/middlewares/validate';
 import { createTriggerSchema, deleteTriggerSchema, readTriggerSchema, searchTriggerSchema, updateTriggerSchema } from '~/schemas/trigger.schema';
-import { BadRequestException } from '~/utils/exceptions';
-import { searchMax, Trigger as ApiTrigger,
-    TriggerInputType as ApiTriggerInputType,
-    TriggerOutputType as ApiTriggerOutputType } from '~/types/api';
 import { verifyToken } from '~/middlewares/auth.handler';
+import { createTrigger, deleteTrigger, readTrigger, searchTriggers, updateTrigger } from '~/controllers/trigger.controller';
 
 dotenv.config();
 
 const triggerRoutes = Router();
 
 // Create Trigger : POST /trigger
-triggerRoutes.post('/', verifyToken, validate(createTriggerSchema), async (req: Request, res: Response) => {
-    const {id, name, description, serviceId}: Trigger = req.body;
-    // TODO Check if user is admin
-    /*if (!is_Admin(id))
-        throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
-    if (id !== undefined)
-        throw new BadRequestException("You cannot specify an id when creating a trigger");
-    const newTrigger: Trigger = await prisma.trigger.create({
-        data: {
-            name: name,
-            description: description,
-            serviceId: serviceId
-        }
-    });
-    Logging.info(`Trigger ${newTrigger.id} created`);
-    return res.status(StatusCodes.CREATED).json(newTrigger);
-});
-
-async function buildTrigger(trigger: Trigger) {
-    const retTrigger: ApiTrigger = {
-        id: trigger.id,
-        name: trigger.name,
-        description: trigger.description === null ? undefined : trigger.description,
-        serviceId: trigger.serviceId,
-    };
-    // Add inputs types
-    const triggerInputTypes = await prisma.triggerInputType.findMany({
-        where: {
-            triggerId: trigger.id
-        },
-    });
-    triggerInputTypes.forEach((triggerInputType) => {
-        const addInputType: ApiTriggerInputType = {
-            id: triggerInputType.id,
-            name: triggerInputType.name,
-            type: triggerInputType.type,
-            description: triggerInputType.description === null ? undefined : triggerInputType.description,
-            regex: triggerInputType.regex === null ? undefined : triggerInputType.regex,
-            mandatory: triggerInputType.mandatory,
-            triggerId: triggerInputType.triggerId
-        };
-        if (retTrigger.inputs === undefined)
-            retTrigger.inputs = [];
-        retTrigger.inputs.push(addInputType);
-    });
-    // Add outputs types
-    const triggerOutputTypes = await prisma.triggerOutputType.findMany({
-        where: {
-            triggerId: trigger.id
-        }
-    });
-    triggerOutputTypes.forEach((triggerOutputType) => {
-        const addOutputType: ApiTriggerOutputType = {
-            id: triggerOutputType.id,
-            name: triggerOutputType.name,
-            type: triggerOutputType.type,
-            description: triggerOutputType.description === null ? undefined : triggerOutputType.description,
-            triggerId: triggerOutputType.triggerId
-        };
-        if (retTrigger.outputs === undefined)
-            retTrigger.outputs = [];
-        retTrigger.outputs.push(addOutputType);
-    });
-    return retTrigger;
-}
-
+triggerRoutes.post('/', verifyToken, validate(createTriggerSchema), createTrigger);
 // Read Service : GET /service/:id
-triggerRoutes.get('/:id', validate(readTriggerSchema), async (req: Request, res: Response) => {
-    const {id} = req.params;
-    try {
-        const trigger: Trigger | null = await prisma.trigger.findUnique({
-            where: {
-                id: parseInt(id)
-            }
-        });
-        if (trigger === null)
-            throw new BadRequestException("Trigger not found");
-        const retTrigger = await buildTrigger(trigger);
-        Logging.info(`Trigger ${id} read`);
-        return res.status(StatusCodes.OK).json(retTrigger);
-    } catch (_) {
-        throw new BadRequestException("Trigger not found")
-    }
-});
-
+triggerRoutes.get('/:id', validate(readTriggerSchema), readTrigger);
 // Update Trigger : POST /trigger/:id
-triggerRoutes.post('/:id', verifyToken, validate(updateTriggerSchema), async (req: Request, res: Response) => {
-    const {id} = req.params;
-    const {name, description, serviceId}: Trigger = req.body;
-    // TODO Check if user is admin
-    /*if (!is_Admin(id))
-        throw new ForbiddenRequestException("You are not allowed to update a trigger output type");*/
-    try {
-        const updatedTrigger: Trigger = await prisma.trigger.update({
-            where: {
-                id: parseInt(id)
-            },
-            data: {
-                name: name,
-                description: description,
-                serviceId: serviceId
-            }
-        });
-        Logging.info(`Trigger ${id} updated`);
-        return res.status(StatusCodes.OK).json(updatedTrigger);
-    } catch (_) {
-        throw new BadRequestException("Trigger not found")
-    }
-});
-
+triggerRoutes.post('/:id', verifyToken, validate(updateTriggerSchema), updateTrigger);
 // Delete Trigger : POST /trigger/delete/:id
-triggerRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerSchema), async (req: Request, res: Response) => {
-    const {id} = req.params;
-    // TODO Check if user is admin
-    /*if (!is_Admin(id))
-        throw new ForbiddenRequestException("You are not allowed to delete a trigger output type");*/
-    try {
-        const deletedTrigger: Trigger = await prisma.trigger.delete({
-            where: {
-                id: parseInt(id)
-            }
-        });
-        Logging.info(`Trigger ${id} deleted`);
-        return res.status(StatusCodes.OK).json(deletedTrigger);
-    } catch (_) {
-        throw new BadRequestException("Trigger not found")
-    }
-});
-
+triggerRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerSchema), deleteTrigger);
 // Search Triggers : GET /trigger
-triggerRoutes.get('/', validate(searchTriggerSchema), async (req: Request, res: Response) => {
-    const {max}: searchMax = req.query;
-    const triggers: Trigger[] = await prisma.trigger.findMany({
-        take: max
-    });
-    const retTriggers: ApiTrigger[] = [];
-    triggers.forEach(async (trigger) => {
-        retTriggers.push(await buildTrigger(trigger));
-    });
-    Logging.info(`Triggers searched`);
-    return res.status(StatusCodes.OK).json(retTriggers);
-});
+triggerRoutes.get('/', validate(searchTriggerSchema), searchTriggers);
 
 export default triggerRoutes; 
