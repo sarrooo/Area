@@ -1,8 +1,11 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MainButton } from '@/components/MainButton'
+import { useLogoutMutation } from '@/redux/services/user'
 
 export const Navbar = () => {
   const navigate = useNavigate()
+  const [logoutMutation] = useLogoutMutation()
+
   const services = () => {
     navigate('/login')
   }
@@ -16,6 +19,16 @@ export const Navbar = () => {
   }
 
   const login = () => {
+    navigate('/login')
+  }
+
+  const logout = async () => {
+    try {
+      await logoutMutation().unwrap()
+      navigate('/login')
+    } catch (error) {
+      /* empty */
+    }
     navigate('/login')
   }
 
@@ -35,6 +48,7 @@ export const Navbar = () => {
           <MainButton callback={services} text="Services" primary={false} />
           <MainButton callback={dashboard} text="Dashboard" primary={false} />
           <MainButton callback={createTrirea} text="Create trirea" />
+          <MainButton callback={logout} text="Logout" />
         </div>
       )}
       {!isLogged && !isConnecting && (

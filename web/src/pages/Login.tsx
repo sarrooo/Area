@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { BsGithub } from 'react-icons/bs'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { useCookies } from 'react-cookie'
-import axios from 'axios'
 import { Input } from '@/components/Input'
 import { MainButton } from '@/components/MainButton'
 import { LoginWithButton } from '@/components/LoginWithButton'
@@ -25,18 +23,16 @@ const Login = () => {
   } = useForm<LoginRequest>({ reValidateMode: 'onSubmit' })
   const navigate = useNavigate()
   const [loginMutation] = useLoginMutation()
-  const [cookies] = useCookies(['token'])
   const [searchParams] = useSearchParams()
   const isLogged = useAppSelector((state) => state.user.isLogged)
 
   useEffect(() => {
+    if (isLogged) {
+      navigate('/dashboard')
+    }
     const error = searchParams.get('error')
-    console.log(isLogged)
     if (error) {
       toast.error(error.replace(/"|'/g, ''))
-    }
-    if (cookies.token) {
-      navigate('/dashboard')
     }
   }, [])
 

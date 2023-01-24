@@ -24,11 +24,12 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
-    logout: build.mutation<LoginResponse, LoginRequest>({
+    logout: build.mutation<LoginResponse, void>({
       query: (body) => ({
         url: `/auth/logout`,
         method: 'POST',
         body,
+        invalidatesTags: ['User'],
       }),
     }),
     refresh: build.mutation<RefreshRequest, void>({
@@ -41,4 +42,9 @@ export const userApi = api.injectEndpoints({
   }),
 })
 
-export const { useLoginMutation, useRegisterMutation } = userApi
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useRefreshMutation,
+} = userApi

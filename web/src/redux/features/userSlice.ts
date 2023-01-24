@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import jwtDecode from 'jwt-decode'
 import { User } from '@/types/User'
 import { RootState } from '@/redux/store'
 import { userApi } from '@/redux/services/user'
@@ -23,12 +24,16 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(userApi.endpoints.login.matchFulfilled, (state) => {
-      state.isLogged = true
-    })
-    builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state) => {
-      state.isLogged = false
-    })
+    builder
+      .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
+        const decoded = jwtDecode<User>(action.payload.token)
+        state.user = decoded
+        state.isLogged = true
+      })
+      .addMatcher(userApi.endpoints.logout.matchFulfilled, () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        return initialState
+      })
   },
 })
 
