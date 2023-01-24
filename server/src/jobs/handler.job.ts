@@ -3,7 +3,7 @@ import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
 
-export const start = async () => {
+/*export const start = async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered: boolean = false;
@@ -23,9 +23,9 @@ export const start = async () => {
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-}
+}*/
 
-/*cron.schedule('* * * * *', async () => {
+cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered: boolean = false;
@@ -45,7 +45,7 @@ export const start = async () => {
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-});*/
+});
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
     const reactionPath = `~/jobs/reactions/${reaction.service.name}/${reaction.name}.reaction`;

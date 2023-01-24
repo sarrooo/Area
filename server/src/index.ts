@@ -11,12 +11,9 @@ import Logging from "~/lib/logging";
 import Routes from "~/routes";
 import * as process from "process";
 import config from "config";
-import '~/jobs/handler.job'
-import {start} from "~/jobs/handler.job";
+import '~/jobs/handler.job';
 
 const port = config.get<number>('port');
-
-start();
 
 const app = express();
 
