@@ -2,11 +2,33 @@ import {TrireaInputs, TrireaOutputs} from "~/jobs/handler.job";
 import * as console from "console";
 import {each} from "async";
 import {UserService} from "@prisma/client";
+import axios from "axios";
+import {TwitterUserResult} from "~/types/twitter";
+import Logging from "~/lib/logging";
 
 export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
+    try {
     const sendMessageInputs = await getInputs(inputs);
-    console.log(sendMessageInputs.message);
-    console.log(userServicesReaction);
+    const twitterToken = userServicesReaction[0].RefreshToken;
+    const targetID = '1288164266823098368';
+
+        const { data } = await axios.post(
+            `https://api.twitter.com/2/dm_conversations/with/${targetID}/messages`,
+            {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${twitterToken}`,
+                },
+                text: sendMessageInputs.message,
+            }
+        );
+
+
+        return data.data;
+    } catch (err: any) {
+        Logging.error('Failed to get Twitter User' + err);
+        throw new Error(err);
+    }
 };
 
 const getInputs = async (inputs: TrireaOutputs[]): Promise<SendMessageInputs> => {
