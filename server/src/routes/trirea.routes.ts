@@ -7,7 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
-import { createTrireaSchema, readTrireaSchema, updateTrireaSchema } from '~/schemas/trirea.schema';
+import { createTrireaSchema, readTrireaSchema, updateTrireaSchema, deleteTrireaSchema } from '~/schemas/trirea.schema';
 import { verifyToken } from '~/middlewares/auth.handler';
 dotenv.config();
 
@@ -227,7 +227,7 @@ trireaRoutes.post('/:id', verifyToken, validate(updateTrireaSchema), async (req:
 });
 
 // Delete Trirea : POST /trirea/delete/:id
-trireaRoutes.post('/delete/:id', verifyToken, async (req: Request, res: Response) => {
+trireaRoutes.post('/delete/:id', verifyToken, validate(deleteTrireaSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     try {
         const trirea: Trirea | null = await prisma.trirea.findUnique({
