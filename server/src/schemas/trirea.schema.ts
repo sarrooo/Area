@@ -101,3 +101,12 @@ export const deleteTrireaSchema = object({
         }),
     }),
 });
+
+// Search Trirea : GET /trirea
+export const searchTrireaSchema = object({
+    body: object({
+        max: number().optional(),
+        active: number().optional(),
+        userId: number().optional(),
+    }),
+});

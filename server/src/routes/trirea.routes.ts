@@ -7,7 +7,7 @@ import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
 import { searchInfos, Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
-import { createTrireaSchema, readTrireaSchema, updateTrireaSchema, deleteTrireaSchema } from '~/schemas/trirea.schema';
+import { createTrireaSchema, readTrireaSchema, updateTrireaSchema, deleteTrireaSchema, searchTrireaSchema } from '~/schemas/trirea.schema';
 import { verifyToken } from '~/middlewares/auth.handler';
 dotenv.config();
 
@@ -253,7 +253,7 @@ trireaRoutes.post('/delete/:id', verifyToken, validate(deleteTrireaSchema), asyn
 });
 
 // Search Trirea : GET /trirea
-trireaRoutes.get('/', verifyToken, async (req: Request, res: Response) => {
+trireaRoutes.get('/', verifyToken, validate(searchTrireaSchema), async (req: Request, res: Response) => {
     const {active, max, userId}: searchInfos = req.body;
     if (/*!isAdmin(user) && */req.user.id !== userId)
         throw new BadRequestException("You search for others trireas");
