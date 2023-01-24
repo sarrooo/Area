@@ -4,15 +4,16 @@ import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
+import { validate } from '~/middlewares/validate';
 import { Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
-
+import { createTrireaSchema } from '~/schemas/trirea.schema';
 dotenv.config();
 
 const trireaRoutes = Router();
 
 // Create Trirea : POST /trirea
-trireaRoutes.post('/'/*, verifyToken, */, async (req: Request, res: Response) => {
+trireaRoutes.post('/'/*, verifyToken, */, validate(createTrireaSchema), async (req: Request, res: Response) => {
     const {id, enabled, userId, triggerId, reactionId, triggerInputs, reactionInputs}: ApiTrirea = req.body;
     if (id !== undefined)
         throw new BadRequestException("You cannot specify an id when creating a trirea");
