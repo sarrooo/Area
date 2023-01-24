@@ -226,4 +226,30 @@ trireaRoutes.post('/:id', verifyToken, validate(updateTrireaSchema), async (req:
     }
 });
 
+// Delete Trirea : POST /trirea/delete/:id
+trireaRoutes.post('/delete/:id', verifyToken, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    try {
+        const trirea: Trirea | null = await prisma.trirea.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+        });
+        // ? Check if user can access to this trirea
+        if (trirea === null)
+            throw new BadRequestException("Trirea not found");
+        if (req.user.id !== trirea.userId)
+            throw new BadRequestException("You cannot delete this trirea");
+        const deletedTrirea: Trirea = await prisma.trirea.delete({
+            where: {
+                id: parseInt(id)
+            }
+        });
+        Logging.info(`Deleted trirea ${deletedTrirea.id}`);
+        return res.status(StatusCodes.OK).json(deletedTrirea);
+    } catch (_) {
+        throw new BadRequestException("Trirea not found");
+    }
+});
+
 export default trireaRoutes;
