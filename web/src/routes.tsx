@@ -11,8 +11,14 @@ const routes = (isLoggedIn: boolean) => [
     path: '/',
     children: [
       { path: '/', element: <Landing /> },
-      { path: '/login', element: <Login /> },
-      { path: '/register', element: <Register /> },
+      {
+        path: '/',
+        element: isLoggedIn ? <Navigate to="/dashboard" /> : <Outlet />,
+        children: [
+          { path: '/login', element: <Login /> },
+          { path: '/register', element: <Register /> },
+        ],
+      },
       {
         path: '/',
         element: isLoggedIn ? (

@@ -30,6 +30,14 @@ export const userSlice = createSlice({
         state.user = decoded
         state.isLogged = true
       })
+      .addMatcher(
+        userApi.endpoints.register.matchFulfilled,
+        (state, action) => {
+          const decoded = jwtDecode<User>(action.payload.token)
+          state.user = decoded
+          state.isLogged = true
+        }
+      )
       .addMatcher(userApi.endpoints.logout.matchFulfilled, () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return initialState

@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import { useEffect } from 'react'
-import { useCookies } from 'react-cookie'
 import { Input } from '@/components/Input'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
@@ -22,17 +20,11 @@ const Register = () => {
   } = useForm<RegisterRequest>({ reValidateMode: 'onSubmit' })
   const navigate = useNavigate()
   const [registerMutation] = useRegisterMutation()
-  const [cookies] = useCookies(['token'])
-
-  useEffect(() => {
-    if (cookies.token) {
-      navigate('/dashboard')
-    }
-  }, [])
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
       await registerMutation(data).unwrap()
+      navigate('/dashboard')
     } catch (error) {
       toast.error('Error while registering')
     }

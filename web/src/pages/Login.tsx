@@ -13,7 +13,6 @@ import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/email'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
-import { useAppSelector } from '@/redux/hooks'
 
 const Login = () => {
   const {
@@ -24,12 +23,8 @@ const Login = () => {
   const navigate = useNavigate()
   const [loginMutation] = useLoginMutation()
   const [searchParams] = useSearchParams()
-  const isLogged = useAppSelector((state) => state.user.isLogged)
 
   useEffect(() => {
-    if (isLogged) {
-      navigate('/dashboard')
-    }
     const error = searchParams.get('error')
     if (error) {
       toast.error(error.replace(/"|'/g, ''))

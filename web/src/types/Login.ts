@@ -17,6 +17,7 @@ export interface RegisterRequest {
 
 export interface RegisterResponse {
   id: number
+  token: string
 }
 
 export interface RefreshRequest {
