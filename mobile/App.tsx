@@ -10,8 +10,8 @@
 
 import React from 'react';
 import {
+  Image,
   SafeAreaView,
-  Button,
   StatusBar,
   StyleSheet,
   useColorScheme,
@@ -20,12 +20,13 @@ import {
 import {Section} from './src/components/Section';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {MainButton} from './src/components/MainButton';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={isDarkMode ? Colors.black : Colors.white}
@@ -33,51 +34,25 @@ const App = () => {
       <Section title="Trirea">
         Welcome to trirea, change your world, your universe
       </Section>
-      <Button
-        title="Get started"
-        containerStyle={{
-          height: 40,
-          width: 200,
-          marginHorizontal: 50,
-          marginVertical: 10,
-        }}></Button>
+      <MainButton title="Get started" />
+      <Image
+        style={styles.image}
+        source={require('./assets/images/universe.png')}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
+  image: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+  },
+  container: {
     paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 48,
-    fontWeight: '400',
-    fontFamily: 'Poppins',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: '#A6EAFF',
-  },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'black',
+    backgroundColor: '#fff',
+    height: '100%',
   },
 });
 
