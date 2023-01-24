@@ -84,4 +84,73 @@ trireaRoutes.post('/'/*, verifyToken, */, validate(createTrireaSchema), async (r
     return res.status(StatusCodes.CREATED).json(retTrirea);
 });
 
+async function buildTrirea(trirea: Trirea) {
+    const retTrirea: ApiTrirea = {
+        id: trirea.id,
+        createdAt: trirea.createdAt,
+        updatedAt: trirea.updatedAt,
+        prevTriggerData: trirea.prevTriggerData === null ? undefined : newTrirea.prevTriggerData,
+        enabled: trirea.enabled,
+        userId: trirea.userId,
+        triggerId: trirea.triggerId,
+        reactionId: trirea.reactionId,
+        triggerInputs: [],
+        reactionInputs: []
+    };
+    // Add trigger inputs
+    const triggerInputs: TrireaTriggerInput[] = await prisma.trireaTriggerInput.findMany({
+        where: {
+            trireaId: trirea.id
+        }
+    });
+    triggerInputs.forEach(async (trigger) => {
+        retTrirea.triggerInputs.push({
+            id: trigger.id,
+            value: trigger.value === null ? undefined : trigger.value,
+            trireaId: trigger.trireaId,
+            triggerInputTypeId: trigger.triggerInputTypeId
+        });
+    });
+    // Add reaction inputs
+    const reactionInputs: TrireaReactionInput[] = await prisma.trireaReactionInput.findMany({
+        where: {
+            trireaId: trirea.id
+        }
+    });
+    reactionInputs.forEach(async (reaction) => {
+        retTrirea.reactionInputs.push({
+            id: reaction.id,
+            value: reaction.value === null ? undefined : reaction.value,
+            trireaId: reaction.trireaId,
+            linkedToId: reaction.linkedToId === null ? undefined : reaction.linkedToId,
+            reactionInputTypeId: reaction.reactionInputTypeId
+        });
+    });
+    return retTrirea;
+}
+
+// Read Trirea : GET /trirea/:id
+trireaRoutes.get('/:id'/*, verifyToken, */, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    try {
+        const trirea: Trirea | null = await prisma.trirea.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+        });
+        if (trirea === null)
+            throw new BadRequestException("Trirea not found");
+        // ? Check if user can access to this trirea
+        // TODO GET real user id with the token
+        const realUserId = 0;
+        if (/*!isAdmin(user) && */ realUserId !== trirea.userId)
+            throw new BadRequestException("You cannot access this trirea");
+        const retTrirea = await buildTrirea(trirea);
+        Logging.info(`Read trirea ${trirea.id}`);
+        return res.status(StatusCodes.OK).json(retTrirea);
+    } catch (_) {
+        throw new BadRequestException("Trirea not found");
+    }
+});
+
 export default trireaRoutes;
