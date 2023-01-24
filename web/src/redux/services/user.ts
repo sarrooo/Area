@@ -1,7 +1,7 @@
 import {
   LoginRequest,
   LoginResponse,
-  RefreshRequest,
+  RefreshResponse,
   RegisterRequest,
   RegisterResponse,
 } from '@/types/Login'
@@ -32,10 +32,17 @@ export const userApi = api.injectEndpoints({
         invalidatesTags: ['User'],
       }),
     }),
-    refresh: build.mutation<RefreshRequest, void>({
+    refresh: build.mutation<RefreshResponse, void>({
       query: (body) => ({
         url: `/auth/refresh`,
         method: 'POST',
+        body,
+      }),
+    }),
+    me: build.query<void, void>({
+      query: (body) => ({
+        url: `/user/me`,
+        method: 'GET',
         body,
       }),
     }),
@@ -47,4 +54,5 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useRefreshMutation,
+  useMeQuery,
 } = userApi

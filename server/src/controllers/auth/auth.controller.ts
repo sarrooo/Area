@@ -2,10 +2,12 @@ import { Request, Response } from "express";
 import { prisma } from "~/lib/prisma";
 import { sign, verify } from "jsonwebtoken";
 import { User } from "@prisma/client";
+import config from "config";
 import { LoginUserInput, RegisterUserInput } from "~/schemas/user.schema";
 import {
   BadRequestException,
   ForbiddenRequestException,
+  UnauthorizedRequestException,
 } from "~/utils/exceptions";
 import { compare, hash } from "bcrypt";
 import Logging from "~/lib/logging";
@@ -72,10 +74,13 @@ export const refresh = async (req: Request, res: Response) => {
     throw new ForbiddenRequestException("No refresh token");
   }
 
-  const payload: any = await verify(
-    refreshToken,
-    process.env.JWT_REFRESH_SECRET as string
-  );
+  let payload: any;
+  try {
+    payload = verify(refreshToken, process.env.JWT_REFRESH_SECRET as string);
+  } catch (error) {
+    Logging.error(error);
+    throw new UnauthorizedRequestException("Invalid refresh token");
+  }
   if (!payload) {
     throw new ForbiddenRequestException("Invalid refresh token");
   }
@@ -133,7 +138,7 @@ export const generateToken = async (
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     sameSite: "none",
-    maxAge: 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * config.get<number>("jwtConfig.expiresInRefreshSecret"),
     secure: true,
   });
 
@@ -153,16 +158,25 @@ export const generateToken = async (
       expiredAt: expiredAt,
     },
   });
-
+  Logging.info(
+    `Refresh token generated for user ${
+      config.get<number>("jwtConfig.expiresInSecret") * 1000
+    }`
+  );
   const token = sign(
     { id: user.id, first_name: user.first_name, last_name: user.last_name },
     process.env.JWT_SECRET as string,
-    { expiresIn: process.env.JWT_EXPIRES_IN_SECRET }
+    { expiresIn: `${config.get<number>("jwtConfig.expiresInSecret")}s` }
+  );
+  Logging.info(
+    `Token generated for user ${config.get<number>(
+      "jwtConfig.expiresInSecret"
+    )}`
   );
   res.cookie("token", token, {
     httpOnly: false,
     sameSite: "none",
-    maxAge: 1000 * 60,
+    maxAge: 1000 * config.get<number>("jwtConfig.expiresInSecret"),
     secure: true,
   });
 

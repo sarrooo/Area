@@ -1,10 +1,11 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { MainButton } from '@/components/MainButton'
-import { useLogoutMutation } from '@/redux/services/user'
+import { useLogoutMutation, useMeQuery } from '@/redux/services/user'
 
 export const Navbar = () => {
   const navigate = useNavigate()
   const [logoutMutation] = useLogoutMutation()
+  const { data } = useMeQuery()
 
   const services = () => {
     navigate('/login')
@@ -32,6 +33,14 @@ export const Navbar = () => {
     navigate('/login')
   }
 
+  const me = async () => {
+    try {
+      console.log(data)
+    } catch (error) {
+      /* empty */
+    }
+  }
+
   const loc = useLocation()
   const isLogged =
     loc.pathname.includes('/dashboard') || loc.pathname.includes('/services')
@@ -45,6 +54,7 @@ export const Navbar = () => {
       </Link>
       {isLogged && (
         <div className="flex justify-around w-1/3">
+          <MainButton callback={me} text="me" />
           <MainButton callback={services} text="Services" primary={false} />
           <MainButton callback={dashboard} text="Dashboard" primary={false} />
           <MainButton callback={createTrirea} text="Create trirea" />

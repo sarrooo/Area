@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
 import { User } from '@/types/User'
 import { RootState } from '@/redux/store'
@@ -6,11 +6,13 @@ import { userApi } from '@/redux/services/user'
 
 interface UserState {
   user: User | null
+  accessToken: string | null
   isLogged: boolean
 }
 
 const initialState: UserState = {
   user: null,
+  accessToken: null,
   isLogged: false,
 }
 
@@ -18,9 +20,11 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    logoutUser: (state) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      state = initialState
+    logout: () => {
+      return initialState
+    },
+    refreshToken: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload
     },
   },
   extraReducers: (builder) => {
@@ -28,6 +32,7 @@ export const userSlice = createSlice({
       .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
         const decoded = jwtDecode<User>(action.payload.token)
         state.user = decoded
+        state.accessToken = action.payload.token
         state.isLogged = true
       })
       .addMatcher(
@@ -35,17 +40,24 @@ export const userSlice = createSlice({
         (state, action) => {
           const decoded = jwtDecode<User>(action.payload.token)
           state.user = decoded
+          state.accessToken = action.payload.token
           state.isLogged = true
         }
       )
+      .addMatcher(userApi.endpoints.refresh.matchPending, (state, action) => {
+        console.log('refresh pending')
+        state.accessToken = action.payload.token
+      })
       .addMatcher(userApi.endpoints.logout.matchFulfilled, () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        return initialState
+      })
+      .addMatcher(userApi.endpoints.logout.matchRejected, () => {
         return initialState
       })
   },
 })
 
-export const { logoutUser } = userSlice.actions
+export const { logout, refreshToken } = userSlice.actions
 
 export const selectUser = (state: RootState) => state.user
 

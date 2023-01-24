@@ -20,6 +20,6 @@ export interface RegisterResponse {
   token: string
 }
 
-export interface RefreshRequest {
+export interface RefreshResponse {
   token: string
 }
