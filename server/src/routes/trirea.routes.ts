@@ -1,4 +1,4 @@
-import { Trirea, TrireaReactionInput, TrireaTriggerInput, User } from '@prisma/client';
+import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '@prisma/client';
 import dotenv from 'dotenv';
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -147,6 +147,79 @@ trireaRoutes.get('/:id', verifyToken, validate(readTrireaSchema), async (req: Re
             throw new BadRequestException("You cannot access this trirea");
         const retTrirea = await buildTrirea(trirea);
         Logging.info(`Read trirea ${trirea.id}`);
+        return res.status(StatusCodes.OK).json(retTrirea);
+    } catch (_) {
+        throw new BadRequestException("Trirea not found");
+    }
+});
+
+// Update Trirea : POST /trirea/:id
+trireaRoutes.post('/:id', verifyToken, async (req: Request, res: Response) => {
+    const {id} = req.params;
+    const {enabled, userId, triggerId, reactionId, triggerInputs, reactionInputs}: ApiTrirea = req.body;
+    try {
+        const trirea: Trirea | null = await prisma.trirea.findUnique({
+            where: {
+                id: parseInt(id)
+            },
+        });
+        // ? Check if user can access to this trirea
+        if (trirea === null)
+            throw new BadRequestException("Trirea not found");
+        if (userId !== trirea.userId && req.user.id !== trirea.userId)
+            throw new BadRequestException("You cannot update this trirea");
+        // Add or update trigger inputs
+        triggerInputs.forEach(async (trigger) => {
+            await prisma.trireaTriggerInput.upsert({
+                where: {
+                    id: trigger.id
+                },
+                update: {
+                    value: trigger.value,
+                    trireaId: trirea.id,
+                    triggerInputTypeId: trigger.triggerInputTypeId
+                },
+                create: {
+                    value: trigger.value,
+                    trireaId: trirea.id,
+                    triggerInputTypeId: trigger.triggerInputTypeId
+                },
+            });
+        });
+        // Add or update reaction inputs
+        reactionInputs.forEach(async (reaction) => {
+            await prisma.trireaReactionInput.upsert({
+                where: {
+                    id: reaction.id
+                },
+                update: {
+                    value: reaction.value,
+                    linkedToId: reaction.linkedToId,
+                    trireaId: trirea.id,
+                    reactionInputTypeId: reaction.reactionInputTypeId
+                },
+                create: {
+                    value: reaction.value,
+                    linkedToId: reaction.linkedToId,
+                    trireaId: trirea.id,
+                    reactionInputTypeId: reaction.reactionInputTypeId
+                },
+            });
+        });
+        // Update trirea
+        const updatedTrirea: Trirea = await prisma.trirea.update({
+            where: {
+                id: parseInt(id)
+            },
+            data: {
+                enabled: enabled,
+                userId: userId,
+                triggerId: triggerId,
+                reactionId: reactionId
+            }
+        });
+        const retTrirea = await buildTrirea(updatedTrirea);
+        Logging.info(`Updated trirea ${updatedTrirea.id}`);
         return res.status(StatusCodes.OK).json(retTrirea);
     } catch (_) {
         throw new BadRequestException("Trirea not found");
