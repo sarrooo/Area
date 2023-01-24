@@ -15,7 +15,7 @@ export const start = async () => {
         triggered = await trigger.start(trirea.trireaTriggerInputs);
         if (triggered) {
             const reaction = await loadReaction(trirea.reaction);
-            await reaction.start(trirea);
+            await reaction.start(trirea.trireaReactionInputs);
         }
     });
 
@@ -99,6 +99,17 @@ const getTrireas = () => {
                             }
                         }
                     }
+                },
+                trireaReactionInputs: {
+                    select: {
+                        value: true,
+                        triggerOutput: {
+                            select: {
+                                name: true,
+                                type: true,
+                            }
+                        }
+                    }
                 }
             },
         }
@@ -108,6 +119,14 @@ const getTrireas = () => {
 export type TrireaInputs = {
     value: string | null;
     triggerInput: {
+        name: string;
+        type: string;
+    }
+}
+
+export type TrireaOutputs = {
+    value: string | null;
+    triggerOutput: {
         name: string;
         type: string;
     }
