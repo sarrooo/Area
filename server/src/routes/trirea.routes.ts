@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
 import { validate } from '~/middlewares/validate';
-import { Trirea as ApiTrirea } from '~/types/api';
+import { searchInfos, Trirea as ApiTrirea } from '~/types/api';
 import { BadRequestException } from '~/utils/exceptions';
 import { createTrireaSchema, readTrireaSchema, updateTrireaSchema, deleteTrireaSchema } from '~/schemas/trirea.schema';
 import { verifyToken } from '~/middlewares/auth.handler';
@@ -250,6 +250,27 @@ trireaRoutes.post('/delete/:id', verifyToken, validate(deleteTrireaSchema), asyn
     } catch (_) {
         throw new BadRequestException("Trirea not found");
     }
+});
+
+// Search Trirea : GET /trirea
+trireaRoutes.get('/', verifyToken, async (req: Request, res: Response) => {
+    const {active, max, userId}: searchInfos = req.body;
+    if (/*!isAdmin(user) && */req.user.id !== userId)
+        throw new BadRequestException("You search for others trireas");
+    const trireas: Trirea[] = await prisma.trirea.findMany({
+        where: {
+            userId: userId,
+            enabled: active
+        },
+        take: max
+    });
+    const retTrireas: ApiTrirea[] = [];
+    trireas.forEach(async (trirea) => {
+        const retTrirea = await buildTrirea(trirea);
+        retTrireas.push(retTrirea);
+    });
+    Logging.info(`Searched trireas for user ${userId}`);
+    return res.status(StatusCodes.OK).json(retTrireas);
 });
 
 export default trireaRoutes;
