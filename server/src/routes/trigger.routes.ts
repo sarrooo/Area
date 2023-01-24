@@ -10,13 +10,14 @@ import { BadRequestException } from '~/utils/exceptions';
 import { searchMax, Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
     TriggerOutputType as ApiTriggerOutputType } from '~/types/api';
+import { verifyToken } from '~/middlewares/auth.handler';
 
 dotenv.config();
 
 const triggerRoutes = Router();
 
 // Create Trigger : POST /trigger
-triggerRoutes.post('/'/*, verifyToken, */, validate(createTriggerSchema), async (req: Request, res: Response) => {
+triggerRoutes.post('/', verifyToken, validate(createTriggerSchema), async (req: Request, res: Response) => {
     const {id, name, description, serviceId}: Trigger = req.body;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
@@ -102,7 +103,7 @@ triggerRoutes.get('/:id', validate(readTriggerSchema), async (req: Request, res:
 });
 
 // Update Trigger : POST /trigger/:id
-triggerRoutes.post('/:id'/*, verifyToken, */, validate(updateTriggerSchema), async (req: Request, res: Response) => {
+triggerRoutes.post('/:id', verifyToken, validate(updateTriggerSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     const {name, description, serviceId}: Trigger = req.body;
     // TODO Check if user is admin
@@ -127,7 +128,7 @@ triggerRoutes.post('/:id'/*, verifyToken, */, validate(updateTriggerSchema), asy
 });
 
 // Delete Trigger : POST /trigger/delete/:id
-triggerRoutes.post('/delete/:id'/*, verifyToken, */, validate(deleteTriggerSchema), async (req: Request, res: Response) => {
+triggerRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerSchema), async (req: Request, res: Response) => {
     const {id} = req.params;
     // TODO Check if user is admin
     /*if (!is_Admin(id))
