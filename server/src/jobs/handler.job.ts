@@ -3,7 +3,7 @@ import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
 
-cron.schedule('* * * * *', async () => {
+export const start = async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered: boolean = false;
@@ -14,16 +14,38 @@ cron.schedule('* * * * *', async () => {
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
 
-        triggered = await trigger.start(trirea.trireaTriggerInputs, userServiceTrigger);
+        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger);
         if (triggered) {
             const reaction = await loadReaction(trirea.reaction);
-            await reaction.start(trirea.trireaReactionInputs, userServiceReaction);
+            await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
         }
     });
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-});
+}
+
+/*cron.schedule('* * * * *', async () => {
+    const date = new Date();
+    const trireas = await getTrireas();
+    let triggered: boolean = false;
+
+    await each(trireas, async (trirea) => {
+
+        const trigger = await loadTrigger(trirea.trigger);
+        const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
+        const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
+
+        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger);
+        if (triggered) {
+            const reaction = await loadReaction(trirea.reaction);
+            await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
+        }
+    });
+
+
+    console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
+});*/
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
     const reactionPath = `~/jobs/reactions/${reaction.service.name}/${reaction.name}.reaction`;
@@ -42,6 +64,7 @@ const getTrireas = async () => {
                 enabled: true,
             },
             select: {
+                id: true,
                 trigger: {
                     select: {
                         name: true,

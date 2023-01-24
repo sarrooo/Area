@@ -5,7 +5,7 @@ import axios from "axios";
 import Logging from "~/lib/logging";
 import {TwitterUserResult} from "~/types/twitter";
 
-export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
+export const start = async (trireaId: number, inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
 
     const sendMessageInputs = await getInputs(inputs);
     if (!sendMessageInputs.message || !sendMessageInputs.username) {
@@ -20,7 +20,9 @@ export const start = async (inputs: TrireaOutputs[], userServicesReaction: UserS
 
     const twitterToken = userServicesReaction[0].RefreshToken;
     const targetID = await getUserID(sendMessageInputs.username, twitterToken);
-
+    if (!targetID) {
+        Logging.warning('Reaction twitter_send_message fail: No user found');
+    }
     await sendMessageToUser(sendMessageInputs.message, targetID.id, twitterToken);
 };
 
@@ -37,7 +39,7 @@ const sendMessageToUser = async (message: string, userID: string, twitterToken: 
                     Authorization: `Bearer ${twitterToken}`,
                 },
             });
-        return data;
+        return data.data;
     } catch (err: any) {
         return
     }
@@ -46,7 +48,7 @@ const sendMessageToUser = async (message: string, userID: string, twitterToken: 
 const getUserID = async (username: string, twitterToken: string): Promise<TwitterUserResult> => {
 
     try {
-        const {data} = await axios.get<TwitterUserResult>(
+        const {data} = await axios.get<{data: TwitterUserResult}>(
             `https://api.twitter.com/2/users/by/username/${username}`,
             {
                 headers: {
@@ -55,7 +57,7 @@ const getUserID = async (username: string, twitterToken: string): Promise<Twitte
                 }
             });
 
-        return data;
+        return data.data;
     } catch (err: any) {
         return err;
     }
