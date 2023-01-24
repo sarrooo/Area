@@ -1,8 +1,9 @@
 import {TrireaInputs, TrireaOutputs} from "~/jobs/handler.job";
 import * as console from "console";
 import {each} from "async";
+import {UserService} from "@prisma/client";
 
-export const start = async (inputs: TrireaOutputs[]) => {
+export const start = async (inputs: TrireaOutputs[], userServices: UserService[]) => {
     const sendMessageInputs = await getInputs(inputs);
     console.log(sendMessageInputs.message);
 };

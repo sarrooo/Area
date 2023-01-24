@@ -11,7 +11,10 @@ export const start = async () => {
     let triggered: boolean = false;
 
     await each(trireas, async (trirea) => {
+
         const trigger = await loadTrigger(trirea.trigger);
+        const userServices = await getUserService(trirea.userId, trirea.trigger.service.name, trirea.reaction.service.name);
+
         triggered = await trigger.start(trirea.trireaTriggerInputs);
         if (triggered) {
             const reaction = await loadReaction(trirea.reaction);
@@ -62,7 +65,7 @@ const loadTrigger = async (trigger: {name: string, service: {name: string}}) => 
     return await import(triggerPath);
 }
 
-const getTrireas = () => {
+const getTrireas = async () => {
     return prisma.trirea.findMany(
         {
             where: {
@@ -110,10 +113,31 @@ const getTrireas = () => {
                             }
                         }
                     }
-                }
+                },
+                userId: true,
             },
         }
     );
+}
+
+const getUserService = async (userId: number, triggerService: string, reactionService: string) => {
+    return prisma.userService.findMany({
+        where: {
+            userId: userId,
+            OR: [
+                {
+                    service: {
+                        name: triggerService,
+                    }
+                },
+                {
+                    service: {
+                        name: reactionService,
+                    }
+                }
+            ],
+        }
+    })
 }
 
 export type TrireaInputs = {
