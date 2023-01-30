@@ -4,8 +4,8 @@ services:
     image: postgres:14
     container_name: area_db
     restart: always
-    environment:
-      POSTGRES_PASSWORD: password
+    env_file:
+      - "./postgres/.env"
     volumes:
       - area-db-data:/var/lib/postgresql/data
       - ./postgres:/etc/postgresql/14/main
@@ -19,7 +19,14 @@ services:
     network_mode: "host"
     depends_on:
       - "db"
-networks:
-  back:
+  web:
+    build: ./web
+    container_name: area_web
+    restart: always
+    env_file:
+      - "./web/.env"
+    network_mode: "host"
+    depends_on:
+      - "server"
 volumes:
   area-db-data:
