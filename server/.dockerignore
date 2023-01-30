@@ -1,0 +1,8 @@
+Dockerfile
+.env.example
+.gitignore
+routes.txt
+vercel.json
+node_modules/
+prisma/migrations/
+.nvmrc
