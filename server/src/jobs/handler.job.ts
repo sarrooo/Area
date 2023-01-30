@@ -1,15 +1,15 @@
-import cron from 'node-cron';
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
 
-/*export const start = async () => {
+export const start = async () => {
     const date = new Date();
     const trireas = await getTrireas();
-    let triggered: boolean = false;
+    let triggered = false;
 
     await each(trireas, async (trirea) => {
 
+        console.log(trirea);
         const trigger = await loadTrigger(trirea.trigger);
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
@@ -23,9 +23,9 @@ import * as console from "console";
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-}*/
+}
 
-cron.schedule('* * * * *', async () => {
+/*cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered = false;
@@ -45,7 +45,7 @@ cron.schedule('* * * * *', async () => {
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-});
+});*/
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
     const reactionPath = `~/jobs/reactions/${reaction.service.name}/${reaction.name}.reaction`;
@@ -88,7 +88,7 @@ const getTrireas = async () => {
                 trireaTriggerInputs: {
                     select: {
                         value: true,
-                        triggerInput: {
+                        triggerInputType: {
                             select: {
                                 name: true,
                                 type: true,
@@ -99,7 +99,7 @@ const getTrireas = async () => {
                 trireaReactionInputs: {
                     select: {
                         value: true,
-                        triggerOutput: {
+                        reactionInputType: {
                             select: {
                                 name: true,
                                 type: true,
