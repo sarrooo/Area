@@ -138,8 +138,8 @@ model TrireaTriggerInput {
   value     String?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
-  triggerInput TriggerInputType  @relation(fields: [triggerInputId], references: [id])
-  triggerInputId Int
+  triggerInputType TriggerInputType  @relation(fields: [triggerInputTypeId], references: [id])
+  triggerInputTypeId Int
 
   @@map("trirea_trigger_inputs")
 }
@@ -161,7 +161,6 @@ model UserService {
   userId    Int
   service   Service @relation(fields: [serviceId], references: [id])
   serviceId Int
-  RefreshToken String?
 
 
   @@id([userId, serviceId])
