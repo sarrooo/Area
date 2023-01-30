@@ -1,7 +1,4 @@
-import {Request, Response, Router} from "express";
-import {Server, Client} from "~/types/about";
-import {prisma} from "~/lib/prisma";
-import {StatusCodes} from "http-status-codes";
+import {Router} from "express";
 import {about} from "~/controllers/about.controller";
 
 const aboutRoutes = Router();
