@@ -28,7 +28,7 @@ import * as console from "console";
 cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
-    let triggered: boolean = false;
+    let triggered = false;
 
     await each(trireas, async (trirea) => {
 
