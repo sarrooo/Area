@@ -4,6 +4,8 @@
   "description": "Trirea EPITECH project third year",
   "main": "src/index.ts",
   "scripts": {
+    "setup-dev-db": "npx prisma migrate dev --name init",
+    "setup-prod-db": "npx prisma generate",
     "test": "echo 'Undefined tests' && exit 1",
     "dev": "nodemon --watch src -e js,ts,json --exec \"ts-node src/index.ts\"",
     "build": "tsup src/index.ts --format cjs --clean",

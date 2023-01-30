@@ -1,20 +1,19 @@
-import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import '@/App.css'
 
-import Landing from './pages/landing'
-import NotFound from './pages/notFound'
-import Login from './pages/login'
-import SignUp from './pages/signUp'
+import { useRoutes } from 'react-router-dom'
+import routes from './routes'
+import { useAppSelector } from '@/redux/hooks'
+import { Navbar } from '@/components/Navbar'
 
 function App() {
+  const isLogged = useAppSelector((state) => state.user.isLogged)
+
+  const routing = useRoutes(routes(isLogged))
+
   return (
     <div className="App">
-      <Routes>
-        <Route index element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Navbar />
+      {routing}
     </div>
   )
 }
