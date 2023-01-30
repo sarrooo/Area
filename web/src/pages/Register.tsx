@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { emailRegex, passwordRegex } from '@/utils/regex'
 import { Input } from '@/components/Input'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
@@ -26,7 +27,7 @@ const Register = () => {
       await registerMutation(data).unwrap()
       navigate('/dashboard')
     } catch (error) {
-      toast.error('Error while registering')
+      toast.error(error.data.error)
     }
   }
 
@@ -72,7 +73,13 @@ const Register = () => {
               placeholder="john.doe@email.com"
               register={register}
               fieldName="email"
-              rules={{ required: 'Required field' }}
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: emailRegex,
+                  message: 'Invalid format email',
+                },
+              }}
               errors={errors}
             />
             <Input<RegisterRequest>
@@ -82,7 +89,14 @@ const Register = () => {
               placeholder="**********"
               register={register}
               fieldName="password"
-              rules={{ required: 'Required field' }}
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
               errors={errors}
             />
             <Input<RegisterRequest>
@@ -92,7 +106,14 @@ const Register = () => {
               placeholder="**********"
               register={register}
               fieldName="password_confirmation"
-              rules={{ required: 'Required field' }}
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
               errors={errors}
             />
             <div className="flex flex-rows justify-around pt-3">
