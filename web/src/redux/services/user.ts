@@ -5,6 +5,11 @@ import {
   RegisterRequest,
   RegisterResponse,
 } from '@/types/Login'
+
+import {
+  TrireaResponse,
+} from '@/types/Trirea'
+
 import { api } from '@/redux/services/api'
 
 export const userApi = api.injectEndpoints({
@@ -39,6 +44,12 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+    getTrirea: build.query<void, void>({
+      query: () => ({
+        url: `/trirea`,
+        method: 'GET',
+      }),
+    }),
     me: build.query<void, void>({
       query: (body) => ({
         url: `/user/me`,
@@ -55,4 +66,5 @@ export const {
   useLogoutMutation,
   useRefreshMutation,
   useMeQuery,
+  useGetTrireaQuery,
 } = userApi

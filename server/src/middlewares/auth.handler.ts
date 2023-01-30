@@ -31,7 +31,7 @@ export const verifyToken = async (
       throw new UnauthorizedRequestException("jwt expired");
     }
     if (!payload) {
-      throw new ForbiddenRequestException("Access denied");
+      throw new ForbiddenRequestException("Access denied (payload)");
     }
     const user = await prisma.user.findFirst({
       where: {
@@ -39,7 +39,7 @@ export const verifyToken = async (
       },
     });
     if (!user) {
-      throw new ForbiddenRequestException("Access denied");
+      throw new ForbiddenRequestException("Access denied (user)");
     }
 
     const { password, ...UserWithoutPassword } = user;
