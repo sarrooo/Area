@@ -4,9 +4,8 @@ WORKDIR /app
 
 COPY . .
 RUN npm install
-RUN npm run setup-db
-RUN rm -rf ./prisma/migrations
+RUN npm run build
 
 EXPOSE 8080
 
-CMD ["npm", "start"]
+CMD npm run setup-prod-db && npm run start
