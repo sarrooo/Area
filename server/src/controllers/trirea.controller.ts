@@ -251,8 +251,8 @@ export const deleteTrirea = async (req: Request, res: Response) => {
 // Search Trirea : GET /trirea
 export const searchTrirea = async (req: Request, res: Response) => {
     const {active, max, userId}: searchInfos = req.body;
-    if (/*!isAdmin(user) && */req.user.id !== userId)
-        throw new BadRequestException("You search for others trireas");
+    /*if (!isAdmin(user) && req.user.id !== userId)
+        throw new BadRequestException("You search for others trireas");*/
     const trireas: Trirea[] = await prisma.trirea.findMany({
         where: {
             userId: userId,
