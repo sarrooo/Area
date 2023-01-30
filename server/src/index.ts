@@ -41,3 +41,5 @@ app.use(ExceptionsHandler);
 app.listen(port, () => {
     Logging.success(`Server listening on port ${port}`);
 });
+
+module.exports = app;
