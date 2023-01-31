@@ -43,7 +43,7 @@ export const Dashboard = () => {
       <h1 className="font-bold text-4xl">Dashboard</h1>
 
       {isLoading && <p>Loading...</p>}
-      {isError && <p> {JSON.stringify(error.data)} </p>}
+      {isError && <p> {JSON.stringify(error)} </p>}
       {!isError && !isLoading && <p> {JSON.stringify(data)} </p>}
 
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">

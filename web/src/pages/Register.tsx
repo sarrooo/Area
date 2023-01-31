@@ -27,7 +27,7 @@ const Register = () => {
       await registerMutation(data).unwrap()
       navigate('/dashboard')
     } catch (error) {
-      toast.error(error.data.error)
+      toast.error('Invalid email or password')
     }
   }
 
