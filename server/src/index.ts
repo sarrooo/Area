@@ -12,9 +12,7 @@ import Routes from "~/routes";
 import * as process from "process";
 import config from "config";
 import '~/jobs/handler.job';
-import {start} from "~/jobs/handler.job";
 
-start();
 const port = config.get<number>('port');
 
 const app = express();

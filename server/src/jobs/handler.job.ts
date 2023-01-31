@@ -1,8 +1,9 @@
+import cron from "node-cron";
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
 
-export const start = async () => {
+/*export const start = async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered = false;
@@ -14,8 +15,10 @@ export const start = async () => {
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
 
-        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger);
+        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
         if (triggered) {
+            console.log('triggered');
+            return;
             const reaction = await loadReaction(trirea.reaction);
             await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
         }
@@ -23,21 +26,24 @@ export const start = async () => {
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-}
+}*/
 
-/*cron.schedule('* * * * *', async () => {
+cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered = false;
 
     await each(trireas, async (trirea) => {
 
+        console.log(trirea);
         const trigger = await loadTrigger(trirea.trigger);
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
 
-        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger);
+        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
         if (triggered) {
+            console.log('triggered');
+            return;
             const reaction = await loadReaction(trirea.reaction);
             await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
         }
@@ -45,7 +51,7 @@ export const start = async () => {
 
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-});*/
+});
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
     const reactionPath = `~/jobs/reactions/${reaction.service.name}/${reaction.name}.reaction`;
@@ -65,6 +71,7 @@ const getTrireas = async () => {
             },
             select: {
                 id: true,
+                prevTriggerData: true,
                 trigger: {
                     select: {
                         name: true,
@@ -135,9 +142,20 @@ const getUserServiceReaction = async (userId: number, reactionService: string) =
     })
 }
 
+export const saveTriggerData = async (trireaId: number, data: string) => {
+    return prisma.trirea.update({
+        where: {
+            id: trireaId,
+        },
+        data: {
+            prevTriggerData: data,
+        }
+    });
+}
+
 export type TrireaInputs = {
     value: string | null;
-    triggerInput: {
+    triggerInputType: {
         name: string;
         type: string;
     }
@@ -145,7 +163,7 @@ export type TrireaInputs = {
 
 export type TrireaOutputs = {
     value: string | null;
-    triggerOutput: {
+    reactionInputType: {
         name: string;
         type: string;
     }
