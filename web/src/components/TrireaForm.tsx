@@ -51,35 +51,35 @@ export const TrireaForm = () => {
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="text"
+                fieldName="email"
               />
               <Input
                 id="name"
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="text"
+                fieldName="email"
               />
               <Input
                 id="name"
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="text"
+                fieldName="email"
               />
               <Input
                 id="name"
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="text"
+                fieldName="email"
               />
               <Input
                 id="name"
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="text"
+                fieldName="email"
               />
             </div>
             <div className="w-full flex justify-between items center">

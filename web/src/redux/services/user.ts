@@ -6,10 +6,6 @@ import {
   RegisterResponse,
 } from '@/types/Login'
 
-import {
-  TrireaResponse,
-} from '@/types/Trirea'
-
 import { api } from '@/redux/services/api'
 
 export const userApi = api.injectEndpoints({
