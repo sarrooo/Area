@@ -19,14 +19,14 @@ services:
     network_mode: "host"
     depends_on:
       - "db"
-  web:
-    build: ./web
-    container_name: area_web
-    restart: always
-    env_file:
-      - "./web/.env"
-    network_mode: "host"
-    depends_on:
-      - "server"
+  # web:
+  #   build: ./web
+  #   container_name: area_web
+  #   restart: always
+  #   env_file:
+  #     - "./web/.env"
+  #   network_mode: "host"
+  #   depends_on:
+  #     - "server"
 volumes:
   area-db-data:
