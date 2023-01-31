@@ -61,19 +61,50 @@ export const Dashboard = () => {
   const createService = () => {
     createServiceMutation(dummyService)
   }
+  const createTrigger = () => {
+    createTriggerMutation(dummyTrigger)
+  }
+  const createReaction = () => {
+    createReactionMutation(dummyReaction)
+  }
+  const createTrirea = () => {
+    createTrireaMutation(dummyTrirea)
+  }
 
   return (
     <div className="px-32 py-16 space-y-16">
       <h1 className="font-bold text-4xl">Dashboard</h1>
 
-      <button
-        type="button"
-        onClick={createService}
-        className="px-16 py-8 bg-orange-200"
-      >
-        Create service
-      </button>
-
+      <div className="flex space-x-8">
+        <button
+          type="button"
+          onClick={createService}
+          className="px-16 py-8 bg-orange-200"
+        >
+          Create service
+        </button>
+        <button
+          type="button"
+          onClick={createTrigger}
+          className="px-16 py-8 bg-orange-200"
+        >
+          Create trigger
+        </button>
+        <button
+          type="button"
+          onClick={createReaction}
+          className="px-16 py-8 bg-orange-200"
+        >
+          Create reaction
+        </button>
+        <button
+          type="button"
+          onClick={createTrirea}
+          className="px-16 py-8 bg-orange-200"
+        >
+          create trirea
+        </button>
+      </div>
       {isLoading && <p>Loading...</p>}
       {isError && <p> {JSON.stringify(error)} </p>}
       {!isError && !isLoading && <p> {JSON.stringify(data)} </p>}

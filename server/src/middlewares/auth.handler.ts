@@ -45,7 +45,7 @@ export const verifyToken = async (
     const { password, ...UserWithoutPassword } = user;
     req.user = UserWithoutPassword;
   } catch (_) {
-    throw new ForbiddenRequestException("Access denied");
+    throw new UnauthorizedRequestException("Access denied clown");
   }
   next();
 };
@@ -54,10 +54,16 @@ export const isConnected: (req: Request) => Promise<User | null> = async (
   req: Request
 ) => {
   const { authorization } = req.headers;
+  let payload: any = "";
+
   if (!authorization) return null;
   const token = (authorization && authorization.split(" ")[1]) || "";
   console.log(token);
-  const payload: any = verify(token, process.env.JWT_SECRET as string);
+  try {
+    payload = verify(token, process.env.JWT_SECRET as string);
+  } catch (error) {
+    throw new UnauthorizedRequestException("jwt unverified");
+  }
   if (!payload) return null;
 
   const user: User | null = await prisma.user.findFirst({

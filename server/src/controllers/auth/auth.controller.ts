@@ -100,7 +100,7 @@ export const refresh = async (req: Request, res: Response) => {
   const token = sign(
     { id: payload.id, name: payload.email },
     process.env.JWT_SECRET as string,
-    { expiresIn: process.env.JWT_EXPIRES_IN_SECRET }
+    { expiresIn: `${config.get<number>("jwtConfig.expiresInSecret")}s`}
   );
   return res.status(StatusCodes.OK).json({ token });
 };
