@@ -62,7 +62,7 @@ export const createTrirea = async (req: Request, res: Response) => {
         const newInput: TrireaReactionInput = await prisma.trireaReactionInput.create({
             data: {
                 value: reaction.value,
-                linkedToId: reaction.linkedToId,
+                triggerOutputTypeId: reaction.triggerOutputTypeId,
                 trireaId: newTrirea.id,
                 reactionInputTypeId: reaction.reactionInputTypeId
             }
@@ -71,7 +71,7 @@ export const createTrirea = async (req: Request, res: Response) => {
             id: newInput.id,
             value: newInput.value === null ? undefined : newInput.value,
             trireaId: newInput.trireaId,
-            linkedToId: newInput.linkedToId === null ? undefined : newInput.linkedToId,
+            triggerOutputTypeId: newInput.triggerOutputTypeId === null ? undefined : newInput.triggerOutputTypeId,
             reactionInputTypeId: newInput.reactionInputTypeId
         });
     });
@@ -118,7 +118,7 @@ async function buildTrirea(trirea: Trirea) {
             id: reaction.id,
             value: reaction.value === null ? undefined : reaction.value,
             trireaId: reaction.trireaId,
-            linkedToId: reaction.linkedToId === null ? undefined : reaction.linkedToId,
+            triggerOutputTypeId: reaction.triggerOutputTypeId === null ? undefined : reaction.triggerOutputTypeId,
             reactionInputTypeId: reaction.reactionInputTypeId
         });
     });
@@ -190,13 +190,13 @@ export const updateTrirea = async (req: Request, res: Response) => {
                 },
                 update: {
                     value: reaction.value,
-                    linkedToId: reaction.linkedToId,
+                    triggerOutputTypeId: reaction.triggerOutputTypeId,
                     trireaId: trirea.id,
                     reactionInputTypeId: reaction.reactionInputTypeId
                 },
                 create: {
                     value: reaction.value,
-                    linkedToId: reaction.linkedToId,
+                    triggerOutputTypeId: reaction.triggerOutputTypeId,
                     trireaId: trirea.id,
                     reactionInputTypeId: reaction.reactionInputTypeId
                 },

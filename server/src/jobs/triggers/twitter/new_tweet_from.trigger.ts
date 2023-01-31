@@ -1,28 +1,26 @@
 import {each} from "async";
 import Logging from "~/lib/logging";
-import {saveTriggerData, TrireaInputs} from "~/jobs/handler.job";
+import {saveTriggerData, transmitOutput, TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 import axios from "axios";
-import * as console from "console";
 
 export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string | null): Promise<boolean> => {
-    console.log("TEST")
     const newTweetFromInputs = await getInputs(inputs);
 
     if (!newTweetFromInputs.username) {
-        Logging.warning('Trigger new_tweet_from fail: No username provided');
+        Logging.warning('Trigger new_tweet fail: No username provided');
         return false;
     }
 
     if (userServicesTrigger.length === 0 || !userServicesTrigger[0].RefreshToken) {
-        Logging.warning('Reaction twitter_send_message fail: No user service token provided');
+        Logging.warning('Trigger new_tweet fail: No user service token provided');
         return false;
     }
 
     const twitterToken = userServicesTrigger[0].RefreshToken;
     const data = await getTweetFromAUser(newTweetFromInputs.username, twitterToken);
     if (data.meta.result_count === -1) {
-        Logging.warning('Reaction twitter_get_tweet_from_a_user fail: fail to fetch tweet');
+        Logging.warning('Trigger new_tweet fail: fail to fetch tweet');
         return false;
     }
 
@@ -39,8 +37,11 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         return false;
     }
 
+    //TODO: Find a way to not hardcode outputName
     if (prevTriggerData !== data.meta.newest_id) {
+        Logging.info('data: ' + prevTriggerData + ' ' + data.meta.newest_id);
         await saveTriggerData(trireaId, data.meta.newest_id);
+        await transmitOutput(trireaId, data.meta.newest_id, 'new_tweet_from.tweet_id')
         return true;
     }
 
@@ -58,7 +59,7 @@ const getTweetFromAUser = async (username: string, twitterToken: string): Promis
             });
         return data;
     } catch (err: any) {
-        Logging.warning('Reaction twitter_send_message fail: fail to send message to target' + err);
+        Logging.warning('Trigger new_tweet: fail to send message to target' + err);
         return {
             meta: {newest_id: "", oldest_id: "", result_count: -1}
         }

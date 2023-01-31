@@ -97,6 +97,7 @@ model TriggerOutputType {
   description String?
   trigger Trigger  @relation(fields: [triggerId], references: [id])
   triggerId Int
+  trireaReactionInput TrireaReactionInput[]
 
   @@map("trigger_outputs_types")
 }
@@ -147,11 +148,12 @@ model TrireaTriggerInput {
 model TrireaReactionInput {
   id        Int      @id @default(autoincrement())
   value     String?
-  linkedToId Int?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
   reactionInputType ReactionInputType  @relation(fields: [reactionInputTypeId], references: [id])
   reactionInputTypeId Int
+  triggerOutputType TriggerOutputType?  @relation(fields: [triggerOutputTypeId], references: [id])
+  triggerOutputTypeId Int?
 
   @@map("trirea_reaction_inputs")
 }
