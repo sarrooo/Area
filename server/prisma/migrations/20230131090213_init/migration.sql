@@ -120,9 +120,9 @@ CREATE TABLE "trirea_trigger_inputs" (
 CREATE TABLE "trirea_reaction_inputs" (
     "id" SERIAL NOT NULL,
     "value" TEXT,
-    "linkedToId" INTEGER NOT NULL,
+    "linkedToId" INTEGER,
     "trireaId" INTEGER NOT NULL,
-    "triggerOutputTypeId" INTEGER NOT NULL,
+    "reactionInputTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "trirea_reaction_inputs_pkey" PRIMARY KEY ("id")
 );
@@ -190,7 +190,7 @@ ALTER TABLE "trirea_trigger_inputs" ADD CONSTRAINT "trirea_trigger_inputs_trigge
 ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_trireaId_fkey" FOREIGN KEY ("trireaId") REFERENCES "trireas"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_triggerOutputTypeId_fkey" FOREIGN KEY ("triggerOutputTypeId") REFERENCES "trigger_outputs_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_reactionInputTypeId_fkey" FOREIGN KEY ("reactionInputTypeId") REFERENCES "reaction_inputs_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_services" ADD CONSTRAINT "user_services_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
