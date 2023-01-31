@@ -3,6 +3,7 @@ import { IoMdMore } from 'react-icons/io'
 import { BiEdit, BiTrash } from 'react-icons/bi'
 
 export type trireaProps = {
+  id: number
   name: string
   triggerName: string
   reactionName: string
@@ -10,6 +11,7 @@ export type trireaProps = {
 }
 
 export const TrireaCard = ({
+  id,
   name,
   triggerName,
   reactionName,
@@ -40,6 +42,7 @@ export const TrireaCard = ({
 
   return (
     <button
+      key={id.toString()}
       type="button"
       onClick={hideMenu}
       className="bg-white text-left h-96 rounded-lg shadow-lg p-8 space-y-8 relative cursor-default"
