@@ -17,6 +17,8 @@ export const createTrirea = async (req: Request, res: Response) => {
     if (userId !== undefined)
         throw new BadRequestException("You cannot specify a user id when creating a trirea");
     const realUserId = req.user.id;
+    if (realUserId === undefined)
+        throw new BadRequestException("You must be logged in to create a trirea");
     const newTrirea: Trirea = await prisma.trirea.create({
         data: {
             enabled: enabled,
@@ -162,7 +164,7 @@ export const updateTrirea = async (req: Request, res: Response) => {
         // ? Check if user can access to this trirea
         if (trirea === null)
             throw new BadRequestException("Trirea not found");
-        if (userId !== trirea.userId && req.user.id !== trirea.userId)
+        if (/*!isAdmin(user)*/userId !== trirea.userId && req.user.id !== trirea.userId)
             throw new BadRequestException("You cannot update this trirea");
         // Add or update trigger inputs
         triggerInputs.forEach(async (trigger) => {
@@ -234,7 +236,7 @@ export const deleteTrirea = async (req: Request, res: Response) => {
         // ? Check if user can access to this trirea
         if (trirea === null)
             throw new BadRequestException("Trirea not found");
-        if (req.user.id !== trirea.userId)
+        if (/*!isAdmin(user)*/req.user.id !== trirea.userId)
             throw new BadRequestException("You cannot delete this trirea");
         const deletedTrirea: Trirea = await prisma.trirea.delete({
             where: {
@@ -251,8 +253,8 @@ export const deleteTrirea = async (req: Request, res: Response) => {
 // Search Trirea : GET /trirea
 export const searchTrirea = async (req: Request, res: Response) => {
     const {active, max, userId}: searchInfos = req.body;
-    /*if (!isAdmin(user) && req.user.id !== userId)
-        throw new BadRequestException("You search for others trireas");*/
+    if (/*!isAdmin(user)*/userId !== undefined && req.user.id !== userId)
+        throw new BadRequestException("You search for others trireas");
     const trireas: Trirea[] = await prisma.trirea.findMany({
         where: {
             userId: userId,
