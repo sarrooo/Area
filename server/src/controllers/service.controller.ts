@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import Logging from '~/lib/logging';
 import { prisma } from '~/lib/prisma';
-import { isConnected } from '~/middlewares/auth.handler';
 import { searchMax, Service as ApiService,
     Trigger as ApiTrigger,
     TriggerInputType as ApiTriggerInputType,
@@ -44,13 +43,13 @@ async function buildService(service: Service, req: Request): Promise<ApiService>
         requiredSubscription: service.requiredSubscription,
         subscribed: undefined
     };
-    const user: User | null = await isConnected(req);
-    if (user !== null) {
+    const user = req.user;
+    if (user !== null && user !== undefined) {
         // Check if user is subscribed to service
         const userService: UserService | null = await prisma.userService.findUnique({
             where: {
                 userId_serviceId: {
-                    userId: user.id,
+                    userId: user.id ? user.id : -1,
                     serviceId: service.id
                 }
             }
