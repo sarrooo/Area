@@ -66,10 +66,10 @@ const getUserID = async (username: string, twitterToken: string): Promise<Twitte
 const getInputs = async (inputs: TrireaOutputs[]): Promise<SendMessageInputs> => {
     const sendMessageInputs : SendMessageInputs = {message: "", username: ""};
     await each(inputs, async (input) => {
-        if (input.triggerOutput.name === 'send_message.message' && input.value) {
+        if (input.reactionInputType.name === 'send_message.message' && input.value) {
             sendMessageInputs.message = input.value;
         }
-        if (input.triggerOutput.name === 'send_message.username' && input.value) {
+        if (input.reactionInputType.name === 'send_message.username' && input.value) {
             sendMessageInputs.username = input.value;
         }
     });

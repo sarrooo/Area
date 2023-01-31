@@ -32,7 +32,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 const getInputs = async (inputs: TrireaInputs[]): Promise<AtTimeInputs> => {
     const atTimeInputs : AtTimeInputs = {timer: NaN};
     await each(inputs, async (input) => {
-        if (input.triggerInput.name === 'at_time.timer' && input.value) {
+        if (input.triggerInputType.name === 'at_time.timer' && input.value) {
             atTimeInputs.timer = Date.parse(input.value);
         }
     });
