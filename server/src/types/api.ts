@@ -84,6 +84,7 @@ export type Trirea = {
     updatedAt?: Date;
     prevTriggerData?: string;
     enabled: boolean;
+    name: string;
     userId?: number;
     triggerId: number;
     reactionId: number;

@@ -121,6 +121,7 @@ model Trirea {
   updatedAt DateTime @updatedAt
   prevTriggerData     String?
   enabled Boolean
+  name   String
   user User  @relation(fields: [userId], references: [id])
   userId Int
   trigger Trigger  @relation(fields: [triggerId], references: [id])
