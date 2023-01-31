@@ -2,7 +2,7 @@ import {each} from "async";
 import {saveTriggerData, TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 
-export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string): Promise<boolean> => {
+export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string | null): Promise<boolean> => {
     const everyInputs = await getInputs(inputs);
     if (!prevTriggerData) {
         prevTriggerData = new Date().toString();

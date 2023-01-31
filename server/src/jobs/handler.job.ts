@@ -2,6 +2,7 @@ import cron from "node-cron";
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
+import {start} from "~/jobs/triggers/twitter/new_tweet_from.trigger";
 
 /*export const start = async () => {
     const date = new Date();
@@ -28,6 +29,7 @@ import * as console from "console";
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 }*/
 
+
 cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
@@ -39,7 +41,6 @@ cron.schedule('* * * * *', async () => {
         const trigger = await loadTrigger(trirea.trigger);
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
-
         triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
         if (triggered) {
             const reaction = await loadReaction(trirea.reaction);
@@ -58,6 +59,7 @@ const loadReaction = async (reaction: {name: string, service: {name: string}}) =
 
 const loadTrigger = async (trigger: {name: string, service: {name: string}}) => {
     const triggerPath = `~/jobs/triggers/${trigger.service.name}/${trigger.name}.trigger`;
+    console.log(triggerPath)
     return await import(triggerPath);
 }
 

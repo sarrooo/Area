@@ -4,7 +4,7 @@ import {TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 import {prisma} from "~/lib/prisma";
 
-export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[]): Promise<boolean> => {
+export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string): Promise<boolean> => {
     const actualTime = Date.now();
     const atTimeInputs = await getInputs(inputs);
 
