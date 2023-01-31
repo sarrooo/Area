@@ -1,4 +1,4 @@
-import { number, object, string } from "zod";
+import { boolean, number, object, string } from "zod";
 
 // Create Trigger Intput Type : POST /input/trigger
 export const createTriggerInputTypeSchema = object({
@@ -12,7 +12,7 @@ export const createTriggerInputTypeSchema = object({
         }),
         description: string().optional(),
         regex: string().optional(),
-        mandatory: number().optional(),
+        mandatory: boolean().optional(),
         type: string({
             required_error: "Type is required",
         })
@@ -44,7 +44,7 @@ export const updateTriggerInputTypeSchema = object({
         }),
         description: string().optional(),
         regex: string().optional(),
-        mandatory: number({
+        mandatory: boolean({
             required_error: "Mandatory is required",
         }),
         type: string({

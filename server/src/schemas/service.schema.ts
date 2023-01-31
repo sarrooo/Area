@@ -1,4 +1,4 @@
-import { number, object, string } from "zod";
+import { boolean, number, object, string } from "zod";
 
 // Create Service : POST /service
 export const createServiceSchema = object({
@@ -9,7 +9,7 @@ export const createServiceSchema = object({
         }),
         description: string().optional(),
         image: string().optional(),
-        requiredSubscription: string({
+        requiredSubscription: boolean({
             required_error: "Required Subscription is required",
         })
     })
@@ -37,7 +37,7 @@ export const updateServiceSchema = object({
         }),
         description: string().optional(),
         image: string().optional(),
-        requiredSubscription: number({
+        requiredSubscription: boolean({
             required_error: "Required Subscription is required",
         }),
     }),
