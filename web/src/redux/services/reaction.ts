@@ -9,9 +9,9 @@ export const reactionApi = api.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getReaction: build.query<Reaction, void>({
-      query: () => ({
-        url: `/reaction/:id`,
+    getReaction: build.query<Reaction, number>({
+      query: (id) => ({
+        url: `/reaction/${id}`,
         method: 'GET',
       }),
     }),
@@ -24,14 +24,14 @@ export const reactionApi = api.injectEndpoints({
     }),
     updateReaction: build.mutation<void, Reaction>({
       query: (body) => ({
-        url: `/reaction/delete/:id`,
+        url: `/reaction/delete/${body.id}`,
         method: 'POST',
         body,
       }),
     }),
-    deleteReaction: build.mutation<void, void>({
-      query: () => ({
-        url: `/reaction/:id`,
+    deleteReaction: build.mutation<void, number>({
+      query: (id) => ({
+        url: `/reaction/${id}`,
         method: 'POST',
       }),
     }),
@@ -42,9 +42,9 @@ export const reactionApi = api.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getReactionInput: build.query<ReactionInputType, void>({
-      query: () => ({
-        url: `/input/reaction/:id`,
+    getReactionInput: build.query<ReactionInputType, number>({
+      query: (id) => ({
+        url: `/input/reaction/${id}`,
         method: 'GET',
       }),
     }),
@@ -57,14 +57,14 @@ export const reactionApi = api.injectEndpoints({
     }),
     updateReactionInput: build.mutation<void, ReactionInputType>({
       query: (body) => ({
-        url: `/input/reaction/delete/:id`,
+        url: `/input/reaction/delete/${body.id}`,
         method: 'POST',
         body,
       }),
     }),
-    deleteReactionInput: build.mutation<void, void>({
-      query: () => ({
-        url: `/input/reaction/:id`,
+    deleteReactionInput: build.mutation<void, number>({
+      query: (id) => ({
+        url: `/input/reaction/${id}`,
         method: 'POST',
       }),
     }),

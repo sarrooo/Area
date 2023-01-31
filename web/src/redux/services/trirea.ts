@@ -9,9 +9,9 @@ export const trireaApi = api.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getTrirea: build.query<Trirea, void>({
-      query: () => ({
-        url: `/trirea/:id`,
+    getTrirea: build.query<Trirea, number>({
+      query: (id: number) => ({
+        url: `/trirea/${id}`,
         method: 'GET',
       }),
     }),
@@ -24,14 +24,14 @@ export const trireaApi = api.injectEndpoints({
     }),
     updateTrirea: build.mutation<void, Trirea>({
       query: (body) => ({
-        url: `/trirea/delete/:id`,
+        url: `/trirea/delete/${body.id}`,
         method: 'POST',
         body,
       }),
     }),
-    deleteTrirea: build.mutation<void, void>({
-      query: () => ({
-        url: `/trirea/:id`,
+    deleteTrirea: build.mutation<void, number>({
+      query: (id) => ({
+        url: `/trirea/${id}`,
         method: 'POST',
       }),
     }),

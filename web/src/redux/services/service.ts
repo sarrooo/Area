@@ -9,9 +9,9 @@ export const serviceApi = api.injectEndpoints({
         method: 'GET',
       }),
     }),
-    getService: build.query<Service, void>({
-      query: () => ({
-        url: `/service/:id`,
+    getService: build.query<Service, number>({
+      query: (id) => ({
+        url: `/service/${id}`,
         method: 'GET',
       }),
     }),
@@ -24,14 +24,14 @@ export const serviceApi = api.injectEndpoints({
     }),
     updateService: build.mutation<void, Service>({
       query: (body) => ({
-        url: `/service/:id`,
+        url: `/service/${body.id}`,
         method: 'POST',
         body,
       }),
     }),
-    deleteService: build.mutation<void, void>({
-      query: () => ({
-        url: `/service/delete/:id`,
+    deleteService: build.mutation<void, number>({
+      query: (id) => ({
+        url: `/service/delete/${id}}`,
         method: 'POST',
       }),
     }),
