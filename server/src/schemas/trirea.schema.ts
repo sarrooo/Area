@@ -1,10 +1,10 @@
-import { array, number, object, string } from "zod";
+import { array, boolean, number, object, string } from "zod";
 
 // Create Trirea : POST /trirea
 export const createTrireaSchema = object({
     body: object({
         id: number().optional(),
-        enabled: number({
+        enabled: boolean({
             required_error: "Enabled is required",
         }),
         name: string({
@@ -60,7 +60,7 @@ export const updateTrireaSchema = object({
         }),
     }),
     body: object({
-        enabled: number({
+        enabled: boolean({
             required_error: "Enabled is required",
         }),
         userId: number().optional(),
