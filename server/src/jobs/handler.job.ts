@@ -42,8 +42,6 @@ cron.schedule('* * * * *', async () => {
 
         triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
         if (triggered) {
-            console.log('triggered');
-            return;
             const reaction = await loadReaction(trirea.reaction);
             await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
         }

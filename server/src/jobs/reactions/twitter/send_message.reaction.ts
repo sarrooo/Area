@@ -4,6 +4,7 @@ import {UserService} from "@prisma/client";
 import axios from "axios";
 import Logging from "~/lib/logging";
 import {TwitterUserResult} from "~/types/twitter";
+import * as console from "console";
 
 export const start = async (trireaId: number, inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
 
@@ -20,6 +21,7 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
 
     const twitterToken = userServicesReaction[0].RefreshToken;
     const targetID = await getUserID(sendMessageInputs.username, twitterToken);
+    console.log("Twitter : ", targetID, sendMessageInputs.username);
     if (!targetID) {
         Logging.warning('Reaction twitter_send_message fail: No user found');
     }
@@ -41,6 +43,7 @@ const sendMessageToUser = async (message: string, userID: string, twitterToken: 
             });
         return data.data;
     } catch (err: any) {
+        Logging.warning('Reaction twitter_send_message fail: fail to send message to target' + err);
         return
     }
 }
@@ -59,6 +62,7 @@ const getUserID = async (username: string, twitterToken: string): Promise<Twitte
 
         return data.data;
     } catch (err: any) {
+        Logging.warning('Reaction twitter_send_message fail: No user target found' + err);
         return err;
     }
 }
