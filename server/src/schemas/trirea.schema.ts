@@ -7,6 +7,9 @@ export const createTrireaSchema = object({
         enabled: number({
             required_error: "Enabled is required",
         }),
+        name: string({
+            required_error: "Name is required",
+        }),
         userId: number().optional(),
         triggerId: number({
             required_error: "Trigger Id is required",
