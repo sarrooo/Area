@@ -23,6 +23,7 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     if (!userID) {
         Logging.warning('Reaction like_tweet fail: No userID found');
     }
+    Logging.info('Reaction like_tweet: ' + likeTweetInputs.id + ' liked by ' + userID);
     await likeTweet(likeTweetInputs.id, userID, twitterToken);
 };
 
