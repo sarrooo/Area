@@ -29,7 +29,7 @@ const dummyReaction = {
 const dummyTrirea = {
   name: 'Trirea',
   enabled: true,
-  triggerId: 1,
+  triggerId: 6,
   triggerInputs: [],
   reactionId: 1,
   reactionInputs: [],
@@ -71,11 +71,12 @@ export const Dashboard = () => {
     createTrireaMutation(dummyTrirea)
   }
 
+  console.log('data -> ', data)
+  console.log('serviceData -> ', serviceData)
   return (
     <div className="px-32 py-16 space-y-16">
       <h1 className="font-bold text-4xl">Dashboard</h1>
-
-      <div className="flex space-x-8">
+      {/* <div className="flex space-x-8">
         <button
           type="button"
           onClick={createService}
@@ -104,17 +105,7 @@ export const Dashboard = () => {
         >
           create trirea
         </button>
-      </div>
-      {isLoading && <p>Loading...</p>}
-      {isError && <p> {JSON.stringify(error)} </p>}
-      {!isError && !isLoading && <p> {JSON.stringify(data)} </p>}
-
-      {serviceIsLoading && <p>Loading...</p>}
-      {serviceIsError && <p> {JSON.stringify(serviceError)} </p>}
-      {!serviceIsError && !serviceIsLoading && (
-        <p> {JSON.stringify(serviceData)} </p>
-      )}
-
+      </div> */}
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">
         {trireas.map((trirea) => {
           return (

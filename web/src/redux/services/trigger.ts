@@ -24,7 +24,7 @@ export const triggerApi = api.injectEndpoints({
     }),
     updateTrigger: build.mutation<void, Trigger>({
       query: (body) => ({
-        url: `/trigger/delete/${body.id}`,
+        url: `/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
@@ -57,7 +57,7 @@ export const triggerApi = api.injectEndpoints({
     }),
     updateTriggerOutput: build.mutation<void, TriggerOutputType>({
       query: (body) => ({
-        url: `/output/trigger/delete/${body.id}`,
+        url: `/output/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
@@ -90,7 +90,7 @@ export const triggerApi = api.injectEndpoints({
     }),
     updateTriggerInput: build.mutation<void, TriggerInputType>({
       query: (body) => ({
-        url: `/input/trigger/delete/${body.id}`,
+        url: `/input/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),

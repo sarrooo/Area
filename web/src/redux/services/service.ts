@@ -24,7 +24,7 @@ export const serviceApi = api.injectEndpoints({
     }),
     updateService: build.mutation<void, Service>({
       query: (body) => ({
-        url: `/service/${body.id}`,
+        url: `/service/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),

@@ -24,7 +24,7 @@ export const reactionApi = api.injectEndpoints({
     }),
     updateReaction: build.mutation<void, Reaction>({
       query: (body) => ({
-        url: `/reaction/delete/${body.id}`,
+        url: `/reaction/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
@@ -57,7 +57,7 @@ export const reactionApi = api.injectEndpoints({
     }),
     updateReactionInput: build.mutation<void, ReactionInputType>({
       query: (body) => ({
-        url: `/input/reaction/delete/${body.id}`,
+        url: `/input/reaction/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
