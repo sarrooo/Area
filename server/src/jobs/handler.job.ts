@@ -2,36 +2,7 @@ import cron from "node-cron";
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import * as console from "console";
-import {start} from "~/jobs/triggers/twitter/new_tweet_from.trigger";
 
-/*export const start = async () => {
-    const date = new Date();
-    const trireas = await getTrireas();
-    let triggered = false;
-
-    await each(trireas, async (trirea) => {
-
-        console.log(trirea);
-        const trigger = await loadTrigger(trirea.trigger);
-        const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
-        const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
-
-        triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
-        if (triggered) {
-            console.log('triggered');
-            return;
-            const reaction = await loadReaction(trirea.reaction);
-            await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
-        }
-    });
-
-
-    console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
-}*/
-
-//TODO: Populate database with triggers and reactions at start
-//TODO: Find a way to not hardcode inputs & outputs names
-//TODO: Rename refreshToken by AccesToken in database services subscriptions
 cron.schedule('* * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
@@ -48,7 +19,6 @@ cron.schedule('* * * * *', async () => {
             await reaction.start(trirea.id, triggerOutputs, userServiceReaction);
         }
     });
-
 
     console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
