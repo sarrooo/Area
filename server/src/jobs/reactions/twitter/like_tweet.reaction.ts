@@ -23,7 +23,7 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     if (!userID) {
         Logging.warning('Reaction like_tweet fail: No userID found');
     }
-    Logging.info('Reaction like_tweet: ' + likeTweetInputs.id + ' liked by ' + userID);
+    Logging.info('Reaction like_tweet: ' + likeTweetInputs.id + ' liked by ' + userID + 'with token ' + twitterToken);
     await likeTweet(likeTweetInputs.id, userID, twitterToken);
 };
 
@@ -40,6 +40,7 @@ const likeTweet = async (tweetID: string, userID: string, twitterToken: string):
                     Authorization: `Bearer ${twitterToken}`,
                 },
             });
+        console.log(data);
         return data.data;
     } catch (err: any) {
         Logging.warning('Reaction like_tweet fail: fail to send message to target' + err);

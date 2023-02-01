@@ -43,8 +43,9 @@ cron.schedule('* * * * *', async () => {
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
         triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
         if (triggered) {
+            const triggerOutputs = await getReactionsInputs(trirea.id);
             const reaction = await loadReaction(trirea.reaction);
-            await reaction.start(trirea.id, trirea.trireaReactionInputs, userServiceReaction);
+            await reaction.start(trirea.id, triggerOutputs, userServiceReaction);
         }
     });
 
@@ -125,6 +126,23 @@ const getUserServiceTrigger = async (userId: number, triggerService: string) => 
             userId: userId,
             service: {
                 name: triggerService,
+            }
+        }
+    })
+}
+
+const getReactionsInputs = async(trireaId: number) => {
+    return prisma.trireaReactionInput.findMany({
+        where: {
+            trireaId: trireaId,
+        },
+        select: {
+            value: true,
+            reactionInputType: {
+                select: {
+                    name: true,
+                    type: true,
+                }
             }
         }
     })
