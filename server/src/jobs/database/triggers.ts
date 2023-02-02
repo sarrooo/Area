@@ -54,3 +54,54 @@ export const triggers:Prisma.TriggerCreateInput[] = [
         }
     },
 ]
+
+// TRIGGERS INPUTS TYPE
+export const reactionsInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
+    {
+        name: 'at_time.time',
+        description: 'Time at which the trigger will be executed',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'at_time',
+            }
+        }
+    },
+    {
+        name: 'new_tweet_from.username',
+        description: 'Username to watch',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'new_tweet_from',
+            }
+        }
+    },
+    {
+        name: 'every.freq',
+        description: 'frequency of the trigger',
+        type: 'Int',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'every',
+            }
+        }
+    },
+]
+
+// TRIGGERS OUTPUT TYPE
+export const triggersOutputPopulate:Prisma.TriggerOutputTypeCreateInput[] = [
+    {
+        name: 'new_tweet_from.tweet_id',
+        description: 'Tweet from the user',
+        type: 'String',
+        trigger: {
+            connect: {
+                name: 'new_tweet_from',
+            }
+        }
+    },
+]

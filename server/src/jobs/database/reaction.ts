@@ -38,7 +38,7 @@ export const reactionsPopulate :Prisma.ReactionCreateInput[] = [
     },
 ]
 
-// REACTIONS INPUTS
+// REACTIONS INPUTS TYPE
 export const reactionsInputsPopulate:Prisma.ReactionInputTypeCreateInput[] = [
     {
         name: 'send_message.message',
