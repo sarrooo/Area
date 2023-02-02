@@ -13,7 +13,7 @@ type InputProps<TFormValues extends FieldValues> = {
   className?: string
   placeholder?: string
   required?: boolean
-  inputType?: 'text' | 'password' | 'number'
+  children?: React.ReactNode
 
   register: UseFormRegister<TFormValues>
   fieldName: Path<TFormValues>
@@ -21,16 +21,17 @@ type InputProps<TFormValues extends FieldValues> = {
   errors?: Partial<FieldErrors<TFormValues>>
 }
 
-export const Input = <TFormValues extends FieldValues>({
+export const Select = <TFormValues extends FieldValues>({
   id,
   label,
   className = '',
   placeholder = 'input',
-  inputType = 'text',
   register,
   fieldName,
   rules,
   errors,
+  required,
+  children,
 }: InputProps<TFormValues>) => {
   return (
     <div className={`p-2 ${className}`}>
@@ -39,13 +40,16 @@ export const Input = <TFormValues extends FieldValues>({
         className="block text-left text-sm font-medium text-gray-900 "
       >
         {label}
-        <input
+        <select
           {...register(fieldName, rules)}
-          type={inputType}
           id={id}
+          required={required}
           className="relative mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          placeholder={placeholder}
-        />
+          aria-label="Default select example"
+        >
+          <option selected>{placeholder}</option>
+          {children}
+        </select>
       </label>
       {errors && (
         <ErrorMessage

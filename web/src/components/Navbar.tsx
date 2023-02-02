@@ -48,12 +48,12 @@ export const Navbar = () => {
     loc.pathname.includes('/login') || loc.pathname.includes('/register')
 
   return (
-    <header className="w-full flex justify-between body-font items-center px-8 py-4 border-b-2 border-black">
+    <header className="body-font flex w-full items-center justify-between border-b-2 border-black px-8 py-4">
       <Link to="/" className="text-4xl font-bold">
         Trirea
       </Link>
       {isLogged && (
-        <div className="flex justify-around w-1/3">
+        <div className="flex w-1/3 justify-around">
           <MainButton callback={me} text="me" />
           <MainButton callback={services} text="Services" primary={false} />
           <MainButton callback={dashboard} text="Dashboard" primary={false} />
@@ -62,7 +62,7 @@ export const Navbar = () => {
         </div>
       )}
       {!isLogged && !isConnecting && (
-        <div className="flex justify-around w-1/3">
+        <div className="flex w-1/3 justify-around">
           <MainButton callback={login} text="Login" />
         </div>
       )}

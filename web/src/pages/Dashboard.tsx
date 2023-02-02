@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux'
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
 import {
@@ -10,6 +11,7 @@ import {
 } from '@/redux/services/service'
 import { useCreateTriggerMutation } from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
+import { selectUser, UserState } from '@/redux/features/userSlice'
 
 const dummyService = {
   name: 'Service',
@@ -46,13 +48,9 @@ const trireas = [
 ]
 
 export const Dashboard = () => {
-  const { data, error, isError, isLoading } = useGetTrireasQuery()
-  const {
-    data: serviceData,
-    error: serviceError,
-    isError: serviceIsError,
-    isLoading: serviceIsLoading,
-  } = useGetServicesQuery()
+  // const { data, error, isError } = useGetTrireasQuery()
+  const { data: serviceData } = useGetServicesQuery()
+  const myState = useSelector((state: UserState) => state.user)
   const [createServiceMutation] = useCreateServiceMutation()
   const [createTriggerMutation] = useCreateTriggerMutation()
   const [createReactionMutation] = useCreateReactionMutation()
@@ -71,11 +69,11 @@ export const Dashboard = () => {
     createTrireaMutation(dummyTrirea)
   }
 
-  console.log('data -> ', data)
+  console.log('state ', myState)
   console.log('serviceData -> ', serviceData)
   return (
-    <div className="px-32 py-16 space-y-16">
-      <h1 className="font-bold text-4xl">Dashboard</h1>
+    <div className="space-y-16 px-32 py-16">
+      <h1 className="text-4xl font-bold">Dashboard</h1>
       {/* <div className="flex space-x-8">
         <button
           type="button"

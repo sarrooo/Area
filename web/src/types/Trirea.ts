@@ -13,7 +13,17 @@ export type TrireaReactionInput = {
   reactionInputTypeId: number
 }
 
+export type TrireaFormRequest = {
+  name: string
+  triggerId: number
+  reactionId: number
+  enabled: boolean
+  triggerInputs: TrireaTriggerInput[]
+  reactionInputs: TrireaReactionInput[]
+}
+
 export type Trirea = {
+  name: string
   id?: number
   createdAt?: Date
   updatedAt?: Date

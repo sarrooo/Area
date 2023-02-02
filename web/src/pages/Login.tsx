@@ -45,8 +45,8 @@ const Login = () => {
       <div>
         <h1 className="text-6xl font-bold">Welcome back !</h1>
       </div>
-      <div className="p-8 bg-white shadow-xl rounded-lg w-1/3 space-y-8">
-        <h1 className="text-3xl text-center font-bold">Login</h1>
+      <div className="w-1/3 space-y-8 rounded-lg bg-white p-8 shadow-xl">
+        <h1 className="text-center text-3xl font-bold">Login</h1>
         <form className="space-y-4" onSubmit={handleSubmit(submitLogin)}>
           <Input<LoginRequest>
             id="email"
@@ -75,7 +75,7 @@ const Login = () => {
             }}
             errors={errors}
           />
-          <div className="flex justify-around items-center">
+          <div className="flex items-center justify-around">
             <p>
               Don&apos;t have an account ?
               <Link
@@ -89,7 +89,7 @@ const Login = () => {
           </div>
         </form>
         <div className="h-[4px] w-full rounded-lg bg-gray-300" />
-        <div className="flex flex-col justify-center items-center space-y-4">
+        <div className="flex flex-col items-center justify-center space-y-4">
           <LoginWithButton
             text="Google"
             url={getOauthGoogleUrl()}

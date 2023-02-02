@@ -1,88 +1,132 @@
 import { useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 import { HiX } from 'react-icons/hi'
 import { MainButton } from '@/components/MainButton'
 import { PageIndicator } from '@/components/PageIndicator'
-import { LoginRequest } from '@/types/Login'
 import { Input } from '@/components/Input'
+import { Trirea, TrireaFormRequest } from '@/types/Trirea'
+import { Select } from '@/components/Select'
+import { useGetServicesQuery } from '@/redux/services/service'
+import { useGetTriggersQuery } from '@/redux/services/trigger'
+import { useGetReactionsQuery } from '@/redux/services/reaction'
+import { useCreateTrireaMutation } from '@/redux/services/trirea'
+import { setTrireaName, UserState } from '@/redux/features/userSlice'
 
 export const TrireaForm = () => {
-  const { register } = useForm<LoginRequest>({ reValidateMode: 'onSubmit' })
-  const setIsShowing = (boolfs: boolean) => {
+  const { register } = useForm<TrireaFormRequest>({
+    reValidateMode: 'onSubmit',
+  })
+
+  const stateData = useSelector((state: UserState) => state.user)
+  const dispatch = useDispatch()
+  const services = useGetServicesQuery()
+  const triggers = useGetTriggersQuery()
+  const reactions = useGetReactionsQuery()
+  const [createTrirea] = useCreateTrireaMutation()
+
+  const setIsShowing = () => {
     console.log('close modal')
+  }
+
+  const submitTrirea = (data: Trirea) => {
+    createTrirea(data)
+  }
+
+  const setName = () => {
+    dispatch(setTrireaName({ name: 'trirea' }))
   }
 
   return (
     <div
       onClick={() => {
-        setIsShowing(false)
+        setIsShowing()
       }}
       id="editUserModal"
       tabIndex={-1}
       aria-hidden="true"
-      className="flex justify-center backdrop-blur-sm overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 items-center p-4 w-full md:inset-0 h-modal md:h-full"
+      className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 backdrop-blur-sm md:inset-0 md:h-full"
     >
-      <div className="w-full h-full md:h-auto">
+      <div className="h-full w-full md:h-auto">
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation()
           }}
-          className="relative w-1/2 bg-white rounded-lg shadow dark:bg-gray-700 cursor-default"
+          className="relative w-1/2 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
         >
-          <div className="flex justify-between items-center p-4 rounded-t border-b">
+          <div className="flex items-center justify-between rounded-t border-b p-4">
             <h3 className="text-xl font-semibold text-gray-900">
               Create a trirea
             </h3>
             <button
               onClick={() => {
-                setIsShowing(false)
+                setIsShowing()
               }}
               type="button"
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+              className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
               data-modal-toggle="editUserModal"
             >
               <HiX size={32} />
             </button>
           </div>
-          <div className="p-6 space-y-6">
-            <div className="w-1/2 space-y-8">
-              <Input
+          <div className="space-y-6 p-6">
+            <div className="w-1/2 space-y-4">
+              <Input<TrireaFormRequest>
                 id="name"
                 label="Name"
                 placeholder="trirea"
                 register={register}
-                fieldName="email"
+                fieldName="name"
               />
-              <Input
-                id="name"
-                label="Name"
-                placeholder="trirea"
+              <Input<TrireaFormRequest>
+                id="trigger"
+                inputType="number"
+                label="Trigger ID"
+                placeholder="123"
                 register={register}
-                fieldName="email"
+                fieldName="triggerId"
               />
-              <Input
-                id="name"
-                label="Name"
-                placeholder="trirea"
+              <Input<TrireaFormRequest>
+                id="reaction"
+                inputType="number"
+                label="Reaction ID"
+                placeholder="123"
                 register={register}
-                fieldName="email"
+                fieldName="reactionId"
               />
-              <Input
-                id="name"
-                label="Name"
-                placeholder="trirea"
+              <Input<TrireaFormRequest>
+                id="enabled"
+                label="Enable"
+                placeholder="true"
                 register={register}
-                fieldName="email"
+                fieldName="enabled"
               />
-              <Input
-                id="name"
-                label="Name"
-                placeholder="trirea"
+              <Input<TrireaFormRequest>
+                id="triggerInputs"
+                label="Trigger Inputs"
+                placeholder="lorem ipsum"
                 register={register}
-                fieldName="email"
+                fieldName="triggerInputs"
+              />
+              <Select<TrireaFormRequest>
+                id="triggerType"
+                label="Trigger Type"
+                placeholder="Enabled"
+                register={register}
+                fieldName="enabled"
+              >
+                <option value="true">true</option>
+                <option value="false">false</option>
+              </Select>
+              <Input<TrireaFormRequest>
+                id="reactionInputs"
+                label="Reaction Inputs"
+                placeholder="14h00"
+                register={register}
+                fieldName="reactionInputs"
               />
             </div>
-            <div className="w-full flex justify-between items center">
+            <div className="items center flex w-full justify-between">
               <PageIndicator current={1} pages={2} />
               <MainButton text="Next" />
             </div>
