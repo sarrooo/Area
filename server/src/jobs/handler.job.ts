@@ -1,7 +1,6 @@
 import cron from "node-cron";
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
-import * as console from "console";
 
 cron.schedule('* * * * *', async () => {
     const date = new Date();
@@ -19,8 +18,6 @@ cron.schedule('* * * * *', async () => {
             await reaction.start(trirea.id, triggerOutputs, userServiceReaction);
         }
     });
-
-    console.log(`This task is running every minute - ${date.getHours()}:${date.getMinutes()}`);
 });
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {
