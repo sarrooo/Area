@@ -1,12 +1,10 @@
 import {prisma} from "~/lib/prisma";
-import {each} from "async";
 import {triggersInputsPopulate, triggersOutputPopulate, triggersPopulate} from "./triggers";
 import {reactionsInputsPopulate, reactionsPopulate} from "./reaction";
 import Logging from "~/lib/logging";
 import * as console from "console";
 
-//TODO: Use Create{Object}InputMany instead of Create{Object}Input for each
-//IMPORTANT: Don't delete the loggings, it cancel the lazy execution of the async functions
+//IMPORTANT: Don't delete the loggings, it cancels the lazy execution of the async functions
 async function main() {
     //TRIGGERS
     for (const trigger of triggersPopulate) {
