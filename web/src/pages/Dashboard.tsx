@@ -7,11 +7,12 @@ import {
 } from '@/redux/services/trirea'
 import {
   useCreateServiceMutation,
+  useGetServiceQuery,
   useGetServicesQuery,
 } from '@/redux/services/service'
 import { useCreateTriggerMutation } from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
-import { selectUser, UserState } from '@/redux/features/userSlice'
+import { selectUser } from '@/redux/features/userSlice'
 
 const dummyService = {
   name: 'Service',
@@ -48,10 +49,10 @@ const trireas = [
 ]
 
 export const Dashboard = () => {
-  // const { data, error, isError } = useGetTrireasQuery()
+  const { data, error, isError } = useGetTrireasQuery()
   const { data: serviceData } = useGetServicesQuery()
-  // const { trirea } = useSelector((state: UserState) => state.user)
-  const myData = useSelector((state: UserState) => state.user)
+  // const { data: service } = useGetServiceQuery(16)
+  const myData = useSelector(selectUser)
   const [createServiceMutation] = useCreateServiceMutation()
   const [createTriggerMutation] = useCreateTriggerMutation()
   const [createReactionMutation] = useCreateReactionMutation()
@@ -70,8 +71,10 @@ export const Dashboard = () => {
     createTrireaMutation(dummyTrirea)
   }
 
-  console.log('state ', myData)
+  // console.log('state ', myData)
+  console.log('trireaData -> ', data)
   console.log('serviceData -> ', serviceData)
+  // console.log('firstService -> ', service)
   return (
     <div className="space-y-16 px-32 py-16">
       <h1 className="text-4xl font-bold">Dashboard</h1>

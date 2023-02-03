@@ -20,6 +20,8 @@ export const createTrirea = async (req: Request, res: Response) => {
     if (realUserId === undefined)
         throw new BadRequestException("You must be logged in to create a trirea");
     console.log("REAL_USER_ID: ",realUserId)
+    console.log("triggerId: ",triggerId)
+    console.log("reactionId: ",reactionId)
     const newTrirea: Trirea = await prisma.trirea.create({
         data: {
             name: name,
@@ -43,7 +45,8 @@ export const createTrirea = async (req: Request, res: Response) => {
         reactionInputs: []
     };
     // Add trigger inputs
-    triggerInputs.forEach(async (trigger) => {
+
+    for(const trigger of triggerInputs) {
         if (trigger.id !== undefined)
             throw new BadRequestException("You cannot specify an id when creating a trirea trigger input");
         const newInput: TrireaTriggerInput = await prisma.trireaTriggerInput.create({
@@ -59,9 +62,29 @@ export const createTrirea = async (req: Request, res: Response) => {
             trireaId: newInput.trireaId,
             triggerInputTypeId: newInput.triggerInputTypeId
         });
-    });
+    }
+
+    // triggerInputs.forEach(async (trigger) => {
+    //     if (trigger.id !== undefined)
+    //         throw new BadRequestException("You cannot specify an id when creating a trirea trigger input");
+    //     const newInput: TrireaTriggerInput = await prisma.trireaTriggerInput.create({
+    //         data: {
+    //             value: trigger.value,
+    //             trireaId: newTrirea.id,
+    //             triggerInputTypeId: trigger.triggerInputTypeId
+    //         }
+    //     });
+    //     retTrirea.triggerInputs.push({
+    //         id: newInput.id,
+    //         value: newInput.value === null ? undefined : newInput.value,
+    //         trireaId: newInput.trireaId,
+    //         triggerInputTypeId: newInput.triggerInputTypeId
+    //     });
+    // });
+
     // Add reaction inputs
-    reactionInputs.forEach(async (reaction) => {
+
+    for (const reaction of reactionInputs) {
         if (reaction.id !== undefined)
             throw new BadRequestException("You cannot specify an id when creating a trirea reaction input");
         const newInput: TrireaReactionInput = await prisma.trireaReactionInput.create({
@@ -79,7 +102,26 @@ export const createTrirea = async (req: Request, res: Response) => {
             linkedToId: newInput.linkedToId === null ? undefined : newInput.linkedToId,
             reactionInputTypeId: newInput.reactionInputTypeId
         });
-    });
+    }
+    // reactionInputs.forEach(async (reaction) => {
+    //     if (reaction.id !== undefined)
+    //         throw new BadRequestException("You cannot specify an id when creating a trirea reaction input");
+    //     const newInput: TrireaReactionInput = await prisma.trireaReactionInput.create({
+    //         data: {
+    //             value: reaction.value,
+    //             linkedToId: reaction.linkedToId,
+    //             trireaId: newTrirea.id,
+    //             reactionInputTypeId: reaction.reactionInputTypeId
+    //         }
+    //     });
+    //     retTrirea.reactionInputs.push({
+    //         id: newInput.id,
+    //         value: newInput.value === null ? undefined : newInput.value,
+    //         trireaId: newInput.trireaId,
+    //         linkedToId: newInput.linkedToId === null ? undefined : newInput.linkedToId,
+    //         reactionInputTypeId: newInput.reactionInputTypeId
+    //     });
+    // });
     // Return
     Logging.info(`Created trirea ${newTrirea.id}`);
     return res.status(StatusCodes.CREATED).json(retTrirea);
@@ -261,16 +303,20 @@ export const searchTrirea = async (req: Request, res: Response) => {
         throw new BadRequestException("You search for others trireas");
     const trireas: Trirea[] = await prisma.trirea.findMany({
         where: {
-            userId: userId,
-            enabled: active
+            userId: userId ? userId : 1,
+            enabled: active ? active : true
         },
         take: max
     });
     const retTrireas: ApiTrirea[] = [];
-    trireas.forEach(async (trirea) => {
-        const retTrirea: ApiTrirea = await buildTrirea(trirea);
+    for(let i = 0; i < trireas.length; i++) {
+        const retTrirea: ApiTrirea = await buildTrirea(trireas[i]);
         retTrireas.push(retTrirea);
-    });
+    }
+    // trireas.forEach(async (trirea) => {
+    //     const retTrirea: ApiTrirea = await buildTrirea(trirea);
+    //     retTrireas.push(retTrirea);
+    // });
     Logging.info(`Searched trireas for user ${userId}`);
     return res.status(StatusCodes.OK).json(retTrireas);
 };
