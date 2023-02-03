@@ -6,7 +6,6 @@ import {
   getGithubUser,
 } from "~~/services/github-session.service";
 import { prisma } from "~/lib/prisma";
-import config from "config";
 import { generateToken } from "~/controllers/auth/auth.controller";
 
 export const githubOAuthHandler = async (
