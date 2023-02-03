@@ -268,7 +268,7 @@ export const searchTrirea = async (req: Request, res: Response) => {
     });
     const retTrireas: ApiTrirea[] = [];
     trireas.forEach(async (trirea) => {
-        const retTrirea = await buildTrirea(trirea);
+        const retTrirea: ApiTrirea = await buildTrirea(trirea);
         retTrireas.push(retTrirea);
     });
     Logging.info(`Searched trireas for user ${userId}`);

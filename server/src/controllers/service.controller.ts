@@ -221,7 +221,8 @@ export const searchService = async (req: Request, res: Response) => {
     });
     const retServices: ApiService[] = [];
     services.forEach(async (service: Service) => {
-        retServices.push(await buildService(service, req));
+        const retService: ApiService = await buildService(service, req);
+        retServices.push(retService);
     });
     Logging.info(`Services searched`);
     return res.status(StatusCodes.OK).json(retServices);
