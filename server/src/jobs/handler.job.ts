@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import {prisma} from "~/lib/prisma";
 import {each} from "async";
+import Logging from "~/lib/logging";
 
 cron.schedule('* * * * *', async () => {
     const date = new Date();
@@ -8,6 +9,7 @@ cron.schedule('* * * * *', async () => {
     let triggered = false;
 
     await each(trireas, async (trirea) => {
+        triggered = false;
         const trigger = await loadTrigger(trirea.trigger);
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
@@ -18,6 +20,7 @@ cron.schedule('* * * * *', async () => {
             await reaction.start(trirea.id, triggerOutputs, userServiceReaction);
         }
     });
+    Logging.info('Trirea handler: ' + date);
 });
 
 const loadReaction = async (reaction: {name: string, service: {name: string}}) => {

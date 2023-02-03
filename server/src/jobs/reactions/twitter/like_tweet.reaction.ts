@@ -18,8 +18,7 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     }
 
     const twitterToken = userServicesReaction[0].RefreshToken;
-    //TODO: Don't scam like me and retrieve the user_id from the oauth system :')
-    const userID = '1288164266823098368' //ID of @MikaelVallenet
+    const userID = await getUserID(twitterToken)
     if (!userID) {
         Logging.warning('Reaction like_tweet fail: No userID found');
     }
@@ -43,8 +42,25 @@ const likeTweet = async (tweetID: string, userID: string, twitterToken: string):
         console.log(data);
         return data.data;
     } catch (err: any) {
-        Logging.warning('Reaction like_tweet fail: fail to send message to target' + err);
+        Logging.warning('Reaction like_tweet fail: fail to like tweet to target' + err);
         return
+    }
+}
+
+const getUserID = async (twitterToken: string): Promise<string> => {
+    try {
+        const { data } = await axios.get<twitterUser>(
+            `https://api.twitter.com/2/users/me`,
+            {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${twitterToken}`,
+                }
+            });
+        return data.data.id;
+    } catch (err: any) {
+        Logging.warning('Reaction like_tweet fail: fail to get user id' + err);
+        return ""
     }
 }
 
@@ -60,4 +76,12 @@ const getInputs = async (inputs: TrireaOutputs[]): Promise<LikeTweetInputs> => {
 
 type LikeTweetInputs = {
     id: string;
+}
+
+type twitterUser = {
+    data: {
+        id: string;
+        name: string;
+        username: string;
+    }
 }
