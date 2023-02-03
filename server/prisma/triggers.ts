@@ -1,7 +1,7 @@
 import {Prisma} from "@prisma/client";
 
 // CREATE TRIGGERS & SERVICES IF NOT EXIST
-export const triggers:Prisma.TriggerCreateInput[] = [
+export const triggersPopulate:Prisma.TriggerCreateInput[] = [
     {
         name: 'every',
         description: 'triggers every X minutes',
@@ -56,7 +56,7 @@ export const triggers:Prisma.TriggerCreateInput[] = [
 ]
 
 // TRIGGERS INPUTS TYPE
-export const reactionsInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
+export const triggersInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
     {
         name: 'at_time.time',
         description: 'Time at which the trigger will be executed',

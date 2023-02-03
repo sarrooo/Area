@@ -120,9 +120,9 @@ CREATE TABLE "trirea_trigger_inputs" (
 CREATE TABLE "trirea_reaction_inputs" (
     "id" SERIAL NOT NULL,
     "value" TEXT,
-    "linkedToId" INTEGER,
     "trireaId" INTEGER NOT NULL,
     "reactionInputTypeId" INTEGER NOT NULL,
+    "triggerOutputTypeId" INTEGER,
 
     CONSTRAINT "trirea_reaction_inputs_pkey" PRIMARY KEY ("id")
 );
@@ -131,9 +131,13 @@ CREATE TABLE "trirea_reaction_inputs" (
 CREATE TABLE "user_services" (
     "userId" INTEGER NOT NULL,
     "serviceId" INTEGER NOT NULL,
+    "RefreshToken" TEXT,
 
     CONSTRAINT "user_services_pkey" PRIMARY KEY ("userId","serviceId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "services_name_key" ON "services"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
@@ -152,6 +156,12 @@ CREATE UNIQUE INDEX "tokens_token_key" ON "tokens"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "tokens_userId_key" ON "tokens"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "triggers_name_key" ON "triggers"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "reactions_name_key" ON "reactions"("name");
 
 -- AddForeignKey
 ALTER TABLE "tokens" ADD CONSTRAINT "tokens_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -191,6 +201,9 @@ ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_trir
 
 -- AddForeignKey
 ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_reactionInputTypeId_fkey" FOREIGN KEY ("reactionInputTypeId") REFERENCES "reaction_inputs_types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "trirea_reaction_inputs" ADD CONSTRAINT "trirea_reaction_inputs_triggerOutputTypeId_fkey" FOREIGN KEY ("triggerOutputTypeId") REFERENCES "trigger_outputs_types"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_services" ADD CONSTRAINT "user_services_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
