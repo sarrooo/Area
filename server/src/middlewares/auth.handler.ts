@@ -27,7 +27,7 @@ export const verifyToken = async (
       throw new UnauthorizedRequestException("jwt expired");
     }
     if (!payload) {
-      throw new ForbiddenRequestException("Access denied");
+      throw new ForbiddenRequestException("Access denied (payload)");
     }
     const user = await prisma.user.findFirst({
       where: {
@@ -35,7 +35,7 @@ export const verifyToken = async (
       },
     });
     if (!user) {
-      throw new ForbiddenRequestException("Access denied");
+      throw new ForbiddenRequestException("Access denied (user)");
     }
 
     const { password, ...UserWithoutPassword } = user;
@@ -46,20 +46,39 @@ export const verifyToken = async (
   next();
 };
 
-export const isConnected: (req: Request) => Promise<User | null> = async (
-  req: Request
+export const isConnected = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   const { authorization } = req.headers;
-  if (!authorization) return null;
-  const token = (authorization && authorization.split(" ")[1]) || "";
-  console.log(token);
-  const payload: any = verify(token, process.env.JWT_SECRET as string);
-  if (!payload) return null;
-
-  const user: User | null = await prisma.user.findFirst({
-    where: {
-      id: payload.id,
-    },
-  });
-  return user;
+  if (authorization) {
+    try {
+      const token = (authorization && authorization.split(" ")[1]) || "";
+  
+      let payload: any = "";
+      try {
+        payload = verify(token, process.env.JWT_SECRET as string);
+      } catch (e) {
+        throw new UnauthorizedRequestException("jwt expired");
+      }
+      if (!payload) {
+        throw new ForbiddenRequestException("Access denied (payload)");
+      }
+      const user = await prisma.user.findFirst({
+        where: {
+          id: payload.id,
+        },
+      });
+      if (!user) {
+        throw new ForbiddenRequestException("Access denied (user)");
+      }
+  
+      const { password, ...UserWithoutPassword } = user;
+      req.user = UserWithoutPassword;
+    } catch (_) {
+      throw new ForbiddenRequestException("Access denied");
+    }
+  }
+  next();
 };

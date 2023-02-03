@@ -15,7 +15,7 @@ routes.use('/auth', authRoutes);
 routes.use('/user', userRoutes);
 routes.use('/output/trigger', triggerOutputRoutes);
 routes.use('/input/trigger', triggerInputRoutes);
-routes.use('/input/reaction', reactionInputRoutes);
+routes.use('reaction', reactionInputRoutes);
 routes.use('/sessions', sessionRoutes);
 routes.use('/service', serviceRoutes);
 routes.use('/trigger', triggerRoutes);

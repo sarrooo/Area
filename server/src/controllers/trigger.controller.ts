@@ -19,15 +19,19 @@ export const createTrigger = async (req: Request, res: Response) => {
         throw new ForbiddenRequestException("You are not allowed to create a trigger output type");*/
     if (id !== undefined)
         throw new BadRequestException("You cannot specify an id when creating a trigger");
-    const newTrigger: Trigger = await prisma.trigger.create({
-        data: {
-            name: name,
-            description: description,
-            serviceId: serviceId
-        }
-    });
-    Logging.info(`Trigger ${newTrigger.id} created`);
-    return res.status(StatusCodes.CREATED).json(newTrigger);
+    try {
+        const newTrigger: Trigger = await prisma.trigger.create({
+            data: {
+                name: name,
+                description: description,
+                serviceId: serviceId
+            }
+        });
+        Logging.info(`Trigger ${newTrigger.id} created`);
+        return res.status(StatusCodes.CREATED).json(newTrigger);
+    }  catch (error: any) {
+        throw new BadRequestException(`Error while creating trigger: ${error.message}`);
+    }
 };
 
 async function buildTrigger(trigger: Trigger) {
