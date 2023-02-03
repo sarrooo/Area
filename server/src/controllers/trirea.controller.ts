@@ -19,6 +19,7 @@ export const createTrirea = async (req: Request, res: Response) => {
     const realUserId = req.user.id;
     if (realUserId === undefined)
         throw new BadRequestException("You must be logged in to create a trirea");
+    console.log("REAL_USER_ID: ",realUserId)
     const newTrirea: Trirea = await prisma.trirea.create({
         data: {
             name: name,

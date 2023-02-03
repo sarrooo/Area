@@ -10,17 +10,17 @@ services:
       - area-db-data:/var/lib/postgresql/data
       - ./postgres:/etc/postgresql/14/main
     network_mode: "host"
-  server:
-    build: ./server
-    container_name: area_server
-    restart: always
-    ports:
-      - "8080:8080"
-    env_file:
-      - "./server/.env"
-    network_mode: "host"
-    depends_on:
-      - "db"
+  # server:
+  #   build: ./server
+  #   container_name: area_server
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   env_file:
+  #     - "./server/.env"
+  #   network_mode: "host"
+  #   depends_on:
+  #     - "db"
   # web:
   #   build: ./web
   #   container_name: area_web

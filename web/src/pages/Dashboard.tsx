@@ -31,7 +31,7 @@ const dummyReaction = {
 const dummyTrirea = {
   name: 'Trirea',
   enabled: true,
-  triggerId: 6,
+  triggerId: 1,
   triggerInputs: [],
   reactionId: 1,
   reactionInputs: [],
@@ -50,7 +50,8 @@ const trireas = [
 export const Dashboard = () => {
   // const { data, error, isError } = useGetTrireasQuery()
   const { data: serviceData } = useGetServicesQuery()
-  const myState = useSelector((state: UserState) => state.user)
+  // const { trirea } = useSelector((state: UserState) => state.user)
+  const myData = useSelector((state: UserState) => state.user)
   const [createServiceMutation] = useCreateServiceMutation()
   const [createTriggerMutation] = useCreateTriggerMutation()
   const [createReactionMutation] = useCreateReactionMutation()
@@ -69,41 +70,41 @@ export const Dashboard = () => {
     createTrireaMutation(dummyTrirea)
   }
 
-  console.log('state ', myState)
+  console.log('state ', myData)
   console.log('serviceData -> ', serviceData)
   return (
     <div className="space-y-16 px-32 py-16">
       <h1 className="text-4xl font-bold">Dashboard</h1>
-      {/* <div className="flex space-x-8">
+      <div className="flex space-x-8">
         <button
           type="button"
           onClick={createService}
-          className="px-16 py-8 bg-orange-200"
+          className="bg-orange-200 px-16 py-8"
         >
           Create service
         </button>
         <button
           type="button"
           onClick={createTrigger}
-          className="px-16 py-8 bg-orange-200"
+          className="bg-orange-200 px-16 py-8"
         >
           Create trigger
         </button>
         <button
           type="button"
           onClick={createReaction}
-          className="px-16 py-8 bg-orange-200"
+          className="bg-orange-200 px-16 py-8"
         >
           Create reaction
         </button>
         <button
           type="button"
           onClick={createTrirea}
-          className="px-16 py-8 bg-orange-200"
+          className="bg-orange-200 px-16 py-8"
         >
           create trirea
         </button>
-      </div> */}
+      </div>
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">
         {trireas.map((trirea) => {
           return (
