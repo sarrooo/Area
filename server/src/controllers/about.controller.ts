@@ -23,10 +23,10 @@ export const about = async (req: Request, res: Response) => {
         },
     })
 
-    let client: Client = {
+    const client: Client = {
         host: req.ip
     }
-    let server: Server = {
+    const server: Server = {
         current_time: Date.now(),
         services: services,
     }

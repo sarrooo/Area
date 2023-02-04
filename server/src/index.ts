@@ -1,6 +1,6 @@
 import aboutRoutes from "~/routes/about.routes";
-
-require('dotenv').config();
+import dotenv from 'dotenv'
+dotenv.config();
 import 'express-async-errors';
 import cors from 'cors';
 import express from 'express';
@@ -11,6 +11,7 @@ import Logging from "~/lib/logging";
 import Routes from "~/routes";
 import * as process from "process";
 import config from "config";
+import '~/jobs/handler.job';
 
 const port = config.get<number>('port');
 

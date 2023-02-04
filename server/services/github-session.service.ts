@@ -5,7 +5,7 @@ import Logging from "~/lib/logging";
 import {GithubOauthToken, GithubUserResult} from "~/types/github";
 
 export const getGithubOauthToken = async ({code}: { code: string }): Promise<GithubOauthToken> => {
-    const rootUrl: string = 'https://github.com/login/oauth/access_token?';
+    const rootUrl = 'https://github.com/login/oauth/access_token?';
 
     const options = {
         code,

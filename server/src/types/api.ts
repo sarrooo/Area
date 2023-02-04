@@ -18,7 +18,7 @@ export type TriggerInputType = {
 export type TrireaReactionInput = {
     id?: number;
     value?: string;
-    linkedToId?: number;
+    triggerOutputTypeId?: number;
     trireaId: number;
     reactionInputTypeId: number;
 }

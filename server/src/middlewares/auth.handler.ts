@@ -1,12 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import {
-  ForbiddenRequestException,
-  UnauthorizedRequestException,
-} from "~/utils/exceptions";
-import dotenv from "dotenv";
-import { verify } from "jsonwebtoken";
+import { NextFunction, Request, Response } from 'express';
+import {ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
+import dotenv from 'dotenv';
+import {verify} from "jsonwebtoken";
 import * as process from "process";
-import { prisma } from "~/lib/prisma";
+import {prisma} from "~/lib/prisma";
 
 dotenv.config();
 

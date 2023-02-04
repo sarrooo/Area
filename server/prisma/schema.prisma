@@ -12,7 +12,7 @@ datasource db {
 
 model Service {
   id     Int     @id @default(autoincrement())
-  name    String
+  name    String @unique
   description   String?
   image String?
   requiredSubscription Boolean
@@ -53,7 +53,7 @@ model Token {
 
 model Trigger {
   id        Int      @id @default(autoincrement())
-  name     String   @db.VarChar(255)
+  name     String   @db.VarChar(255) @unique
   description   String?
   service Service  @relation(fields: [serviceId], references: [id])
   serviceId Int
@@ -66,7 +66,7 @@ model Trigger {
 
 model Reaction {
   id        Int      @id @default(autoincrement())
-  name     String   @db.VarChar(255)
+  name     String   @db.VarChar(255) @unique
   description   String?
   service Service  @relation(fields: [serviceId], references: [id])
   serviceId Int
@@ -97,6 +97,7 @@ model TriggerOutputType {
   description String?
   trigger Trigger  @relation(fields: [triggerId], references: [id])
   triggerId Int
+  trireaReactionInput TrireaReactionInput[]
 
   @@map("trigger_outputs_types")
 }
@@ -148,11 +149,12 @@ model TrireaTriggerInput {
 model TrireaReactionInput {
   id        Int      @id @default(autoincrement())
   value     String?
-  linkedToId Int?
   trirea Trirea  @relation(fields: [trireaId], references: [id])
   trireaId Int
   reactionInputType ReactionInputType  @relation(fields: [reactionInputTypeId], references: [id])
   reactionInputTypeId Int
+  triggerOutputType TriggerOutputType?  @relation(fields: [triggerOutputTypeId], references: [id])
+  triggerOutputTypeId Int?
 
   @@map("trirea_reaction_inputs")
 }
@@ -162,7 +164,7 @@ model UserService {
   userId    Int
   service   Service @relation(fields: [serviceId], references: [id])
   serviceId Int
-
+  RefreshToken String?
 
   @@id([userId, serviceId])
   @@map("user_services")
