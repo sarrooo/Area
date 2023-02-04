@@ -36,6 +36,10 @@ export const TrireaForm = () => {
     dispatch(setTrireaName({ name: 'trirea' }))
   }
 
+  console.log('services', services.data)
+  console.log('trigger', triggers.data)
+  console.log('reactions', reactions.data)
+
   return (
     <div
       onClick={() => {

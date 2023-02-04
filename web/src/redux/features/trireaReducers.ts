@@ -2,61 +2,68 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '@/types/Trirea'
 import { UserState, emptyTrirea } from '@/redux/features/userSlice'
 
-export const clearTrirea = (state: UserState) => {
+export const fillTrireasReducer = (
+  state: UserState,
+  action: PayloadAction<Trirea[]>
+) => {
+  state.trireas = action.payload
+}
+
+export const clearTrireaReducer = (state: UserState) => {
   state.trirea = emptyTrirea
 }
 
-export const setTrirea = (
+export const setTrireaReducer = (
   state: UserState,
   action: PayloadAction<{ trirea: Trirea }>
 ) => {
   state.trirea = action.payload.trirea
 }
 
-export const setTrireaName = (
+export const setTrireaNameReducer = (
   state: UserState,
   action: PayloadAction<{ name: string }>
 ) => {
   state.trirea.name = action.payload.name
 }
 
-export const setTriggerId = (
+export const setTriggerIdReducer = (
   state: UserState,
   action: PayloadAction<{ id: number }>
 ) => {
   state.trirea.triggerId = action.payload.id
 }
 
-export const setReactionId = (
+export const setReactionIdReducer = (
   state: UserState,
   action: PayloadAction<{ id: number }>
 ) => {
   state.trirea.reactionId = action.payload.id
 }
 
-export const addTriggerInput = (
+export const addTriggerInputReducer = (
   state: UserState,
   action: PayloadAction<{ triggerInput: TrireaTriggerInput }>
 ) => {
   state.trirea.triggerInputs.push(action.payload.triggerInput)
 }
 
-export const addReactionInput = (
+export const addReactionInputReducer = (
   state: UserState,
   action: PayloadAction<{ triggerInput: TrireaReactionInput }>
 ) => {
   state.trirea.reactionInputs.push(action.payload.triggerInput)
 }
 
-export const clearTriggerInputs = (state: UserState) => {
+export const clearTriggerInputsReducer = (state: UserState) => {
   state.trirea.triggerInputs = []
 }
 
-export const clearReactionInputs = (state: UserState) => {
+export const clearReactionInputsReducer = (state: UserState) => {
   state.trirea.reactionInputs = []
 }
 
-export const removeTriggerInput = (
+export const removeTriggerInputReducer = (
   state: UserState,
   action: PayloadAction<{ triggerInputId: number }>
 ) => {
@@ -65,7 +72,7 @@ export const removeTriggerInput = (
   })
 }
 
-export const removeReactionInput = (
+export const removeReactionInputReducer = (
   state: UserState,
   action: PayloadAction<{ reactionInputId: number }>
 ) => {

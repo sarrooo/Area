@@ -3,26 +3,31 @@ import jwtDecode from 'jwt-decode'
 import { User } from '@/types/User'
 import { RootState } from '@/redux/store'
 import { userApi } from '@/redux/services/user'
-import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '@/types/Trirea'
-// import {
-//   setTrirea,
-//   setTrireaName,
-//   setTriggerId,
-//   setReactionId,
-//   addTriggerInput,
-//   addReactionInput,
-//   clearTrirea,
-//   clearTriggerInputs,
-//   clearReactionInputs,
-//   removeTriggerInput,
-//   removeReactionInput,
-// } from '@/redux/features/trireaReducers'
+import { Trirea } from '@/types/Trirea'
+import { trireaApi } from '@/redux/services/trirea'
+import { Service } from '@/types/Service'
+import {
+  setTrireaReducer,
+  setTrireaNameReducer,
+  setTriggerIdReducer,
+  setReactionIdReducer,
+  addTriggerInputReducer,
+  addReactionInputReducer,
+  clearTrireaReducer,
+  clearTriggerInputsReducer,
+  clearReactionInputsReducer,
+  removeTriggerInputReducer,
+  removeReactionInputReducer,
+  fillTrireasReducer,
+} from '@/redux/features/trireaReducers'
 
 export interface UserState {
   user: User | null
   accessToken: string | null
   isLogged: boolean
   trirea: Trirea
+  trireas?: Trirea[]
+  services?: Service[]
 }
 
 export const emptyTrirea: Trirea = {
@@ -38,6 +43,8 @@ export const initialState: UserState = {
   user: null,
   accessToken: null,
   isLogged: false,
+  trireas: undefined,
+  services: undefined,
   trirea: {
     name: '',
     enabled: true,
@@ -46,78 +53,6 @@ export const initialState: UserState = {
     triggerInputs: [],
     reactionInputs: [],
   },
-}
-
-const clearTrireaReducer = (state: UserState) => {
-  state.trirea = emptyTrirea
-}
-
-const setTrireaReducer = (
-  state: UserState,
-  action: PayloadAction<{ trirea: Trirea }>
-) => {
-  state.trirea = action.payload.trirea
-}
-
-const setTrireaNameReducer = (
-  state: UserState,
-  action: PayloadAction<{ name: string }>
-) => {
-  state.trirea.name = action.payload.name
-}
-
-const setTriggerIdReducer = (
-  state: UserState,
-  action: PayloadAction<{ id: number }>
-) => {
-  state.trirea.triggerId = action.payload.id
-}
-
-const setReactionIdReducer = (
-  state: UserState,
-  action: PayloadAction<{ id: number }>
-) => {
-  state.trirea.reactionId = action.payload.id
-}
-
-const addTriggerInputReducer = (
-  state: UserState,
-  action: PayloadAction<{ triggerInput: TrireaTriggerInput }>
-) => {
-  state.trirea.triggerInputs.push(action.payload.triggerInput)
-}
-
-const addReactionInputReducer = (
-  state: UserState,
-  action: PayloadAction<{ triggerInput: TrireaReactionInput }>
-) => {
-  state.trirea.reactionInputs.push(action.payload.triggerInput)
-}
-
-const clearTriggerInputsReducer = (state: UserState) => {
-  state.trirea.triggerInputs = []
-}
-
-const clearReactionInputsReducer = (state: UserState) => {
-  state.trirea.reactionInputs = []
-}
-
-const removeTriggerInputReducer = (
-  state: UserState,
-  action: PayloadAction<{ triggerInputId: number }>
-) => {
-  state.trirea.triggerInputs.filter((trirea) => {
-    return trirea.trireaId !== action.payload.triggerInputId
-  })
-}
-
-const removeReactionInputReducer = (
-  state: UserState,
-  action: PayloadAction<{ reactionInputId: number }>
-) => {
-  state.trirea.reactionInputs.filter((trirea) => {
-    return trirea.trireaId !== action.payload.reactionInputId
-  })
 }
 
 const loginReducer = (
@@ -170,6 +105,12 @@ export const userSlice = createSlice({
       .addMatcher(userApi.endpoints.logout.matchRejected, () => {
         return initialState
       })
+    // .addMatcher(
+    //   trireaApi.endpoints.getTrireas.matchFulfilled,
+    //   (state, action) => {
+    //     fillTrireasReducer(state, action)
+    //   }
+    // )
   },
 })
 

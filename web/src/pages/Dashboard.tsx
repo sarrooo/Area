@@ -1,18 +1,17 @@
 import { useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
+import { useEffect } from 'react'
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
 import {
-  useGetTrireasQuery,
   useCreateTrireaMutation,
+  useGetTrireasQuery,
 } from '@/redux/services/trirea'
-import {
-  useCreateServiceMutation,
-  useGetServiceQuery,
-  useGetServicesQuery,
-} from '@/redux/services/service'
+import { useCreateServiceMutation } from '@/redux/services/service'
 import { useCreateTriggerMutation } from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
 import { selectUser } from '@/redux/features/userSlice'
+import { Trirea } from '@/types/Trirea'
 
 const dummyService = {
   name: 'Service',
@@ -38,25 +37,14 @@ const dummyTrirea = {
   reactionInputs: [],
 }
 
-const trireas = [
-  {
-    id: 1,
-    name: 'test',
-    triggerName: 'get email',
-    reactionName: 'send email',
-    isActive: true,
-  },
-]
-
 export const Dashboard = () => {
-  const { data, error, isError } = useGetTrireasQuery()
-  const { data: serviceData } = useGetServicesQuery()
-  // const { data: service } = useGetServiceQuery(16)
   const myData = useSelector(selectUser)
+  const { data: trireas, isLoading, isError } = useGetTrireasQuery()
   const [createServiceMutation] = useCreateServiceMutation()
   const [createTriggerMutation] = useCreateTriggerMutation()
   const [createReactionMutation] = useCreateReactionMutation()
   const [createTrireaMutation] = useCreateTrireaMutation()
+  // const [getTrireasMutation] = useGetTrireasMutation()
 
   const createService = () => {
     createServiceMutation(dummyService)
@@ -71,10 +59,18 @@ export const Dashboard = () => {
     createTrireaMutation(dummyTrirea)
   }
 
-  // console.log('state ', myData)
-  console.log('trireaData -> ', data)
-  console.log('serviceData -> ', serviceData)
-  // console.log('firstService -> ', service)
+  // const setTrireas = async () => {
+  //   try {
+  //     await getTrireasMutation().unwrap()
+  //   } catch (error) {
+  //     toast.error('Invalid email or password')
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   if (!myData.trireas) setTrireas()
+  // }, [myData])
+
   return (
     <div className="space-y-16 px-32 py-16">
       <h1 className="text-4xl font-bold">Dashboard</h1>
@@ -109,18 +105,21 @@ export const Dashboard = () => {
         </button>
       </div>
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">
-        {trireas.map((trirea) => {
-          return (
-            <TrireaCard
-              id={trirea.id}
-              name={trirea.name}
-              triggerName={trirea.triggerName}
-              reactionName={trirea.reactionName}
-              isActive={trirea.isActive}
-            />
-          )
-        })}
         <CreateTrireaButton />
+        {isError && toast.error('Something went wrong')}
+        {isLoading && <div>Loading...</div>}{' '}
+        {trireas &&
+          trireas.map((trirea: Trirea) => {
+            return (
+              <TrireaCard
+                id={trirea.id ? trirea.id : -1}
+                name={trirea.name}
+                triggerName={trirea.triggerId.toString()}
+                reactionName={trirea.reactionId.toString()}
+                isActive={trirea.enabled}
+              />
+            )
+          })}
       </div>
     </div>
   )
