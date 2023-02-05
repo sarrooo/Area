@@ -9,7 +9,8 @@ services:
     volumes:
       - area-db-data:/var/lib/postgresql/data
       - ./postgres:/etc/postgresql/14/main
-    network_mode: "host"
+    ports:
+      - "5432:5432"
   # server:
   #   build: ./server
   #   container_name: area_server
@@ -18,7 +19,7 @@ services:
   #     - "8080:8080"
   #   env_file:
   #     - "./server/.env"
-  #   network_mode: "host"
+  #   network_mode: "host" NOT USE THIS FOR MAC
   #   depends_on:
   #     - "db"
   # web:
@@ -27,7 +28,7 @@ services:
   #   restart: always
   #   env_file:
   #     - "./web/.env"
-  #   network_mode: "host"
+  #   network_mode: "host" NOT USE THIS FOR MAC
   #   depends_on:
   #     - "server"
 volumes:
