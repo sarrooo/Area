@@ -8,37 +8,47 @@ import {
   useGetTrireasQuery,
 } from '@/redux/services/trirea'
 import { useCreateServiceMutation } from '@/redux/services/service'
-import { useCreateTriggerMutation } from '@/redux/services/trigger'
+import {
+  useCreateTriggerInputMutation,
+  useCreateTriggerMutation,
+} from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
 import { selectUser } from '@/redux/features/userSlice'
 import { Trirea } from '@/types/Trirea'
-import { Trigger } from '@/types/Trigger'
+import { Trigger, TriggerInputType } from '@/types/Trigger'
 
 const dummyService = {
-  name: 'Service2',
+  name: 'Service1',
   requiredSubscription: false,
 }
 
+const dummyTriggerInput: TriggerInputType = {
+  name: 'input1',
+  type: 'string',
+  triggerId: 1,
+  mandatory: true,
+}
+
 const dummyTrigger: Trigger = {
-  name: 'Trigger14',
+  name: 'Trigger1',
   serviceId: 1,
   inputs: [
     {
       name: 'input1',
       type: 'string',
-      triggerId: 14,
+      triggerId: 1,
       mandatory: true,
     },
     {
       name: 'input2',
       type: 'number',
-      triggerId: 14,
+      triggerId: 1,
       mandatory: false,
     },
     {
       name: 'input3',
       type: 'date',
-      triggerId: 14,
+      triggerId: 1,
       mandatory: false,
     },
   ],
@@ -46,7 +56,7 @@ const dummyTrigger: Trigger = {
 }
 
 const dummyReaction = {
-  name: 'Reaction2',
+  name: 'Reaction1',
   serviceId: 1,
 }
 
@@ -66,6 +76,7 @@ export const Dashboard = () => {
   const [createTriggerMutation] = useCreateTriggerMutation()
   const [createReactionMutation] = useCreateReactionMutation()
   const [createTrireaMutation] = useCreateTrireaMutation()
+  const [createTriggerInputMutation] = useCreateTriggerInputMutation()
   // const [getTrireasMutation] = useGetTrireasMutation()
 
   const createService = () => {
@@ -79,6 +90,9 @@ export const Dashboard = () => {
   }
   const createTrirea = () => {
     createTrireaMutation(dummyTrirea)
+  }
+  const createTriggerInput = () => {
+    createTriggerInputMutation(dummyTriggerInput)
   }
 
   // const setTrireas = async () => {
@@ -124,6 +138,13 @@ export const Dashboard = () => {
           className="bg-orange-200 px-16 py-8"
         >
           create trirea
+        </button>
+        <button
+          type="button"
+          onClick={createTriggerInput}
+          className="bg-orange-200 px-16 py-8"
+        >
+          create trigger input
         </button>
       </div>
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">
