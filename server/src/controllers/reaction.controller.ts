@@ -41,7 +41,7 @@ async function buildReaction(reaction: Reaction) {
             reactionId: reaction.id
         },
     });
-    reactionInputTypes.forEach(async (reactionInputType) => {
+    for (const reactionInputType of reactionInputTypes) {
         const addInputType: ApiReactionInputType = {
             id: reactionInputType.id,
             name: reactionInputType.name,
@@ -54,7 +54,7 @@ async function buildReaction(reaction: Reaction) {
         if (retReaction.inputs === undefined)
             retReaction.inputs = [];
         retReaction.inputs.push(addInputType);
-    });
+    }
     return retReaction;
 }
 
@@ -128,10 +128,10 @@ export const searchReaction = async (req: Request, res: Response) => {
         take: max
     });
     const retReactions: ApiReaction[] = [];
-    reactions.forEach(async (trigger) => {
-        const retReaction = await buildReaction(trigger);
+    for(const reaction of reactions) {
+        const retReaction = await buildReaction(reaction);
         retReactions.push(retReaction);
-    });
+    }
     Logging.info(`Reactions searched`);
     return res.status(StatusCodes.OK).json(retReactions);
 };

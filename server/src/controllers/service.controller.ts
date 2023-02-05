@@ -53,7 +53,7 @@ async function buildService(
   service: Service,
   req: Request
 ): Promise<ApiService> {
-  let retService: ApiService = {
+  const retService: ApiService = {
     id: service.id,
     name: service.name,
     description: service.description === null ? undefined : service.description,

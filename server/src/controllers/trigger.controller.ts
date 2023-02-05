@@ -47,7 +47,8 @@ async function buildTrigger(trigger: Trigger) {
             triggerId: trigger.id
         },
     });
-    triggerInputTypes.forEach((triggerInputType) => {
+
+    for(const triggerInputType of triggerInputTypes) {
         const addInputType: ApiTriggerInputType = {
             id: triggerInputType.id,
             name: triggerInputType.name,
@@ -60,14 +61,14 @@ async function buildTrigger(trigger: Trigger) {
         if (retTrigger.inputs === undefined)
             retTrigger.inputs = [];
         retTrigger.inputs.push(addInputType);
-    });
-    // Add outputs types
+    }
     const triggerOutputTypes = await prisma.triggerOutputType.findMany({
         where: {
             triggerId: trigger.id
         }
     });
-    triggerOutputTypes.forEach((triggerOutputType) => {
+
+    for(const triggerOutputType of triggerOutputTypes) {
         const addOutputType: ApiTriggerOutputType = {
             id: triggerOutputType.id,
             name: triggerOutputType.name,
@@ -78,13 +79,14 @@ async function buildTrigger(trigger: Trigger) {
         if (retTrigger.outputs === undefined)
             retTrigger.outputs = [];
         retTrigger.outputs.push(addOutputType);
-    });
+    }
     return retTrigger;
 }
 
 // Read Service : GET /service/:id
 export const readTrigger = async (req: Request, res: Response) => {
     const {id} = req.params;
+    Logging.info(`what is this -> ${id} or ${parseInt(id)}`);
     try {
         const trigger: Trigger | null = await prisma.trigger.findUnique({
             where: {
@@ -152,9 +154,13 @@ export const searchTriggers = async (req: Request, res: Response) => {
         take: max
     });
     const retTriggers: ApiTrigger[] = [];
-    triggers.forEach(async (trigger) => {
+    for (const trigger of triggers) {
         retTriggers.push(await buildTrigger(trigger));
-    });
+    }
+
+    // triggers.forEach(async (trigger) => {
+    //     retTriggers.push(await buildTrigger(trigger));
+    // });
     Logging.info(`Triggers searched`);
     return res.status(StatusCodes.OK).json(retTriggers);
 };

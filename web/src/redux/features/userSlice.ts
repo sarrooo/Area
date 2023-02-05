@@ -4,7 +4,6 @@ import { User } from '@/types/User'
 import { RootState } from '@/redux/store'
 import { userApi } from '@/redux/services/user'
 import { Trirea } from '@/types/Trirea'
-import { trireaApi } from '@/redux/services/trirea'
 import { Service } from '@/types/Service'
 import {
   setTrireaReducer,
@@ -18,7 +17,6 @@ import {
   clearReactionInputsReducer,
   removeTriggerInputReducer,
   removeReactionInputReducer,
-  fillTrireasReducer,
 } from '@/redux/features/trireaReducers'
 
 export interface UserState {
@@ -33,8 +31,8 @@ export interface UserState {
 export const emptyTrirea: Trirea = {
   name: '',
   enabled: true,
-  triggerId: -1,
-  reactionId: -1,
+  triggerId: 1,
+  reactionId: 1,
   triggerInputs: [],
   reactionInputs: [],
 }
@@ -48,8 +46,8 @@ export const initialState: UserState = {
   trirea: {
     name: '',
     enabled: true,
-    triggerId: -1,
-    reactionId: -1,
+    triggerId: 1,
+    reactionId: 1,
     triggerInputs: [],
     reactionInputs: [],
   },

@@ -12,19 +12,41 @@ import { useCreateTriggerMutation } from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
 import { selectUser } from '@/redux/features/userSlice'
 import { Trirea } from '@/types/Trirea'
+import { Trigger } from '@/types/Trigger'
 
 const dummyService = {
-  name: 'Service',
+  name: 'Service2',
   requiredSubscription: false,
 }
 
-const dummyTrigger = {
-  name: 'Trigger',
+const dummyTrigger: Trigger = {
+  name: 'Trigger14',
   serviceId: 1,
+  inputs: [
+    {
+      name: 'input1',
+      type: 'string',
+      triggerId: 14,
+      mandatory: true,
+    },
+    {
+      name: 'input2',
+      type: 'number',
+      triggerId: 14,
+      mandatory: false,
+    },
+    {
+      name: 'input3',
+      type: 'date',
+      triggerId: 14,
+      mandatory: false,
+    },
+  ],
+  description: 'description',
 }
 
 const dummyReaction = {
-  name: 'Reaction',
+  name: 'Reaction2',
   serviceId: 1,
 }
 

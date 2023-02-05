@@ -17,7 +17,7 @@ export const createTriggerSchema = object({
 // Read Trigger : GET /trigger/:id
 export const readTriggerSchema = object({
     params: object({
-        id: number({
+        id: string({
             required_error: "Trigger id is required",
         }),
     }),

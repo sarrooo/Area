@@ -2,18 +2,21 @@ import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { HiX } from 'react-icons/hi'
 import { MainButton } from '@/components/MainButton'
-import { PageIndicator } from '@/components/PageIndicator'
 import { Input } from '@/components/Input'
 import { Trirea, TrireaFormRequest } from '@/types/Trirea'
 import { Select } from '@/components/Select'
 import { useGetServicesQuery } from '@/redux/services/service'
-import { useGetTriggersQuery } from '@/redux/services/trigger'
+import {
+  useGetTriggerInputsQuery,
+  useGetTriggerQuery,
+  useGetTriggersQuery,
+} from '@/redux/services/trigger'
 import { useGetReactionsQuery } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
-import { setTrireaName, UserState } from '@/redux/features/userSlice'
+import { UserState } from '@/redux/features/userSlice'
 
 export const TrireaForm = () => {
-  const { register } = useForm<TrireaFormRequest>({
+  const { register, handleSubmit } = useForm<TrireaFormRequest>({
     reValidateMode: 'onSubmit',
   })
 
@@ -23,6 +26,8 @@ export const TrireaForm = () => {
   const triggers = useGetTriggersQuery()
   const reactions = useGetReactionsQuery()
   const [createTrirea] = useCreateTrireaMutation()
+  const triggerInputs = useGetTriggerQuery(14)
+  const allTriggerInputs = useGetTriggerInputsQuery()
 
   const setIsShowing = () => {
     console.log('close modal')
@@ -32,14 +37,9 @@ export const TrireaForm = () => {
     createTrirea(data)
   }
 
-  const setName = () => {
-    dispatch(setTrireaName({ name: 'trirea' }))
-  }
-
-  console.log('services', services.data)
-  console.log('trigger', triggers.data)
-  console.log('reactions', reactions.data)
-
+  console.log('stateData', stateData)
+  console.log('triggerInputs', triggerInputs.data)
+  console.log('allTriggerInputs', allTriggerInputs.data)
   return (
     <div
       onClick={() => {
@@ -56,7 +56,7 @@ export const TrireaForm = () => {
           onClick={(e) => {
             e.stopPropagation()
           }}
-          className="relative w-1/2 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
+          className="relative bottom-4 w-3/4 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
         >
           <div className="flex items-center justify-between rounded-t border-b p-4">
             <h3 className="text-xl font-semibold text-gray-900">
@@ -73,68 +73,86 @@ export const TrireaForm = () => {
               <HiX size={32} />
             </button>
           </div>
-          <div className="space-y-6 p-6">
-            <div className="w-1/2 space-y-4">
-              <Input<TrireaFormRequest>
-                id="name"
-                label="Name"
-                placeholder="trirea"
-                register={register}
-                fieldName="name"
-              />
-              <Input<TrireaFormRequest>
-                id="trigger"
-                inputType="number"
-                label="Trigger ID"
-                placeholder="123"
-                register={register}
-                fieldName="triggerId"
-              />
-              <Input<TrireaFormRequest>
-                id="reaction"
-                inputType="number"
-                label="Reaction ID"
-                placeholder="123"
-                register={register}
-                fieldName="reactionId"
-              />
-              <Input<TrireaFormRequest>
-                id="enabled"
-                label="Enable"
-                placeholder="true"
-                register={register}
-                fieldName="enabled"
-              />
-              <Input<TrireaFormRequest>
-                id="triggerInputs"
-                label="Trigger Inputs"
-                placeholder="lorem ipsum"
-                register={register}
-                fieldName="triggerInputs"
-              />
-              <Select<TrireaFormRequest>
-                id="triggerType"
-                label="Trigger Type"
-                placeholder="Enabled"
-                register={register}
-                fieldName="enabled"
-              >
-                <option value="true">true</option>
-                <option value="false">false</option>
-              </Select>
-              <Input<TrireaFormRequest>
-                id="reactionInputs"
-                label="Reaction Inputs"
-                placeholder="14h00"
-                register={register}
-                fieldName="reactionInputs"
-              />
+          <form onSubmit={handleSubmit(submitTrirea)} className="space-y-6 p-6">
+            <div className="flex space-x-16">
+              <div className="w-1/3 space-y-4">
+                <Input<TrireaFormRequest>
+                  id="name"
+                  label="Name"
+                  placeholder="trirea"
+                  register={register}
+                  fieldName="name"
+                />
+                <Select<TrireaFormRequest>
+                  id="trigger"
+                  label="Trigger"
+                  placeholder="Choose a trigger"
+                  register={register}
+                  fieldName="triggerId"
+                >
+                  {triggers.data?.map((trigger) => (
+                    <option key={trigger.id} value={trigger.id}>
+                      {trigger.name}
+                    </option>
+                  ))}
+                </Select>
+                <Select<TrireaFormRequest>
+                  id="reaction"
+                  label="Reaction"
+                  placeholder="Choose a reaction"
+                  register={register}
+                  fieldName="reactionId"
+                >
+                  {reactions.data?.map((reaction) => (
+                    <option key={reaction.id} value={reaction.id}>
+                      {reaction.name}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div className="w-1/3 space-y-4">
+                <Select<TrireaFormRequest>
+                  id="triggerType"
+                  label="Trigger Type"
+                  placeholder="Enabled"
+                  register={register}
+                  fieldName="enabled"
+                >
+                  <option value="true">true</option>
+                  <option value="false">false</option>
+                </Select>
+                <Input<TrireaFormRequest>
+                  id="reactionInputs"
+                  label="Reaction Inputs"
+                  placeholder="14h00"
+                  register={register}
+                  fieldName="reactionInputs"
+                />
+              </div>
+              <div className="w-1/3 space-y-4">
+                <Select<TrireaFormRequest>
+                  id="triggerType"
+                  label="Trigger Type"
+                  placeholder="Enabled"
+                  register={register}
+                  fieldName="enabled"
+                >
+                  <option value="true">true</option>
+                  <option value="false">false</option>
+                </Select>
+                <Input<TrireaFormRequest>
+                  id="reactionInputs"
+                  label="Reaction Inputs"
+                  placeholder="14h00"
+                  register={register}
+                  fieldName="reactionInputs"
+                />
+              </div>
             </div>
-            <div className="items center flex w-full justify-between">
-              <PageIndicator current={1} pages={2} />
-              <MainButton text="Next" />
+            <div className="items center flex w-full justify-end">
+              <MainButton submitter text="Create" />
             </div>
-          </div>
+          </form>
         </button>
       </div>
     </div>
