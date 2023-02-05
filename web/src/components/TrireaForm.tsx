@@ -4,6 +4,7 @@ import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
 import { Trirea, TrireaFormRequest } from '@/types/Trirea'
 import { Select } from '@/components/Select'
+import { useGetServiceQuery, useGetServicesQuery } from '@/redux/services/service'
 import {
   useGetTriggerQuery,
   useGetTriggersQuery,
@@ -13,6 +14,12 @@ import {
   useGetReactionsQuery,
 } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
+import { UserState } from '@/redux/features/userSlice'
+import { useEffect, useState } from 'react'
+import { getOauthTwitterUrl } from '@/utils/oauth/twitter'
+import { LoginWithButton } from '@/components/LoginWithButton'
+import { BsTwitter } from 'react-icons/bs'
+import { useMeQuery } from '@/redux/services/user'
 import { DateTimeInput } from '@/components/DateTimeInput'
 
 export const TrireaForm = () => {
@@ -27,12 +34,59 @@ export const TrireaForm = () => {
     },
     reValidateMode: 'onSubmit',
   })
-
+  const watchTrigger = watch('triggerId')
+  const watchReaction = watch('reactionId')
+  const stateData = useSelector((state: UserState) => state.user)
+  const dispatch = useDispatch()
+  const services = useGetServicesQuery()
   const triggers = useGetTriggersQuery()
   const reactions = useGetReactionsQuery()
   const selectedTrigger = useGetTriggerQuery(watch('triggerId'))
   const selectedReaction = useGetReactionQuery(watch('reactionId'))
   const [createTrirea] = useCreateTrireaMutation()
+
+  const [needTriggerOauth, setTriggerNeedOauth] = useState(false)
+  const [needReactionOauth, setReactionNeedOauth] = useState(false)
+
+  useEffect(() => {
+    if (!watchTrigger) {
+      return
+    }
+    const triggerChoosen = Number(watchTrigger)
+    triggers.data?.forEach((trigger) => {
+      if (trigger.id === triggerChoosen) {
+        services.data?.forEach((service) => {
+          if (service.id === trigger.serviceId) {
+            if (service.requiredSubscription && !service.subscribed) {
+              setTriggerNeedOauth(true)
+            } else {
+              setTriggerNeedOauth(false)
+            }
+          }
+        })
+      }
+    })
+  }, [watchTrigger])
+
+  useEffect(() => {
+    if (!watchReaction) {
+      return
+    }
+    const reactionChoosen = Number(watchReaction)
+    reactions.data?.forEach((reaction) => {
+      if (reaction.id === reactionChoosen) {
+        services.data?.forEach((service) => {
+          if (service.id === reaction.serviceId) {
+            if (service.requiredSubscription && !service.subscribed) {
+              setReactionNeedOauth(true)
+            } else {
+              setReactionNeedOauth(false)
+            }
+          }
+        })
+      }
+    })
+  }, [watchReaction])
 
   const setIsShowing = () => {
     console.log('close modal')
@@ -80,9 +134,6 @@ export const TrireaForm = () => {
     createTrirea(data)
   }
 
-  console.log('triggers', reactions.data)
-  console.log('oue', watch())
-
   return (
     <div
       onClick={() => {
@@ -101,8 +152,7 @@ export const TrireaForm = () => {
           }}
           className="relative bottom-4 w-3/4 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
         >
-          <div className="flex items-center justify-between rounded-t border-b p-4">
-            <h3 className="text-xl font-semibold text-gray-900">
+          <div className="flex items-center justify-bet ray-900">
               Create a trirea
             </h3>
             <button
@@ -208,7 +258,20 @@ export const TrireaForm = () => {
               </div>
             </div>
             <div className="items center flex w-full justify-end">
-              <MainButton submitter text="Create" />
+              {(needTriggerOauth || needReactionOauth) && (
+                <LoginWithButton
+                  text="Need to connect"
+                  url={getOauthTwitterUrl()}
+                  className="text-xl mr-5 disabled:bg-gray-400 items-center flex space-x-4 font-bold py-4 px-8 transition ease-in-out rounded-xl shadow-md"
+                >
+                  <BsTwitter />
+                </LoginWithButton>
+              )}
+              <MainButton
+                submitter
+                disabled={needTriggerOauth || needReactionOauth}
+                text="Create"
+              />
             </div>
           </form>
         </button>

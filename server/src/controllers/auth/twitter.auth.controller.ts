@@ -6,7 +6,6 @@ import {
   getTwitterUser,
 } from "~~/services/twitter-session.service";
 import { prisma } from "~/lib/prisma";
-import config from "config";
 import { generateToken } from "~/controllers/auth/auth.controller";
 
 export const twitterOAuthHandler = async (
@@ -51,6 +50,23 @@ export const twitterOAuthHandler = async (
       provider: "twitter",
       twitter_id: id,
     },
+  });
+
+  await prisma.userService.upsert({
+    where: {
+      userId_serviceId: {
+        userId: user.id,
+        serviceId: 5,
+      },
+    },
+    update: {
+      userId: user.id,
+      serviceId: 5,
+    },
+    create: {
+      userId: user.id,
+      serviceId: 5,
+    }
   });
 
   const token = await generateToken(user, res);
