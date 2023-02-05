@@ -47,7 +47,9 @@ export const Select = <TFormValues extends FieldValues>({
           className="relative mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
           aria-label="Default select example"
         >
-          <option selected>{placeholder}</option>
+          <option selected disabled hidden value="">
+            {placeholder}
+          </option>
           {children}
         </select>
       </label>
