@@ -23,32 +23,32 @@ const dummyService = {
 }
 
 const dummyTriggerInput: TriggerInputType = {
-  name: 'input1',
-  type: 'string',
+  name: 'input2',
+  type: 'number',
   triggerId: 1,
   mandatory: true,
 }
 
 const dummyTrigger: Trigger = {
-  name: 'Trigger1',
+  name: 'Trigger2',
   serviceId: 1,
   inputs: [
     {
       name: 'input1',
       type: 'string',
-      triggerId: 1,
+      triggerId: 2,
       mandatory: true,
     },
     {
       name: 'input2',
       type: 'number',
-      triggerId: 1,
+      triggerId: 2,
       mandatory: false,
     },
     {
       name: 'input3',
       type: 'date',
-      triggerId: 1,
+      triggerId: 2,
       mandatory: false,
     },
   ],
