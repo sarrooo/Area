@@ -17,7 +17,9 @@ import {
   clearReactionInputsReducer,
   removeTriggerInputReducer,
   removeReactionInputReducer,
+  fillTrireasReducer,
 } from '@/redux/features/trireaReducers'
+import { trireaApi } from '@/redux/services/trirea'
 
 export interface UserState {
   user: User | null

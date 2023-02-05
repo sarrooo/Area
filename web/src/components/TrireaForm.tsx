@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { HiX } from 'react-icons/hi'
 import { MainButton } from '@/components/MainButton'
@@ -14,9 +14,18 @@ import {
 import { useGetReactionsQuery } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
 import { UserState } from '@/redux/features/userSlice'
+import { useEffect } from 'react'
 
 export const TrireaForm = () => {
   const { register, handleSubmit, watch } = useForm<TrireaFormRequest>({
+    defaultValues: {
+      name: '',
+      triggerId: 1,
+      reactionId: 1,
+      triggerInputs: [],
+      reactionInputs: [],
+      enabled: true,
+    },
     reValidateMode: 'onSubmit',
   })
 
@@ -37,11 +46,6 @@ export const TrireaForm = () => {
     createTrirea(data)
   }
 
-  console.log('react', reactions.data)
-  // console.log('stateData', stateData)
-  // console.log('trigger', triggers.data)
-  // console.log('triggerInputs', triggerInputs.data)
-  // console.log('allTriggerInputs', allTriggerInputs.data)
   console.log(watch())
   return (
     <div
@@ -119,16 +123,18 @@ export const TrireaForm = () => {
                 {triggers.data &&
                   triggers.data[watch('triggerId') - 1] &&
                   triggers.data[watch('triggerId') - 1].inputs !== undefined &&
-                  triggers.data[watch('triggerId') - 1].inputs.map((input) => (
-                    <Input<TrireaFormRequest>
-                      id={input.name}
-                      label={input.name}
-                      inputType={input.type === 'string' ? 'text' : 'number'}
-                      placeholder={input.name}
-                      register={register(`triggerInputs.${input.name}.value`)}
-                      fieldName="triggerInputs"
-                    />
-                  ))}
+                  triggers.data[watch('triggerId') - 1].inputs.map(
+                    (input, index = 0) => (
+                      <Input<TrireaFormRequest>
+                        id={input.name}
+                        label={input.name}
+                        inputType={input.type === 'string' ? 'text' : 'number'}
+                        placeholder={input.name}
+                        register={register}
+                        fieldName="triggerInputs"
+                      />
+                    )
+                  )}
               </div>
               <div className="w-1/3 space-y-4">
                 <p>Reaction Inputs</p>
