@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
-import { BsGithub } from 'react-icons/bs'
+import { BsGithub, BsTwitter } from 'react-icons/bs'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
@@ -13,6 +13,7 @@ import { LoginRequest } from '@/types/Login'
 import { emailRegex } from '@/utils/regex'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
+import { getOauthTwitterUrl } from '@/utils/oauth/twitter'
 
 const Login = () => {
   const {
@@ -103,6 +104,13 @@ const Login = () => {
             className="w-3/4"
           >
             <BsGithub />
+          </LoginWithButton>
+          <LoginWithButton
+            text="Twitter"
+            url={getOauthTwitterUrl()}
+            className="w-3/4"
+          >
+            <BsTwitter />
           </LoginWithButton>
         </div>
       </div>
