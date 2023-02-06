@@ -267,7 +267,7 @@ export const searchTrirea = async (req: Request, res: Response) => {
         throw new BadRequestException("You search for others trireas");
     const trireas: Trirea[] = await prisma.trirea.findMany({
         where: {
-            userId: userId ? userId : 1,
+            userId: req.user.id ? req.user.id : undefined,
             enabled: active ? active : true
         },
         take: max

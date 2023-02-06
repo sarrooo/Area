@@ -108,7 +108,7 @@ export const Dashboard = () => {
   return (
     <div className="space-y-16 px-32 py-16">
       <h1 className="text-4xl font-bold">Dashboard</h1>
-      <div className="flex space-x-8">
+      {/* <div className="flex space-x-8">
         <button
           type="button"
           onClick={createService}
@@ -144,7 +144,7 @@ export const Dashboard = () => {
         >
           create trigger input
         </button>
-      </div>
+      </div> */}
       <div className="grid grid-cols-4 gap-y-8 gap-x-8">
         <CreateTrireaButton />
         {isError && toast.error('Something went wrong')}

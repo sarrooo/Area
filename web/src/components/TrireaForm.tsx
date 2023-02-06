@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
 import { BsTwitter } from 'react-icons/bs'
@@ -119,7 +120,9 @@ export const TrireaForm = () => {
       })
     data.triggerId = Number(data.triggerId)
     data.reactionId = Number(data.reactionId)
-    createTrirea(data)
+    createTrirea(data).then(() => {
+      toast.info('Trirea created !')
+    })
   }
 
   return (
