@@ -11,6 +11,7 @@ export const getOauthTwitterUrl = () => {
     scope: [
       'users.read',
       'tweet.read',
+      'like.write',
       'follows.read',
       'follows.write',
       'offline.access',

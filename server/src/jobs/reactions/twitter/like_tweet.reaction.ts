@@ -43,6 +43,7 @@ const likeTweet = async (tweetID: string, userID: string, twitterToken: string):
         return data.data;
     } catch (err: any) {
         Logging.warning('Reaction like_tweet fail: fail to like tweet to target' + err);
+        Logging.warning(err.response.data);
         return
     }
 }

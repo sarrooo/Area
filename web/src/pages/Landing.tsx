@@ -14,7 +14,7 @@ const Landing = () => {
       <div className="space-y-16 p-24">
         <h1 className="text-6xl font-bold">Create your own universe</h1>
         <MainButton text="Get started" callback={register} />
-        <p className="text-lg w-2/3">
+        <p className="w-2/3 text-lg">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
           odio justo, eleifend vestibulum iaculis eget, ultrices ut dui. Etiam
           in ante ac magna lobortis placerat ac at eros. Nulla iaculis imperdiet

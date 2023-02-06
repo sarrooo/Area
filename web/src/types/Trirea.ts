@@ -8,25 +8,28 @@ export type TrireaTriggerInput = {
 export type TrireaReactionInput = {
   id?: number
   value?: string
-  linkedToId?: number
   trireaId: number
+  triggerOutputTypeId?: number
   reactionInputTypeId: number
 }
 
-export interface TrireaResponse {
-  id?: number
-  createdAt?: Date
-  updatedAt?: Date
-  prevTriggerData?: string
-  enabled: boolean
-  userId?: number
+export type TrireaFormRequest = {
+  name: string
   triggerId: number
   reactionId: number
+  enabled: boolean
   triggerInputs: TrireaTriggerInput[]
   reactionInputs: TrireaReactionInput[]
+  triggerInput1?: string
+  triggerInput2?: string
+  triggerInput3?: string
+  reactionInput1?: string
+  reactionInput2?: string
+  reactionInput3?: string
 }
 
-export interface TrireaRequest {
+export type Trirea = {
+  name: string
   id?: number
   createdAt?: Date
   updatedAt?: Date

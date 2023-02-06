@@ -17,7 +17,7 @@ export const createReactionSchema = object({
 // Read Reaction : GET /reaction/:id
 export const readReactionSchema = object({
     params: object({
-        id: number({
+        id: string({
             required_error: "Id is required",
         }),
     }),

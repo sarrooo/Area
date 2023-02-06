@@ -7,13 +7,11 @@ import {
 } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 
-type InputProps<TFormValues extends FieldValues> = {
+type DateTimeInputProps<TFormValues extends FieldValues> = {
   id: string
   label: string
   className?: string
-  placeholder?: string
   required?: boolean
-  inputType?: 'text' | 'password' | 'number'
 
   register: UseFormRegister<TFormValues>
   fieldName: Path<TFormValues>
@@ -21,30 +19,30 @@ type InputProps<TFormValues extends FieldValues> = {
   errors?: Partial<FieldErrors<TFormValues>>
 }
 
-export const Input = <TFormValues extends FieldValues>({
+export const DateTimeInput = <TFormValues extends FieldValues>({
   id,
   label,
   className = '',
-  placeholder = 'input',
-  inputType = 'text',
+  required,
+
   register,
   fieldName,
   rules,
   errors,
-}: InputProps<TFormValues>) => {
+}: DateTimeInputProps<TFormValues>) => {
   return (
     <div className={`p-2 ${className}`}>
       <label
-        htmlFor={id}
         className="block text-left text-sm font-medium text-gray-900 "
+        htmlFor="at_time.time"
       >
         {label}
         <input
-          {...register(fieldName, rules)}
-          type={inputType}
-          id={id}
           className="relative mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          placeholder={placeholder}
+          required={required}
+          {...register(fieldName, rules)}
+          id={id}
+          type="datetime-local"
         />
       </label>
       {errors && (

@@ -12,6 +12,10 @@ import {
 import storage from 'redux-persist/lib/storage'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import { userApi } from '@/redux/services/user'
+import { trireaApi } from '@/redux/services/trirea'
+import { triggerApi } from '@/redux/services/trigger'
+import { reactionApi } from '@/redux/services/reaction'
+import { serviceApi } from '@/redux/services/service'
 import userSlice from '@/redux/features/userSlice'
 import { api } from '@/redux/services/api'
 
@@ -37,7 +41,12 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(userApi.middleware),
+    })
+      .concat(userApi.middleware)
+      .concat(trireaApi.middleware)
+      .concat(triggerApi.middleware)
+      .concat(reactionApi.middleware)
+      .concat(serviceApi.middleware),
 })
 
 setupListeners(store.dispatch)

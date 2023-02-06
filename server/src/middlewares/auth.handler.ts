@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import {verify} from "jsonwebtoken";
 import * as process from "process";
 import {prisma} from "~/lib/prisma";
-import { User } from '@prisma/client';
 
 dotenv.config();
 
@@ -41,7 +40,7 @@ export const verifyToken = async (
     const { password, ...UserWithoutPassword } = user;
     req.user = UserWithoutPassword;
   } catch (_) {
-    throw new ForbiddenRequestException("Access denied");
+    throw new UnauthorizedRequestException("Access denied clown");
   }
   next();
 };

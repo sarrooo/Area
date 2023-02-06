@@ -3,7 +3,7 @@ import {Router} from 'express';
 import {validate} from "~/middlewares/validate";
 import { createTriggerInputTypeSchema, deleteTriggerInputTypeSchema, readTriggerInputTypeSchema, searchTriggerInputTypeSchema, updateTriggerInputTypeSchema } from '~/schemas/trigger_input.schema';
 import { verifyToken } from '~/middlewares/auth.handler';
-import { createTriggerInputType, deleteTriggerInputType, readTriggerInputType, updateTriggerInputType } from '~/controllers/trigger_input.controller';
+import { createTriggerInputType, deleteTriggerInputType, readTriggerInputType, searchTriggerInputType, updateTriggerInputType } from '~/controllers/trigger_input.controller';
 
 dotenv.config();
 
@@ -18,6 +18,6 @@ triggerInputRoutes.post('/:id', verifyToken, validate(updateTriggerInputTypeSche
 // Delete Trigger Input Type : POST /input/trigger/delete/:id
 triggerInputRoutes.post('/delete/:id', verifyToken, validate(deleteTriggerInputTypeSchema), deleteTriggerInputType);
 // Search Trigger Input Type : GET /input/trigger
-triggerInputRoutes.get('/', validate(searchTriggerInputTypeSchema), deleteTriggerInputType);
+triggerInputRoutes.get('/', validate(searchTriggerInputTypeSchema), searchTriggerInputType);
 
 export default triggerInputRoutes;
