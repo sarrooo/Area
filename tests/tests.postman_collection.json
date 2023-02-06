@@ -1,0 +1,429 @@
+{
+	"info": {
+		"_postman_id": "4b5059e3-ec81-45a4-8490-d9b694492177",
+		"name": "tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12181752"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\":\"maxime\",\n    \"last_name\":\"premont\",\n    \"email\":\"maxime.premont@gmail.com\",\n    \"password\": \"test123456\",\n    \"password_confirmation\": \"test123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"maxime.premont@gmail.com\",\n    \"password\": \"test123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/auth/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Trirea",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzU0NDc0NTksImV4cCI6MTY3NzI0NzQ1OX0.y1M1JorhQV1VtiDvz4URh1mlqDun8myYZGLNuOJzmc8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"enabled\":true,\n    \"name\":\"test\",\n    \"triggerId\":1,\n    \"reactionId\":1,\n    \"triggerInputs\": [],\n    \"reactionInputs\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/trirea",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"trirea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Trireas",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/trirea",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"trirea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Trireas With user",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/trirea",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"trirea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Trireas With max",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"max\": 5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/trirea",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"trirea"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Trirea",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/trirea/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"trirea",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Services",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/service",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read Service",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/service/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"service",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "About.json",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/about.json",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"about.json"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Me",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZmlyc3RfbmFtZSI6Im1heGltZSIsImxhc3RfbmFtZSI6InByZW1vbnQiLCJpYXQiOjE2NzQ1NjUzMDgsImV4cCI6MTY3NDU3NTMwN30.ZWffoOSBJjz6geN5uszibrwcLdIW5qbYaw3BFeOGdac",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/me",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"me"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
