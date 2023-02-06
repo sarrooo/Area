@@ -8,8 +8,8 @@ export type TrireaTriggerInput = {
 export type TrireaReactionInput = {
   id?: number
   value?: string
-  linkedToId?: number
   trireaId: number
+  triggerOutputTypeId?: number
   reactionInputTypeId: number
 }
 

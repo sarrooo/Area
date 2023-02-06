@@ -1,25 +1,17 @@
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
+import { BsTwitter } from 'react-icons/bs'
 import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
-import { Trirea, TrireaFormRequest } from '@/types/Trirea'
+import { TrireaFormRequest } from '@/types/Trirea'
 import { Select } from '@/components/Select'
-import { useGetServiceQuery, useGetServicesQuery } from '@/redux/services/service'
-import {
-  useGetTriggerQuery,
-  useGetTriggersQuery,
-} from '@/redux/services/trigger'
-import {
-  useGetReactionQuery,
-  useGetReactionsQuery,
-} from '@/redux/services/reaction'
+import { useGetServicesQuery } from '@/redux/services/service'
+import { useGetTriggersQuery } from '@/redux/services/trigger'
+import { useGetReactionsQuery } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
-import { UserState } from '@/redux/features/userSlice'
-import { useEffect, useState } from 'react'
 import { getOauthTwitterUrl } from '@/utils/oauth/twitter'
 import { LoginWithButton } from '@/components/LoginWithButton'
-import { BsTwitter } from 'react-icons/bs'
-import { useMeQuery } from '@/redux/services/user'
 import { DateTimeInput } from '@/components/DateTimeInput'
 
 export const TrireaForm = () => {
@@ -36,13 +28,9 @@ export const TrireaForm = () => {
   })
   const watchTrigger = watch('triggerId')
   const watchReaction = watch('reactionId')
-  const stateData = useSelector((state: UserState) => state.user)
-  const dispatch = useDispatch()
   const services = useGetServicesQuery()
   const triggers = useGetTriggersQuery()
   const reactions = useGetReactionsQuery()
-  const selectedTrigger = useGetTriggerQuery(watch('triggerId'))
-  const selectedReaction = useGetReactionQuery(watch('reactionId'))
   const [createTrirea] = useCreateTrireaMutation()
 
   const [needTriggerOauth, setTriggerNeedOauth] = useState(false)
@@ -97,7 +85,7 @@ export const TrireaForm = () => {
       data.triggerInputs.push({
         value: data.triggerInput1,
         trireaId: 1,
-        triggerInputTypeId: 1,
+        triggerInputTypeId: 3,
       })
     if (data.triggerInput2)
       data.triggerInputs.push({
@@ -109,7 +97,7 @@ export const TrireaForm = () => {
       data.triggerInputs.push({
         value: data.triggerInput3,
         trireaId: 1,
-        triggerInputTypeId: 1,
+        triggerInputTypeId: 2,
       })
     if (data.reactionInput1)
       data.reactionInputs.push({
@@ -121,16 +109,16 @@ export const TrireaForm = () => {
       data.reactionInputs.push({
         value: data.reactionInput2,
         trireaId: 1,
-        reactionInputTypeId: 1,
+        reactionInputTypeId: 2,
       })
     if (data.reactionInput3)
       data.reactionInputs.push({
         value: data.reactionInput3,
         trireaId: 1,
-        reactionInputTypeId: 1,
+        reactionInputTypeId: 3,
       })
-    data.triggerId = parseInt(data.triggerId)
-    data.reactionId = parseInt(data.reactionId)
+    data.triggerId = Number(data.triggerId)
+    data.reactionId = Number(data.reactionId)
     createTrirea(data)
   }
 
@@ -152,9 +140,8 @@ export const TrireaForm = () => {
           }}
           className="relative bottom-4 w-3/4 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
         >
-          <div className="flex items-center justify-bet ray-900">
-              Create a trirea
-            </h3>
+          <div className="justify-bet ray-900 flex items-center">
+            <h3 className="px-4 text-xl font-bold">Create a trirea</h3>
             <button
               onClick={() => {
                 setIsShowing()
@@ -262,7 +249,7 @@ export const TrireaForm = () => {
                 <LoginWithButton
                   text="Need to connect"
                   url={getOauthTwitterUrl()}
-                  className="text-xl mr-5 disabled:bg-gray-400 items-center flex space-x-4 font-bold py-4 px-8 transition ease-in-out rounded-xl shadow-md"
+                  className="mr-5 flex items-center space-x-4 rounded-xl py-4 px-8 text-xl font-bold shadow-md transition ease-in-out disabled:bg-gray-400"
                 >
                   <BsTwitter />
                 </LoginWithButton>

@@ -17,9 +17,7 @@ import {
   clearReactionInputsReducer,
   removeTriggerInputReducer,
   removeReactionInputReducer,
-  fillTrireasReducer,
 } from '@/redux/features/trireaReducers'
-import { trireaApi } from '@/redux/services/trirea'
 
 export interface UserState {
   user: User | null
@@ -105,12 +103,6 @@ export const userSlice = createSlice({
       .addMatcher(userApi.endpoints.logout.matchRejected, () => {
         return initialState
       })
-    // .addMatcher(
-    //   trireaApi.endpoints.getTrireas.matchFulfilled,
-    //   (state, action) => {
-    //     fillTrireasReducer(state, action)
-    //   }
-    // )
   },
 })
 

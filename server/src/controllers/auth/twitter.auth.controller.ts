@@ -56,16 +56,18 @@ export const twitterOAuthHandler = async (
     where: {
       userId_serviceId: {
         userId: user.id,
-        serviceId: 5,
+        serviceId: 2,
       },
     },
     update: {
       userId: user.id,
-      serviceId: 5,
+      serviceId: 2,
+      RefreshToken: access_token,
     },
     create: {
       userId: user.id,
-      serviceId: 5,
+      serviceId: 2,
+      RefreshToken: access_token,
     }
   });
 

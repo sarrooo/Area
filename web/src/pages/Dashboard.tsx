@@ -1,6 +1,4 @@
-import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
-import { useEffect } from 'react'
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
 import {
@@ -13,7 +11,6 @@ import {
   useCreateTriggerMutation,
 } from '@/redux/services/trigger'
 import { useCreateReactionMutation } from '@/redux/services/reaction'
-import { selectUser } from '@/redux/features/userSlice'
 import { Trirea } from '@/types/Trirea'
 import { Trigger, TriggerInputType } from '@/types/Trigger'
 
@@ -70,7 +67,6 @@ const dummyTrirea = {
 }
 
 export const Dashboard = () => {
-  const myData = useSelector(selectUser)
   const { data: trireas, isLoading, isError } = useGetTrireasQuery()
   const [createServiceMutation] = useCreateServiceMutation()
   const [createTriggerMutation] = useCreateTriggerMutation()

@@ -72,7 +72,7 @@ export const createTrirea = async (req: Request, res: Response) => {
         const newInput: TrireaReactionInput = await prisma.trireaReactionInput.create({
             data: {
                 value: reaction.value,
-                triggerOutputTypeId: reaction.triggerOutputTypeId ? reaction.triggerOutputTypeId : -1,
+                triggerOutputTypeId: reaction.triggerOutputTypeId ? reaction.triggerOutputTypeId : 1,
                 trireaId: newTrirea.id,
                 reactionInputTypeId: reaction.reactionInputTypeId
             }
