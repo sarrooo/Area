@@ -91,6 +91,8 @@ export const Dashboard = () => {
     createTriggerInputMutation(dummyTriggerInput)
   }
 
+  console.log(trireas)
+
   // const setTrireas = async () => {
   //   try {
   //     await getTrireasMutation().unwrap()
