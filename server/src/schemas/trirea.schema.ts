@@ -20,9 +20,7 @@ export const createTrireaSchema = object({
         triggerInputs: array(object({
             id: number().optional(),
             value: string().optional(),
-            trireadId: number({
-                required_error: "Trirea Id is required in trigger inputs"
-            }),
+            trireadId: number().optional(),
             triggerInputTypeId: number({
                 required_error: "Trigger Input Type Id is required in trigger inputs"
             })
@@ -33,9 +31,7 @@ export const createTrireaSchema = object({
             triggerOutputTypeId: string({
                 required_error: "trigger Output Id is required in reaction inputs"
             }),
-            trireaId: number({
-                required_error: "Trirea Id is required in reaction inputs"
-            }),
+            trireaId: number().optional(),
             reactionInputTypeId: number({
                 required_error: "Reaction Input Type Id is required in reaction inputs"
             })
