@@ -7,9 +7,15 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     const newTweetFromInputs = await getInputs(inputs);
 
     if (!newTweetFromInputs.repository) {
-        Logging.warning('Trigger warning: No repository provided');
+        Logging.warning('Trigger on commit fail: No repository provided');
         return false;
     }
+
+    if (userServicesTrigger.length === 0 || !userServicesTrigger[0].RefreshToken) {
+        Logging.warning('Trigger on commit fail: No user service token provided');
+        return false;
+    }
+
     return false;
 };
 
