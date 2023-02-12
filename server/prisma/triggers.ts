@@ -114,6 +114,17 @@ export const triggersInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
         }
     },
     {
+        name: 'on_commit.owner',
+        description: 'Owner of the repository',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'on_commit',
+            }
+        }
+    },
+    {
         name: 'new_tweet_from.username',
         description: 'Username to watch',
         type: 'String',
