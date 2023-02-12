@@ -1,4 +1,4 @@
-import {TrireaInputs} from "~/jobs/handler.job";
+import {saveTriggerData, TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 import {each} from "async";
 import Logging from "~/lib/logging";
@@ -17,6 +17,21 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         return false;
     }
 
+    const githubToken = userServicesTrigger[0].RefreshToken;
+    const data = await getCommitFromARepository(newTweetFromInputs.repository, newTweetFromInputs.owner, githubToken);
+    if (!data) {
+        Logging.warning('Trigger on commit fail: fail to fetch commit');
+        return false;
+    }
+    if (!prevTriggerData) {
+        await saveTriggerData(trireaId, data);
+        return false;
+    }
+    if (prevTriggerData !== data) {
+        await saveTriggerData(trireaId, data);
+        return true
+    }
+
     return false;
 };
 
@@ -31,7 +46,6 @@ const getCommitFromARepository = async (repository: string, owner: string, githu
             });
         return data;
     } catch (err: any) {
-        Logging.warning('Trigger on commit fail: fail to fetch commit');
         return false;
     }
 }
