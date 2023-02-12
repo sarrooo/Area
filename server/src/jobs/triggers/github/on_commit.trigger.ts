@@ -20,8 +20,11 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 };
 
 const getInputs = async (inputs: TrireaInputs[]): Promise<OnCommitInputs> => {
-    const newTweetFromInputs : OnCommitInputs = {repository: ""};
+    const newTweetFromInputs : OnCommitInputs = {owner:"", repository: ""};
     await each(inputs, async (input) => {
+        if (input.triggerInputType.name === 'on_commit.owner' && input.value) {
+            newTweetFromInputs.owner = input.value;
+        }
         if (input.triggerInputType.name === 'on_commit.repository' && input.value) {
             newTweetFromInputs.repository = input.value;
         }
@@ -30,5 +33,6 @@ const getInputs = async (inputs: TrireaInputs[]): Promise<OnCommitInputs> => {
 }
 
 type OnCommitInputs = {
+    owner: string;
     repository: string;
 }
