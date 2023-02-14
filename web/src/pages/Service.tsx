@@ -43,16 +43,16 @@ export const Service = () => {
         callback={test}
         className="fixed bottom-8 right-8"
       />
-      <div className="w-1/2 px-32 py-16  space-y-12">
+      <div className="w-1/2 space-y-12 px-32  py-16">
         <BackButton />
         <div className="space-y-4">
           <div className="flex justify-between">
             <h1 className="text-4xl font-bold">{service.name}</h1>
             <FollowButton isFollowing={service.isFollowing} />
           </div>
-          <p className="text-lg w-2/3">{service.description}</p>
+          <p className="w-2/3 text-lg">{service.description}</p>
         </div>
-        <div className="flex space-x-2 items-center">
+        <div className="flex items-center space-x-2">
           <AiFillEye size={32} className="text-red-300" />
           <h1 className="text-xl font-bold">Triggers</h1>
         </div>
@@ -67,8 +67,8 @@ export const Service = () => {
           )
         })}
       </div>
-      <div className="w-1/2 px-32 py-32 h-screen bg-primary-900 flex flex-col space-y-8">
-        <div className="flex space-x-2 items-center">
+      <div className="bg-primary-900 flex h-screen w-1/2 flex-col space-y-8 p-32">
+        <div className="flex items-center space-x-2">
           <IoMdSend size={32} className="text-white" />
           <h1 className="text-xl font-bold">Reactions</h1>
         </div>

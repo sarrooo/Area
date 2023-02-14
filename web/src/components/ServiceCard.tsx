@@ -28,7 +28,7 @@ export const ServiceCard = ({
   reactions,
 }: ServiceCardProps) => {
   return (
-    <div className="w-1/2 px-8 pb-8 pt-4 shadow-lg rounded-lg bg-white space-y-4">
+    <div className="w-1/2 space-y-4 rounded-lg bg-white px-8 pb-8 pt-4 shadow-lg">
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
         <FollowButton isFollowing={isFollowing} />

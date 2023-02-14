@@ -133,16 +133,10 @@ export const TrireaForm = () => {
       id="editUserModal"
       tabIndex={-1}
       aria-hidden="true"
-      className="h-modal fixed top-0 right-0 left-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 backdrop-blur-sm md:inset-0 md:h-full"
+      className="h-modal fixed inset-x-0 top-0 z-50 flex w-full items-center justify-center overflow-y-auto overflow-x-hidden p-4 backdrop-blur-sm md:inset-0 md:h-full"
     >
-      <div className="h-full w-full md:h-auto">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-          className="relative bottom-4 w-3/4 cursor-default rounded-lg bg-white shadow dark:bg-gray-700"
-        >
+      <div className="flex h-full w-full justify-center align-middle md:h-auto">
+        <div className="relative bottom-4 w-3/4 cursor-default rounded-lg bg-white shadow dark:bg-gray-700">
           <div className="justify-bet ray-900 flex items-center">
             <h3 className="px-4 text-xl font-bold">Create a trirea</h3>
             <button
@@ -264,7 +258,7 @@ export const TrireaForm = () => {
               />
             </div>
           </form>
-        </button>
+        </div>
       </div>
     </div>
   )

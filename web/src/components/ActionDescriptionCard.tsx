@@ -7,7 +7,7 @@ export const ActionDescriptionCard = ({
   outputs = [],
 }: triggerProps) => {
   return (
-    <div className="px-8 py-4 bg-white shadow-lg rounded-lg space-y-2">
+    <div className="space-y-2 rounded-lg bg-white px-8 py-4 shadow-lg">
       <h1 className="text-xl font-bold">{name}</h1>
       <h1 className="font-bold">
         Params:
