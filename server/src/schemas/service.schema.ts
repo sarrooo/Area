@@ -1,4 +1,4 @@
-import { number, object, string } from "zod";
+import { boolean, number, object, string } from "zod";
 
 // Create Service : POST /service
 export const createServiceSchema = object({
@@ -7,14 +7,54 @@ export const createServiceSchema = object({
         name: string({
             required_error: "Name is required",
         }),
-        description: string({
-            required_error: "Description is required",
-        }),
-        image: string({
-            required_error: "Image is required",
-        }),
-        requiredSubscription: string({
+        description: string().optional(),
+        image: string().optional(),
+        requiredSubscription: boolean({
             required_error: "Required Subscription is required",
         })
+    })
+});
+
+// Read Service : GET /service/:id
+export const readServiceSchema = object({
+    params: object({
+        id: string({
+            required_error: "Id is required",
+        }),
+    }),
+});
+
+// Update Service : POST /service/:id
+export const updateServiceSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+    body: object({
+        name: string({
+            required_error: "Name is required",
+        }),
+        description: string().optional(),
+        image: string().optional(),
+        requiredSubscription: boolean({
+            required_error: "Required Subscription is required",
+        }),
+    }),
+});
+
+// Delete Service : POST /service/delete/:id
+export const deleteServiceSchema = object({
+    params: object({
+        id: number({
+            required_error: "Id is required",
+        }),
+    }),
+});
+
+// Search Service : GET /service
+export const searchServiceSchema = object({
+    body: object({
+        max: number().optional()
     })
 });

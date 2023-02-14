@@ -18,7 +18,7 @@ export type TriggerInputType = {
 export type TrireaReactionInput = {
     id?: number;
     value?: string;
-    linkedToId?: number;
+    triggerOutputTypeId?: number;
     trireaId: number;
     reactionInputTypeId: number;
 }
@@ -74,7 +74,7 @@ export type Service = {
     image?: string;
     triggers?: Trigger[]
     reactions?: Reaction[]
-    requiredSubcription: boolean;
+    requiredSubscription: boolean;
     subscribed?: boolean;
 }
 
@@ -84,13 +84,20 @@ export type Trirea = {
     updatedAt?: Date;
     prevTriggerData?: string;
     enabled: boolean;
-    userId: number;
+    name: string;
+    userId?: number;
     triggerId: number;
     reactionId: number;
-    trigger?: Trigger;
-    reaction?: Reaction;
+    triggerInputs: TrireaTriggerInput[];
+    reactionInputs: TrireaReactionInput[];
 }
 
 export type searchMax = {
     max?: number;
+}
+
+export type searchInfos = {
+    max?: number;
+    active?: boolean;
+    userId?: number;
 }

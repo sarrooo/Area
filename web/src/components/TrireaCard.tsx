@@ -3,6 +3,7 @@ import { IoMdMore } from 'react-icons/io'
 import { BiEdit, BiTrash } from 'react-icons/bi'
 
 export type trireaProps = {
+  id: number
   name: string
   triggerName: string
   reactionName: string
@@ -10,6 +11,7 @@ export type trireaProps = {
 }
 
 export const TrireaCard = ({
+  id,
   name,
   triggerName,
   reactionName,
@@ -40,16 +42,17 @@ export const TrireaCard = ({
 
   return (
     <button
+      key={id.toString()}
       type="button"
       onClick={hideMenu}
-      className="bg-white text-left h-96 rounded-lg shadow-lg p-8 space-y-8 relative cursor-default"
+      className="relative h-96 cursor-default space-y-8 rounded-lg bg-white p-8 text-left shadow-lg"
     >
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
         <button
           type="button"
           onClick={toggleMenu}
-          className="text-black  rounded-full hover:bg-gray-100"
+          className="rounded-full  text-black hover:bg-gray-100"
         >
           <IoMdMore size={32} />
         </button>
@@ -64,22 +67,22 @@ export const TrireaCard = ({
       <button
         type="button"
         onClick={toggleActive}
-        className="relative inline-flex items-center cursor-pointer"
+        className="relative inline-flex cursor-pointer items-center"
       >
         <input
           id="active"
           type="checkbox"
           checked={activeState}
-          className="sr-only peer"
+          className="peer sr-only"
         />
-        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  peer-focus:ring-primary-900 dark:peer-focus:ring-primary-900 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-900" />
+        <div className="peer h-6 w-11 rounded-full  bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary-900 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-primary-900 dark:bg-gray-700 dark:peer-focus:ring-primary-900" />
       </button>
       {showMenu && (
-        <div className="absolute flex flex-col top-24 right-8 shadow-lg rounded-lg bg-white">
+        <div className="absolute top-24 right-8 flex flex-col rounded-lg bg-white shadow-lg">
           <button
             type="button"
             onClick={editTrirea}
-            className="flex space-x-4 items-center px-6 py-4 rounded-t-lg transition ease-in-out hover:bg-gray-300"
+            className="flex items-center space-x-4 rounded-t-lg px-6 py-4 transition ease-in-out hover:bg-gray-300"
           >
             <BiEdit size={18} />
             <span>edit</span>
@@ -87,7 +90,7 @@ export const TrireaCard = ({
           <button
             type="button"
             onClick={deleteTrirea}
-            className="flex space-x-4 items-center px-6 py-4 rounded-b-lg transition ease-in-out hover:bg-red-100"
+            className="flex items-center space-x-4 rounded-b-lg px-6 py-4 transition ease-in-out hover:bg-red-100"
           >
             <BiTrash size={18} />
             <span>delete</span>

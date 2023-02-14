@@ -8,4 +8,5 @@ export interface TwitterOauthToken {
 export interface TwitterUserResult {
     id: string;
     name: string;
+    username: string;
 }

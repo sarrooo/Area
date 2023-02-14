@@ -1,14 +1,17 @@
 import { BsGithub } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
+import { emailRegex, passwordRegex } from '@/utils/regex'
 import { Input } from '@/components/Input'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { MainButton } from '@/components/MainButton'
 import { RegisterRequest } from '@/types/Login'
-import { useRegisterMutation } from '@/services/user'
+import { useRegisterMutation } from '@/redux/services/user'
+import { getOauthGoogleUrl } from '@/utils/oauth/google'
+import { getOauthGithubUrl } from '@/utils/oauth/github'
 
 const Register = () => {
   const {
@@ -16,19 +19,16 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterRequest>({ reValidateMode: 'onSubmit' })
+  const navigate = useNavigate()
   const [registerMutation] = useRegisterMutation()
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
       await registerMutation(data).unwrap()
-      // TODO: slice registerUser(payload)
+      navigate('/dashboard')
     } catch (error) {
       toast.error('Invalid email or password')
     }
-  }
-
-  const test = () => {
-    console.log('test')
   }
 
   return (
@@ -73,7 +73,13 @@ const Register = () => {
               placeholder="john.doe@email.com"
               register={register}
               fieldName="email"
-              rules={{ required: 'Required field' }}
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: emailRegex,
+                  message: 'Invalid format email',
+                },
+              }}
               errors={errors}
             />
             <Input<RegisterRequest>
@@ -83,7 +89,31 @@ const Register = () => {
               placeholder="**********"
               register={register}
               fieldName="password"
-              rules={{ required: 'Required field' }}
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
+              errors={errors}
+            />
+            <Input<RegisterRequest>
+              id="password_confirmation"
+              label="Password Confirmation"
+              inputType="password"
+              placeholder="**********"
+              register={register}
+              fieldName="password_confirmation"
+              rules={{
+                required: 'Required field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
               errors={errors}
             />
             <div className="flex flex-rows justify-around pt-3">
@@ -98,10 +128,18 @@ const Register = () => {
           </form>
           <div className="my-8 h-[4px] w-full rounded-lg bg-gray-300" />
           <div className="flex flex-col justify-center items-center space-y-4">
-            <LoginWithButton text="Google" callback={test} className="w-3/4">
+            <LoginWithButton
+              text="Google"
+              url={getOauthGoogleUrl()}
+              className="w-3/4"
+            >
               <FcGoogle />
             </LoginWithButton>
-            <LoginWithButton text="Github" callback={test} className="w-3/4">
+            <LoginWithButton
+              text="Github"
+              url={getOauthGithubUrl()}
+              className="w-3/4"
+            >
               <BsGithub />
             </LoginWithButton>
           </div>

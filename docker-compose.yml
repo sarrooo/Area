@@ -1,15 +1,35 @@
 version: "3"
 services:
-  postgres:
+  db:
     image: postgres:14
-    container_name: postgres
+    container_name: area_db
     restart: always
-    environment:
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
+    env_file:
+      - "./postgres/.env"
     volumes:
       - area-db-data:/var/lib/postgresql/data
       - ./postgres:/etc/postgresql/14/main
+    ports:
+      - "5432:5432"
+  # server:
+  #   build: ./server
+  #   container_name: area_server
+  #   restart: always
+  #   ports:
+  #     - "8080:8080"
+  #   env_file:
+  #     - "./server/.env"
+  #   network_mode: "host" NOT USE THIS FOR MAC
+  #   depends_on:
+  #     - "db"
+  # web:
+  #   build: ./web
+  #   container_name: area_web
+  #   restart: always
+  #   env_file:
+  #     - "./web/.env"
+  #   network_mode: "host" NOT USE THIS FOR MAC
+  #   depends_on:
+  #     - "server"
 volumes:
   area-db-data:
