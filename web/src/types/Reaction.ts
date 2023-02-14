@@ -1,5 +1,5 @@
 export type ReactionInputType = {
-  id?: number
+  id: number
   name: string
   type: string
   description?: string

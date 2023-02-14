@@ -32,13 +32,9 @@ export const TrireaCard = ({
     if (showMenu) setShowMenu(false)
   }
 
-  const editTrirea = () => {
-    console.log('edit trirea')
-  }
+  const editTrirea = () => {}
 
-  const deleteTrirea = () => {
-    console.log('delete trirea')
-  }
+  const deleteTrirea = () => {}
 
   return (
     <button

@@ -21,7 +21,7 @@ export const CreateTrireaButton = () => {
     >
       <h1 className="text-2xl font-bold">Create a trirea</h1>
       <IoMdAdd size={48} />
-      {showForm && <TrireaForm />}
+      {showForm && <TrireaForm toggleModal={toggleForm} />}
     </div>
   )
 }
