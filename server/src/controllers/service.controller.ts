@@ -82,7 +82,8 @@ async function buildService(
       serviceId: service.id,
     },
   });
-  serviceTriggers.forEach(async (trigger: Trigger) => {
+  for (let i = 0; i < serviceTriggers.length; i++) {
+    const trigger: Trigger = serviceTriggers[i];
     const addTrigger: ApiTrigger = {
       id: trigger.id,
       name: trigger.name,
@@ -97,7 +98,8 @@ async function buildService(
           triggerId: trigger.id,
         },
       });
-    triggerInputTypes.forEach((triggerInputType: TriggerInputType) => {
+    for (let j = 0; j < triggerInputTypes.length; j++) {
+      const triggerInputType: TriggerInputType = triggerInputTypes[j];
       const addInputType: ApiTriggerInputType = {
         id: triggerInputType.id,
         name: triggerInputType.name,
@@ -113,7 +115,7 @@ async function buildService(
       };
       if (addTrigger.inputs === undefined) addTrigger.inputs = [];
       addTrigger.inputs.push(addInputType);
-    });
+    }
     // Add trigger output type to trigger
     const triggerOutputTypes: TriggerOutputType[] =
       await prisma.triggerOutputType.findMany({
@@ -121,7 +123,8 @@ async function buildService(
           triggerId: trigger.id,
         },
       });
-    triggerOutputTypes.forEach((triggerOutputType: TriggerOutputType) => {
+    for (let j = 0; j < triggerOutputTypes.length; j++) {
+      const triggerOutputType: TriggerOutputType = triggerOutputTypes[j];
       const addOutputType: ApiTriggerOutputType = {
         id: triggerOutputType.id,
         name: triggerOutputType.name,
@@ -134,14 +137,15 @@ async function buildService(
       };
       if (addTrigger.outputs === undefined) addTrigger.outputs = [];
       addTrigger.outputs.push(addOutputType);
-    });
+    }
     // Add reactions objects in service
     const serviceReactions: Reaction[] = await prisma.reaction.findMany({
       where: {
         serviceId: service.id,
       },
     });
-    serviceReactions.forEach(async (reaction: Reaction) => {
+    for (let i = 0; i < serviceReactions.length; i++) {
+      const reaction: Reaction = serviceReactions[i];
       const addReaction: ApiReaction = {
         id: reaction.id,
         name: reaction.name,
@@ -156,7 +160,8 @@ async function buildService(
             reactionId: reaction.id,
           },
         });
-      reactionInputTypes.forEach((reactionInputType: ReactionInputType) => {
+      for (let j = 0; j < reactionInputTypes.length; j++) {
+        const reactionInputType: ReactionInputType = reactionInputTypes[j];
         const addInputType: ApiReactionInputType = {
           id: reactionInputType.id,
           name: reactionInputType.name,
@@ -174,12 +179,12 @@ async function buildService(
         };
         if (addReaction.inputs === undefined) addReaction.inputs = [];
         addReaction.inputs.push(addInputType);
-      });
-    });
+      }
+    }
     // Finally add trigger to service
     if (retService.triggers === undefined) retService.triggers = [];
     retService.triggers.push(addTrigger);
-  });
+  }
   return retService;
 }
 
@@ -196,7 +201,7 @@ export const readService = async (req: Request, res: Response) => {
     if (service === null) throw new BadRequestException("Service not found");
     const retService: ApiService = await buildService(service, req);
     Logging.info(`Service ${id} read`);
-    return res.status(StatusCodes.OK).json(service);
+    return res.status(StatusCodes.OK).json(retService);
   } catch (_) {
     throw new BadRequestException("Service not found");
   }
