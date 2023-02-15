@@ -138,52 +138,52 @@ async function buildService(
       if (addTrigger.outputs === undefined) addTrigger.outputs = [];
       addTrigger.outputs.push(addOutputType);
     }
-    // Add reactions objects in service
-    const serviceReactions: Reaction[] = await prisma.reaction.findMany({
-      where: {
-        serviceId: service.id,
-      },
-    });
-    for (let i = 0; i < serviceReactions.length; i++) {
-      const reaction: Reaction = serviceReactions[i];
-      const addReaction: ApiReaction = {
-        id: reaction.id,
-        name: reaction.name,
-        description:
-          reaction.description === null ? undefined : reaction.description,
-        serviceId: reaction.serviceId,
-      };
-      // Add reaction input type
-      const reactionInputTypes: ReactionInputType[] =
-        await prisma.reactionInputType.findMany({
-          where: {
-            reactionId: reaction.id,
-          },
-        });
-      for (let j = 0; j < reactionInputTypes.length; j++) {
-        const reactionInputType: ReactionInputType = reactionInputTypes[j];
-        const addInputType: ApiReactionInputType = {
-          id: reactionInputType.id,
-          name: reactionInputType.name,
-          type: reactionInputType.type,
-          description:
-            reactionInputType.description === null
-              ? undefined
-              : reactionInputType.description,
-          regex:
-            reactionInputType.regex === null
-              ? undefined
-              : reactionInputType.regex,
-          mandatory: reactionInputType.mandatory,
-          reactionId: reactionInputType.reactionId,
-        };
-        if (addReaction.inputs === undefined) addReaction.inputs = [];
-        addReaction.inputs.push(addInputType);
-      }
-    }
     // Finally add trigger to service
     if (retService.triggers === undefined) retService.triggers = [];
     retService.triggers.push(addTrigger);
+  }
+  // Add reactions objects in service
+  const serviceReactions: Reaction[] = await prisma.reaction.findMany({
+    where: {
+      serviceId: service.id,
+    },
+  });
+  for (let i = 0; i < serviceReactions.length; i++) {
+    const reaction: Reaction = serviceReactions[i];
+    const addReaction: ApiReaction = {
+      id: reaction.id,
+      name: reaction.name,
+      description:
+        reaction.description === null ? undefined : reaction.description,
+      serviceId: reaction.serviceId,
+    };
+    // Add reaction input type
+    const reactionInputTypes: ReactionInputType[] =
+      await prisma.reactionInputType.findMany({
+        where: {
+          reactionId: reaction.id,
+        },
+      });
+    for (let j = 0; j < reactionInputTypes.length; j++) {
+      const reactionInputType: ReactionInputType = reactionInputTypes[j];
+      const addInputType: ApiReactionInputType = {
+        id: reactionInputType.id,
+        name: reactionInputType.name,
+        type: reactionInputType.type,
+        description:
+          reactionInputType.description === null
+            ? undefined
+            : reactionInputType.description,
+        regex:
+          reactionInputType.regex === null
+            ? undefined
+            : reactionInputType.regex,
+        mandatory: reactionInputType.mandatory,
+        reactionId: reactionInputType.reactionId,
+      };
+      if (addReaction.inputs === undefined) addReaction.inputs = [];
+      addReaction.inputs.push(addInputType);
+    }
   }
   return retService;
 }
