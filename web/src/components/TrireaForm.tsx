@@ -244,6 +244,24 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                       )
                   )}
                 </Select>
+                <Select
+                  id="reactionService"
+                  label="Reaction Services"
+                  fieldName="reactionServiceId"
+                  placeholder="Choose a service"
+                >
+                  {services.data?.map(
+                    (service) =>
+                      service.reactions && (
+                        <option key={service.id} value={service.id}>
+                          {service.name}
+                        </option>
+                      )
+                  )}
+                </Select>
+              </div>
+              <div className="w-1/3 space-y-4">
+                <p>Trigger</p>
                 <Select<TrireaFormRequest>
                   id="trigger"
                   label="Trigger"
@@ -261,21 +279,23 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     </option>
                   ))}
                 </Select>
-                <Select
-                  id="reactionService"
-                  label="Reaction Services"
-                  fieldName="reactionServiceId"
-                  placeholder="Choose a service"
-                >
-                  {services.data?.map(
-                    (service) =>
-                      service.reactions && (
-                        <option key={service.id} value={service.id}>
-                          {service.name}
-                        </option>
-                      )
-                  )}
-                </Select>
+                {fieldsTriggerInputs.map((field, index) => (
+                  <Input<TrireaFormRequest>
+                    key={field.id}
+                    id={field.id}
+                    label={`Input : ${field.name}`}
+                    fieldName={`triggerInputs.${index}.value`}
+                    placeholder="Enter a value"
+                    register={register}
+                    rules={{
+                      required: 'Required field',
+                    }}
+                    errors={errors}
+                  />
+                ))}
+              </div>
+              <div className="w-1/3 space-y-4">
+                <p>Reaction</p>
                 <Select<TrireaFormRequest>
                   id="reaction"
                   label="Reaction"
@@ -293,31 +313,11 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     </option>
                   ))}
                 </Select>
-              </div>
-              <div className="w-1/3 space-y-4">
-                <p>Trigger Inputs</p>
-                {fieldsTriggerInputs.map((field, index) => (
-                  <Input<TrireaFormRequest>
-                    key={field.id}
-                    id={field.id}
-                    label={field.name}
-                    fieldName={`triggerInputs.${index}.value`}
-                    placeholder="Enter a value"
-                    register={register}
-                    rules={{
-                      required: 'Required field',
-                    }}
-                    errors={errors}
-                  />
-                ))}
-              </div>
-              <div className="w-1/3 space-y-4">
-                <p>Reaction Inputs</p>
                 {fieldsReactionInputs.map((field, index) => (
                   <Input<TrireaFormRequest>
                     key={field.id}
                     id={field.id}
-                    label={field.name}
+                    label={`Input : ${field.name}`}
                     fieldName={`triggerInputs.${index}.value`}
                     placeholder="Enter a value"
                     register={register}
