@@ -16,6 +16,7 @@ import { LoginWithButton } from '@/components/LoginWithButton'
 import { capitalizeFirstLetter } from '../utils/string'
 import { Trigger } from '../types/Trigger'
 import { Reaction } from '../types/Reaction'
+import { Service } from '../types/Service'
 
 type TrireaFormProps = {
   toggleModal: () => void
@@ -52,6 +53,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const reactions = useGetReactionsQuery()
   const [createTrirea] = useCreateTrireaMutation()
 
+  const [selectedTriggerService, setSelectedTriggerService] = useState<Service>()
+  const [selectedReactionService, setSelectedReactionService] = useState<Service>()
+  
   const [selectedTrigger, setSelectedTrigger] = useState<Trigger>()
   const [selectedReaction, setSelectedReaction] = useState<Reaction>()
 
@@ -234,6 +238,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   label="Trigger Services"
                   fieldName="triggerServiceId"
                   placeholder="Choose a service"
+                  onSelect={(e) => {
+                    console.log("e.target.value :>> ", e.target.value)
+                  }}
                 >
                   {services.data?.map(
                     (service) =>

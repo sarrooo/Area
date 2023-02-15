@@ -19,6 +19,8 @@ type InputProps<TFormValues extends FieldValues> = {
   fieldName: Path<TFormValues>
   rules?: RegisterOptions
   errors?: Partial<FieldErrors<TFormValues>>
+
+  onChange?: React.ReactEventHandler<HTMLSelectElement>
 }
 
 export const Select = <TFormValues extends FieldValues>({
@@ -32,6 +34,7 @@ export const Select = <TFormValues extends FieldValues>({
   errors,
   required,
   children,
+  onChange,
 }: InputProps<TFormValues>) => {
   return (
     <div className={`p-2 ${className}`}>
@@ -46,6 +49,7 @@ export const Select = <TFormValues extends FieldValues>({
           id={id}
           required={required}
           className="relative mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+          onChange={onChange}
         >
           <option value="" disabled>
             {placeholder}
