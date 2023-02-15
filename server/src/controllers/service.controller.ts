@@ -184,6 +184,9 @@ async function buildService(
       if (addReaction.inputs === undefined) addReaction.inputs = [];
       addReaction.inputs.push(addInputType);
     }
+    // Finally add reaction to service
+    if (retService.reactions === undefined) retService.reactions = [];
+    retService.reactions.push(addReaction);
   }
   return retService;
 }
