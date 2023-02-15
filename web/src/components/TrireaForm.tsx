@@ -16,7 +16,6 @@ import { LoginWithButton } from '@/components/LoginWithButton'
 import { capitalizeFirstLetter } from '../utils/string'
 import { Trigger } from '../types/Trigger'
 import { Reaction } from '../types/Reaction'
-import { Service } from '../types/Service'
 
 type TrireaFormProps = {
   toggleModal: () => void
@@ -53,9 +52,14 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const reactions = useGetReactionsQuery()
   const [createTrirea] = useCreateTrireaMutation()
 
-  const [selectedTriggerService, setSelectedTriggerService] = useState<Service>()
-  const [selectedReactionService, setSelectedReactionService] = useState<Service>()
-  
+  const [selectedTriggerServiceId, setSelectedTriggerServiceId] =
+    useState<number>()
+  const [selectedReactionServiceId, setSelectedReactionServiceId] =
+    useState<number>()
+
+  const [triggersAvailable, setTriggersAvailable] = useState<Trigger[]>([])
+  const [reactionsAvailable, setReactionsAvailable] = useState<Reaction[]>([])
+
   const [selectedTrigger, setSelectedTrigger] = useState<Trigger>()
   const [selectedReaction, setSelectedReaction] = useState<Reaction>()
 
@@ -104,6 +108,34 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       }
     })
   }, [watchReaction])
+
+  // Use effect to handle selected TRIGGER SERVICE
+  useEffect(() => {
+    try {
+      if (!selectedTriggerServiceId) return
+      const searchedSelectedTriggerService = services.data?.find(
+        (service) => service.id === selectedTriggerServiceId
+      )
+      if (!searchedSelectedTriggerService) throw new Error('Service not found')
+      setTriggersAvailable(searchedSelectedTriggerService.triggers || [])
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
+  }, [selectedTriggerServiceId])
+
+  // Use effect to handle selected REACTION SERVICE
+  useEffect(() => {
+    try {
+      if (!selectedReactionServiceId) return
+      const searchedSelectedReactionService = services.data?.find(
+        (service) => service.id === selectedReactionServiceId
+      )
+      if (!searchedSelectedReactionService) throw new Error('Service not found')
+      setReactionsAvailable(searchedSelectedReactionService.reactions || [])
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
+  }, [selectedReactionServiceId])
 
   // Use effect to handle selected TRIGGER
   useEffect(() => {
@@ -233,13 +265,15 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   rules={{ required: 'Required field' }}
                   errors={errors}
                 />
+                {/* TRIGGER Service */}
                 <Select
                   id="triggerService"
                   label="Trigger Services"
                   fieldName="triggerServiceId"
                   placeholder="Choose a service"
-                  onSelect={(e) => {
-                    console.log("e.target.value :>> ", e.target.value)
+                  onChange={(e) => {
+                    const target = e.target as HTMLSelectElement
+                    setSelectedTriggerServiceId(parseInt(target.value, 10))
                   }}
                 >
                   {services.data?.map(
@@ -251,11 +285,16 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                       )
                   )}
                 </Select>
+                {/* REACTION Service */}
                 <Select
                   id="reactionService"
                   label="Reaction Services"
                   fieldName="reactionServiceId"
                   placeholder="Choose a service"
+                  onChange={(e) => {
+                    const target = e.target as HTMLSelectElement
+                    setSelectedReactionServiceId(parseInt(target.value, 10))
+                  }}
                 >
                   {services.data?.map(
                     (service) =>
@@ -269,6 +308,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
               </div>
               <div className="w-1/3 space-y-4">
                 <p>Trigger</p>
+                {/* TRIGGERS */}
                 <Select<TrireaFormRequest>
                   id="trigger"
                   label="Trigger"
@@ -280,12 +320,13 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   }}
                   errors={errors}
                 >
-                  {triggers.data?.map((trigger) => (
+                  {triggersAvailable?.map((trigger) => (
                     <option key={trigger.id} value={trigger.id}>
                       {trigger.name}
                     </option>
                   ))}
                 </Select>
+                {/* TRIGGERS inputs */}
                 {fieldsTriggerInputs.map((field, index) => (
                   <Input<TrireaFormRequest>
                     key={field.id}
@@ -303,6 +344,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
               </div>
               <div className="w-1/3 space-y-4">
                 <p>Reaction</p>
+                {/* REACTIONS */}
                 <Select<TrireaFormRequest>
                   id="reaction"
                   label="Reaction"
@@ -314,11 +356,12 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   }}
                   errors={errors}
                 >
-                  {reactions.data?.map((reaction) => (
+                  {reactionsAvailable?.map((reaction) => (
                     <option key={reaction.id} value={reaction.id}>
                       {reaction.name}
                     </option>
                   ))}
+                  {/* REACTIONS inputs */}
                 </Select>
                 {fieldsReactionInputs.map((field, index) => (
                   <Input<TrireaFormRequest>
