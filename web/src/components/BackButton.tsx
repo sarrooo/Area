@@ -10,3 +10,5 @@ export const BackButton = () => {
     </Link>
   )
 }
+
+export default BackButton

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
-import { BsTwitter } from 'react-icons/bs'
 import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
 import { TrireaFormRequest } from '@/types/Trirea'
@@ -11,23 +10,26 @@ import { useGetServicesQuery } from '@/redux/services/service'
 import { useGetTriggersQuery } from '@/redux/services/trigger'
 import { useGetReactionsQuery } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
-import { getOauthTwitterUrl } from '@/utils/oauth/twitter'
 import { LoginWithButton } from '@/components/LoginWithButton'
 import { capitalizeFirstLetter } from '../utils/string'
 import { Trigger } from '../types/Trigger'
 import { Reaction } from '../types/Reaction'
+import { MappingOauth, mappingOauth } from '../utils/oauth'
+import { Service } from '../types/Service'
 
 type TrireaFormProps = {
   toggleModal: () => void
 }
 
 export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
+  // Form
   const {
     control,
     register,
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm<TrireaFormRequest>({ reValidateMode: 'onSubmit' })
   const {
     fields: fieldsTriggerInputs,
@@ -47,101 +49,83 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   })
   const watchTrigger = watch('triggerId')
   const watchReaction = watch('reactionId')
+
+  // Queries
   const services = useGetServicesQuery()
   const triggers = useGetTriggersQuery()
   const reactions = useGetReactionsQuery()
   const [createTrirea] = useCreateTrireaMutation()
 
-  const [selectedTriggerServiceId, setSelectedTriggerServiceId] =
-    useState<number>()
-  const [selectedReactionServiceId, setSelectedReactionServiceId] =
-    useState<number>()
+  // States
+  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth>([])
 
-  const [triggersAvailable, setTriggersAvailable] = useState<Trigger[]>([])
-  const [reactionsAvailable, setReactionsAvailable] = useState<Reaction[]>([])
+  const [selectedTriggerService, setSelectedTriggerService] =
+    useState<Service>()
+  const [selectedReactionService, setSelectedReactionService] =
+    useState<Service>()
 
   const [selectedTrigger, setSelectedTrigger] = useState<Trigger>()
   const [selectedReaction, setSelectedReaction] = useState<Reaction>()
 
-  const [needTriggerOauth, setTriggerNeedOauth] = useState(false)
-  const [needReactionOauth, setReactionNeedOauth] = useState(false)
+  const [triggersAvailable, setTriggersAvailable] = useState<Trigger[]>([])
+  const [reactionsAvailable, setReactionsAvailable] = useState<Reaction[]>([])
 
-  // TODO: Refactor this
-  // Use effect to subscribe to trigger service
-  useEffect(() => {
-    try {
-      if (!selectedTrigger) return
-      const selectedService = services.data?.find(
-        (service) => service.id === selectedTrigger.serviceId
+  const handleServiceSubscription = (service: Service) => {
+    const filtredOauthNeeded = oauthNeeded.filter((oauth) => {
+      return !(
+        oauth.name !== selectedTriggerService?.name &&
+        oauth.name !== selectedReactionService?.name
       )
-      if (!selectedService) {
-        throw new Error('Service not found')
-      }
-
-      if (selectedService.requiredSubscription && !selectedService.subscribed) {
-        setTriggerNeedOauth(true)
-      } else {
-        setTriggerNeedOauth(false)
-      }
-    } catch (error) {
-      toast.error('Something went wrong')
-    }
-  }, [selectedTrigger, services.isSuccess])
-
-  // TODO: Refactor this
-  useEffect(() => {
-    if (!watchReaction) {
-      return
-    }
-    const reactionChoosen = Number(watchReaction)
-    reactions.data?.forEach((reaction) => {
-      if (reaction.id === reactionChoosen) {
-        services.data?.forEach((service) => {
-          if (service.id === reaction.serviceId) {
-            if (service.requiredSubscription && !service.subscribed) {
-              setReactionNeedOauth(true)
-            } else {
-              setReactionNeedOauth(false)
-            }
-          }
-        })
-      }
     })
-  }, [watchReaction])
+
+    if (service.requiredSubscription && !service.subscribed) {
+      const oauthMappingSelected = mappingOauth.find(
+        (oauth) => oauth.name === service.name
+      )
+      if (!oauthMappingSelected) throw new Error('Oauth not found')
+      if (oauthNeeded.includes(oauthMappingSelected)) return
+      filtredOauthNeeded.push(oauthMappingSelected)
+    }
+    setOauthNeeded(filtredOauthNeeded)
+  }
+
+  const submitTrirea = (data: TrireaFormRequest) => {
+    createTrirea(data).then(() => {
+      toast.info('Trirea created !')
+    })
+  }
 
   // Use effect to handle selected TRIGGER SERVICE
   useEffect(() => {
     try {
-      if (!selectedTriggerServiceId) return
-      const searchedSelectedTriggerService = services.data?.find(
-        (service) => service.id === selectedTriggerServiceId
-      )
-      if (!searchedSelectedTriggerService) throw new Error('Service not found')
-      setTriggersAvailable(searchedSelectedTriggerService.triggers || [])
+      if (!selectedTriggerService) return
+      reset({ triggerId: 0 })
+      setSelectedTrigger(undefined)
+      setTriggersAvailable(selectedTriggerService.triggers || [])
+      handleServiceSubscription(selectedTriggerService)
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with selected trigger service')
     }
-  }, [selectedTriggerServiceId])
+  }, [selectedTriggerService])
 
   // Use effect to handle selected REACTION SERVICE
   useEffect(() => {
     try {
-      if (!selectedReactionServiceId) return
-      const searchedSelectedReactionService = services.data?.find(
-        (service) => service.id === selectedReactionServiceId
-      )
-      if (!searchedSelectedReactionService) throw new Error('Service not found')
-      setReactionsAvailable(searchedSelectedReactionService.reactions || [])
+      if (!selectedReactionService) return
+      reset({ triggerId: 0 })
+      setSelectedTrigger(undefined)
+      setReactionsAvailable(selectedReactionService.reactions || [])
+      handleServiceSubscription(selectedReactionService)
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with selected reaction service')
     }
-  }, [selectedReactionServiceId])
+  }, [selectedReactionService])
 
   // Use effect to handle selected TRIGGER
   useEffect(() => {
     try {
-      if (!selectedTrigger) return
       removeTriggerInputs()
+      if (!selectedTrigger) return
       let i = 0
       selectedTrigger.inputs?.forEach((input) => {
         const splittedName = input.name.split('.')
@@ -154,7 +138,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
         i += 1
       })
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with selected trigger')
     }
   }, [selectedTrigger])
 
@@ -163,10 +147,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     try {
       if (triggers.isError) {
         throw new Error('Getting triggers failed')
-      } else if (!watchTrigger || !triggers.isSuccess) {
-        return
       }
       const selectedTriggerId = Number(watchTrigger)
+      if (!selectedTriggerId || !triggers.isSuccess) return
       const searchedSelectedTrigger = triggers.data?.find(
         (trigger) => trigger.id === selectedTriggerId
       )
@@ -175,15 +158,15 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       }
       setSelectedTrigger(searchedSelectedTrigger)
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with triggers')
     }
   }, [watchTrigger, triggers])
 
   // Use effect to handle selected REACTION
   useEffect(() => {
     try {
-      if (!selectedReaction) return
       removeReactionInputs()
+      if (!selectedReaction) return
       let i = 0
       selectedReaction.inputs?.forEach((input) => {
         const splittedName = input.name.split('.')
@@ -196,7 +179,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
         i += 1
       })
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with selected reaction')
     }
   }, [selectedReaction])
 
@@ -205,10 +188,15 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     try {
       if (reactions.isError) {
         throw new Error('Getting reactions failed')
-      } else if (!watchReaction || !reactions.isSuccess) {
+      } else if (
+        !watchReaction ||
+        watchReaction === 0 ||
+        !reactions.isSuccess
+      ) {
         return
       }
       const selectedReactionId = Number(watchReaction)
+      if (!selectedReactionId) return
       const searchedSelectedReaction = reactions.data?.find(
         (reaction) => reaction.id === selectedReactionId
       )
@@ -217,15 +205,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       }
       setSelectedReaction(searchedSelectedReaction)
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Something went wrong with reactions')
     }
   }, [watchReaction, reactions])
-
-  const submitTrirea = (data: TrireaFormRequest) => {
-    createTrirea(data).then(() => {
-      toast.info('Trirea created !')
-    })
-  }
 
   return (
     <div
@@ -273,7 +255,10 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a service"
                   onChange={(e) => {
                     const target = e.target as HTMLSelectElement
-                    setSelectedTriggerServiceId(parseInt(target.value, 10))
+                    const searchedSelectedTriggerService = services.data?.find(
+                      (service) => service.id === parseInt(target.value, 10)
+                    )
+                    setSelectedTriggerService(searchedSelectedTriggerService)
                   }}
                 >
                   {services.data?.map(
@@ -293,7 +278,10 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a service"
                   onChange={(e) => {
                     const target = e.target as HTMLSelectElement
-                    setSelectedReactionServiceId(parseInt(target.value, 10))
+                    const searchedSelectedReactionService = services.data?.find(
+                      (service) => service.id === parseInt(target.value, 10)
+                    )
+                    setSelectedReactionService(searchedSelectedReactionService)
                   }}
                 >
                   {services.data?.map(
@@ -380,20 +368,19 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
               </div>
             </div>
             <div className="items center flex w-full justify-end">
-              {(needTriggerOauth || needReactionOauth) && (
-                <LoginWithButton
-                  text="Need to connect"
-                  url={getOauthTwitterUrl()}
-                  className="mr-5 flex items-center space-x-4 rounded-xl py-4 px-8 text-xl font-bold shadow-md transition ease-in-out disabled:bg-gray-400"
-                >
-                  <BsTwitter />
-                </LoginWithButton>
-              )}
-              <MainButton
-                submitter
-                disabled={needTriggerOauth || needReactionOauth}
-                text="Create"
-              />
+              {oauthNeeded?.map((oauth) => {
+                return (
+                  <LoginWithButton
+                    text="Connect"
+                    key={oauth.name}
+                    url={oauth.url}
+                    className="mr-5 flex items-center space-x-4 rounded-xl py-4 px-8 text-xl font-bold shadow-md transition ease-in-out disabled:bg-gray-400"
+                  >
+                    {oauth.icon}
+                  </LoginWithButton>
+                )
+              })}
+              <MainButton submitter disabled={!!oauthNeeded} text="Create" />
             </div>
           </form>
         </div>
