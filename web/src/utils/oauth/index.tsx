@@ -8,9 +8,9 @@ export type MappingOauth = {
   name: string
   url: string
   icon: ReactNode
-}[]
+}
 
-export const mappingOauth: MappingOauth = [
+export const mappingOauth: MappingOauth[] = [
   {
     name: 'github',
     url: getOauthGithubUrl(),

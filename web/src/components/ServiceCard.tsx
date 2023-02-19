@@ -1,34 +1,32 @@
+import { useNavigate } from 'react-router-dom'
 import { FollowButton } from '@/components/FollowButton'
 import { ServiceCardDescription } from '@/components/ServiceCardDescription'
-
-export type triggerProps = {
-  name: string
-  description: string
-  options: string[]
-  outputs?: string[]
-}
-
-type reaction = {
-  name: string
-  description: string
-  options: string[]
-}
+import { Reaction } from '../types/Reaction'
+import { Trigger } from '../types/Trigger'
 
 export type ServiceCardProps = {
   name: string
+  id: number
   isFollowing: boolean
-  triggers: triggerProps[]
-  reactions: reaction[]
+  triggers: Trigger[]
+  reactions: Reaction[]
 }
 
 export const ServiceCard = ({
   name,
+  id,
   isFollowing,
   triggers,
   reactions,
 }: ServiceCardProps) => {
+  const navigate = useNavigate()
+
   return (
-    <div className="w-1/2 space-y-4 rounded-lg bg-white px-8 pb-8 pt-4 shadow-lg">
+    <div
+      className="w-1/2 space-y-4 rounded-lg bg-white px-8 pb-8 pt-4 shadow-lg"
+      onClick={() => navigate(`/service/${id}`)}
+      aria-hidden="true"
+    >
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
         <FollowButton isFollowing={isFollowing} />
@@ -36,11 +34,21 @@ export const ServiceCard = ({
       <div className="grid grid-cols-2 gap-2 ">
         {triggers.map((trigger) => {
           return (
-            <ServiceCardDescription isReaction={false} name={trigger.name} />
+            <ServiceCardDescription
+              key={trigger.id}
+              isReaction={false}
+              name={trigger.name}
+            />
           )
         })}
-        {reactions.map((trigger) => {
-          return <ServiceCardDescription isReaction name={trigger.name} />
+        {reactions.map((reaction) => {
+          return (
+            <ServiceCardDescription
+              key={reaction.id}
+              name={reaction.name}
+              isReaction
+            />
+          )
         })}
       </div>
     </div>

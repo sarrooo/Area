@@ -3,7 +3,7 @@ import { Dashboard } from '@/pages/Dashboard'
 import Landing from '@/pages/Landing'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
-import { Service } from '@/pages/Service'
+import Service from '@/pages/Service'
 import Services from '@/pages/Services'
 import OauthCallback from '@/pages/OauthCallback'
 
@@ -31,7 +31,7 @@ const routes = (isLoggedIn: boolean) => [
         children: [
           { path: '/dashboard', element: <Dashboard /> },
           { path: '/services', element: <Services /> },
-          { path: '/service', element: <Service /> },
+          { path: '/service/:id', element: <Service /> },
         ],
       },
     ],

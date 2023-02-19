@@ -57,7 +57,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const [createTrirea] = useCreateTrireaMutation()
 
   // States
-  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth>([])
+  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth[]>([])
 
   const [selectedTriggerService, setSelectedTriggerService] =
     useState<Service>()
@@ -90,6 +90,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   }
 
   const submitTrirea = (data: TrireaFormRequest) => {
+    data.enabled = true
+    data.reactionId = Number(data.reactionId)
+    data.triggerId = Number(data.triggerId)
     createTrirea(data).then(() => {
       toast.info('Trirea created !')
     })
@@ -99,7 +102,10 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   useEffect(() => {
     try {
       if (!selectedTriggerService) return
-      reset({ triggerId: 0 })
+      reset((formValues) => ({
+        ...formValues,
+        triggerId: 0,
+      }))
       setSelectedTrigger(undefined)
       setTriggersAvailable(selectedTriggerService.triggers || [])
       handleServiceSubscription(selectedTriggerService)
@@ -112,8 +118,11 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   useEffect(() => {
     try {
       if (!selectedReactionService) return
-      reset({ triggerId: 0 })
-      setSelectedTrigger(undefined)
+      reset((formValues) => ({
+        ...formValues,
+        reactionId: 0,
+      }))
+      setSelectedReaction(undefined)
       setReactionsAvailable(selectedReactionService.reactions || [])
       handleServiceSubscription(selectedReactionService)
     } catch (error) {
@@ -326,6 +335,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     rules={{
                       required: 'Required field',
                     }}
+                    inputType={field.type === 'number' ? 'number' : 'text'}
                     errors={errors}
                   />
                 ))}
@@ -362,6 +372,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     rules={{
                       required: 'Required field',
                     }}
+                    inputType={field.type === 'number' ? 'number' : 'text'}
                     errors={errors}
                   />
                 ))}
@@ -380,7 +391,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   </LoginWithButton>
                 )
               })}
-              <MainButton submitter disabled={!!oauthNeeded} text="Create" />
+              <MainButton submitter disabled={!oauthNeeded} text="Create" />
             </div>
           </form>
         </div>
