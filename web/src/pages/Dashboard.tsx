@@ -19,6 +19,7 @@ export const Dashboard = () => {
           trireas.map((trirea: Trirea) => {
             return (
               <TrireaCard
+                key={trirea.id}
                 id={trirea.id ? trirea.id : -1}
                 name={trirea.name}
                 triggerName={trirea.triggerId.toString()}

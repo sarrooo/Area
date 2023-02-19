@@ -89,13 +89,17 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     setOauthNeeded(filtredOauthNeeded)
   }
 
-  const submitTrirea = (data: TrireaFormRequest) => {
-    data.enabled = true
-    data.reactionId = Number(data.reactionId)
-    data.triggerId = Number(data.triggerId)
-    createTrirea(data).then(() => {
-      toast.info('Trirea created !')
-    })
+  const submitTrirea = async (data: TrireaFormRequest) => {
+    try {
+      data.enabled = true
+      data.reactionId = Number(data.reactionId)
+      data.triggerId = Number(data.triggerId)
+      await createTrirea(data).unwrap()
+      reset()
+      toast.success('Trirea created !')
+    } catch (error) {
+      toast.error('Something went wrong with trirea creation')
+    }
   }
 
   // Use effect to handle selected TRIGGER SERVICE
@@ -139,7 +143,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       selectedTrigger.inputs?.forEach((input) => {
         const splittedName = input.name.split('.')
         insertTriggerInputs(i, {
-          id: input.id,
+          triggerInputTypeId: input.id,
           name: capitalizeFirstLetter(splittedName[1]),
           type: input.type,
           value: '',
@@ -180,7 +184,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       selectedReaction.inputs?.forEach((input) => {
         const splittedName = input.name.split('.')
         insertReactionInputs(i, {
-          id: input.id,
+          reactionInputTypeId: input.id,
           name: capitalizeFirstLetter(splittedName[1]),
           type: input.type,
           value: '',
@@ -313,7 +317,10 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a trigger"
                   register={register}
                   rules={{
-                    required: 'Required field',
+                    min: {
+                      value: 1,
+                      message: 'Required field',
+                    },
                   }}
                   errors={errors}
                 >
@@ -335,7 +342,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     rules={{
                       required: 'Required field',
                     }}
-                    inputType={field.type === 'number' ? 'number' : 'text'}
+                    inputType={field.type === 'Int' ? 'number' : 'text'}
                     errors={errors}
                   />
                 ))}
@@ -350,7 +357,10 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a reaction"
                   register={register}
                   rules={{
-                    required: 'Required field',
+                    min: {
+                      value: 1,
+                      message: 'Required field',
+                    },
                   }}
                   errors={errors}
                 >
@@ -366,11 +376,14 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                     key={field.id}
                     id={field.id}
                     label={`Input : ${field.name}`}
-                    fieldName={`triggerInputs.${index}.value`}
+                    fieldName={`reactionInputs.${index}.value`}
                     placeholder="Enter a value"
                     register={register}
                     rules={{
-                      required: 'Required field',
+                      min: {
+                        value: 1,
+                        message: 'Required field',
+                      },
                     }}
                     inputType={field.type === 'number' ? 'number' : 'text'}
                     errors={errors}

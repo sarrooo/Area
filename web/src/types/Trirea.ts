@@ -1,16 +1,18 @@
 export type TrireaTriggerInput = {
-  id: number
+  id?: number
   name: string
   type: string
   value: string
+  triggerInputTypeId: number
   trireaId?: number
 }
 
 export type TrireaReactionInput = {
-  id: number
+  id?: number
   name: string
   type: string
   value: string
+  reactionInputTypeId: number
   trireaId?: number
 }
 

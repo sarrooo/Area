@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { IoMdMore } from 'react-icons/io'
 import { BiEdit, BiTrash } from 'react-icons/bi'
+import { toast } from 'react-toastify'
+import { useDeleteTrireaMutation } from '../redux/services/trirea'
 
 export type trireaProps = {
   id: number
@@ -20,6 +22,8 @@ export const TrireaCard = ({
   const [showMenu, setShowMenu] = useState(false)
   const [activeState, setActiveState] = useState(isActive)
 
+  const [deleteTrireaMutation] = useDeleteTrireaMutation()
+
   const toggleActive = () => {
     setActiveState(!activeState)
   }
@@ -34,14 +38,22 @@ export const TrireaCard = ({
 
   const editTrirea = () => {}
 
-  const deleteTrirea = () => {}
+  const deleteTrirea = async () => {
+    try {
+      id = Number(id)
+      await deleteTrireaMutation(id).unwrap()
+      toast.success('Trirea deleted')
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
+  }
 
   return (
-    <button
+    <div
       key={id.toString()}
-      type="button"
       onClick={hideMenu}
       className="relative h-96 cursor-default space-y-8 rounded-lg bg-white p-8 text-left shadow-lg"
+      aria-hidden="true"
     >
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
@@ -70,6 +82,7 @@ export const TrireaCard = ({
           type="checkbox"
           checked={activeState}
           className="peer sr-only"
+          onChange={toggleActive}
         />
         <div className="peer-checked:bg-primary-900 peer-focus:ring-primary-900 dark:peer-focus:ring-primary-900 peer  h-6 w-11 rounded-full bg-gray-200 after:absolute after:top-[2px] after:left-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:bg-gray-700" />
       </button>
@@ -93,6 +106,6 @@ export const TrireaCard = ({
           </button>
         </div>
       )}
-    </button>
+    </div>
   )
 }
