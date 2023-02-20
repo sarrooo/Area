@@ -1,14 +1,10 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import {Button} from 'native-base';
 
-export const Login = () => {
+export const Dashboard = () => {
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
-      <Button size="sm" colorScheme="default">
-        Default Small
-      </Button>
+      <Text>Dashboard</Text>
     </View>
   );
 };
