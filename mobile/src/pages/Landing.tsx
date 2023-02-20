@@ -13,7 +13,9 @@ import {Section} from '../components/Section';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {MainButton} from '../components/MainButton';
 
-export const Landing = () => {
+import { Button } from 'native-base';
+
+export const Landing = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
@@ -25,7 +27,15 @@ export const Landing = () => {
       <Section title="Trirea">
         Welcome to trirea, change your world, your universe
       </Section>
-      <MainButton title="Get started" />
+      <MainButton
+        title="Login"
+        onPress={() => {
+          navigation.navigate('Login');
+        }}
+      />
+      <Button size="sm" colorScheme="default">
+        Default Small
+      </Button>
       <Image style={styles.image} source={require('../assets/universe.png')} />
     </SafeAreaView>
   );
