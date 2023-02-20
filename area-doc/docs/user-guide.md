@@ -2,7 +2,7 @@
 description: Create a doc page with rich content.
 ---
 
-# Introduction
+# User guide
 
 Trirea is a 3rd year epitech prject, the goal of this project is to create a webapp similar to services like IFTTT, Zapier and so on.
 

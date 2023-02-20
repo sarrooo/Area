@@ -157,10 +157,6 @@ export const searchTriggers = async (req: Request, res: Response) => {
     for (const trigger of triggers) {
         retTriggers.push(await buildTrigger(trigger));
     }
-
-    // triggers.forEach(async (trigger) => {
-    //     retTriggers.push(await buildTrigger(trigger));
-    // });
     Logging.info(`Triggers searched`);
     return res.status(StatusCodes.OK).json(retTriggers);
 };
