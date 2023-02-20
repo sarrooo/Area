@@ -5,9 +5,9 @@ import Logging from "~/lib/logging";
 import axios from "axios";
 
 export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string | null): Promise<boolean> => {
-    const newTweetFromInputs = await getInputs(inputs);
+    const onCommitInputs = await getInputs(inputs);
 
-    if (!newTweetFromInputs.repository) {
+    if (!onCommitInputs.repository) {
         Logging.warning('Trigger on commit fail: No repository provided');
         return false;
     }
@@ -18,24 +18,34 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     }
 
     const githubToken = userServicesTrigger[0].RefreshToken;
-    const data = await getCommitFromARepository(newTweetFromInputs.repository, newTweetFromInputs.owner, githubToken);
+    const data = await getCommitFromARepository(onCommitInputs.repository, onCommitInputs.owner, githubToken);
     if (!data) {
         Logging.warning('Trigger on commit fail: fail to fetch commit');
         return false;
     }
-    if (!prevTriggerData) {
-        await saveTriggerData(trireaId, data);
+
+    if (data.length === 0) {
+        if (!prevTriggerData) {
+            await saveTriggerData(trireaId, data.length.toString());
+            return false;
+        }
         return false;
     }
-    if (prevTriggerData !== data) {
-        await saveTriggerData(trireaId, data);
+
+    if (!prevTriggerData) {
+        await saveTriggerData(trireaId, data[0].sha);
+        return false;
+    }
+
+    if (prevTriggerData !== data[0].sha) {
+        await saveTriggerData(trireaId, data.length.toString());
         return true
     }
 
     return false;
 };
 
-const getCommitFromARepository = async (repository: string, owner: string, githubToken: string): Promise<any> => {
+const getCommitFromARepository = async (repository: string, owner: string, githubToken: string): Promise<Commit[]> => {
     try {
         const {data} = await axios.get<any>(
             `https://api.github.com/repos/${owner}/${repository}/commits`,
@@ -46,7 +56,7 @@ const getCommitFromARepository = async (repository: string, owner: string, githu
             });
         return data;
     } catch (err: any) {
-        return false;
+        return [];
     }
 }
 
@@ -66,4 +76,8 @@ const getInputs = async (inputs: TrireaInputs[]): Promise<OnCommitInputs> => {
 type OnCommitInputs = {
     owner: string;
     repository: string;
+}
+
+type Commit = {
+    sha: string;
 }

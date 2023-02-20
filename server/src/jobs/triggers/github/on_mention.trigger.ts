@@ -23,11 +23,11 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     }
 
     if (!prevTriggerData) {
-        await saveTriggerData(trireaId, data[data.length - 1].id);
+        await saveTriggerData(trireaId, data[0].id);
         return false;
     }
 
-    if (prevTriggerData !== data[data.length - 1].id) {
+    if (prevTriggerData !== data[0].id) {
         await saveTriggerData(trireaId, data.length.toString());
         return true
     }
