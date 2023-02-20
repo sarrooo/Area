@@ -66,11 +66,3 @@ type CreateGistInputs = {
     content: string;
     isPublic: boolean;
 }
-
-type twitterUser = {
-    data: {
-        id: string;
-        name: string;
-        username: string;
-    }
-}
