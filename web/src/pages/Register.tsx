@@ -32,9 +32,9 @@ const Register = () => {
   }
 
   return (
-    <div className="w-full flex flex-rows">
-      <div className="flex flex-col items-center justify-between w-full h-full">
-        <div className="h-full mt-20 ml-12">
+    <div className="flex-rows flex w-full">
+      <div className="flex h-full w-full flex-col items-center justify-between">
+        <div className="mt-20 ml-12 h-full">
           <h1 className="text-6xl font-bold">
             Create an account to create your universe !
           </h1>
@@ -45,9 +45,9 @@ const Register = () => {
           className="absolute left-0 bottom-0"
         />
       </div>
-      <div className="flex items-center justify-center mt-3 w-full h-full">
-        <div className="h-min w-3/5 p-6 rounded-lg shadow-xl">
-          <h1 className="text-3xl text-center font-bold">Register</h1>
+      <div className="mt-3 flex h-full w-full items-center justify-center">
+        <div className="h-min w-3/5 rounded-lg p-6 shadow-xl">
+          <h1 className="text-center text-3xl font-bold">Register</h1>
           <form className="space-y-2" onSubmit={handleSubmit(submitRegister)}>
             <Input<RegisterRequest>
               id="first_name"
@@ -116,7 +116,7 @@ const Register = () => {
               }}
               errors={errors}
             />
-            <div className="flex flex-rows justify-around pt-3">
+            <div className="flex-rows flex justify-around pt-3">
               <div className="">
                 <p>Already have an account ?</p>
                 <Link to="/login" className="underline hover:text-blue-500">
@@ -127,7 +127,7 @@ const Register = () => {
             </div>
           </form>
           <div className="my-8 h-[4px] w-full rounded-lg bg-gray-300" />
-          <div className="flex flex-col justify-center items-center space-y-4">
+          <div className="flex flex-col items-center justify-center space-y-4">
             <LoginWithButton
               text="Google"
               url={getOauthGoogleUrl()}

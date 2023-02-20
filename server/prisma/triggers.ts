@@ -53,6 +53,40 @@ export const triggersPopulate:Prisma.TriggerCreateInput[] = [
             }
         }
     },
+    {
+        name: 'on_commit',
+        description: 'trigger when a commit is pushed on a repository',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'github',
+                },
+                create: {
+                    name: 'github',
+                    description: 'Github is a platform for developers',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    },
+    {
+        name: 'on_mention',
+        description: 'trigger when a user is mentioned',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'github',
+                },
+                create: {
+                    name: 'github',
+                    description: 'Github is a platform for developers',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    }
 ]
 
 // TRIGGERS INPUTS TYPE
@@ -65,6 +99,28 @@ export const triggersInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
         trigger: {
             connect: {
                 name: 'at_time',
+            }
+        }
+    },
+    {
+        name: 'on_commit.repository',
+        description: 'Repository to watch',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+          connect: {
+                name: 'on_commit',
+          }
+        }
+    },
+    {
+        name: 'on_commit.owner',
+        description: 'Owner of the repository',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'on_commit',
             }
         }
     },
@@ -104,4 +160,24 @@ export const triggersOutputPopulate:Prisma.TriggerOutputTypeCreateInput[] = [
             }
         }
     },
+    {
+        name: 'on_commit.commit_message',
+        description: 'Commit message',
+        type: 'String',
+        trigger: {
+            connect: {
+                name: 'on_commit',
+            }
+        }
+    },
+    {
+        name: 'on_mention.link',
+        description: 'Link to the mention',
+        type: 'String',
+        trigger: {
+            connect: {
+                name: 'on_mention',
+            }
+        }
+    }
 ]

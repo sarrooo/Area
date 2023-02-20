@@ -105,7 +105,7 @@ export const updateTrireaSchema = object({
 // Delete Trirea : POST /trirea/delete/:id
 export const deleteTrireaSchema = object({
   params: object({
-    id: number({
+    id: string({
       required_error: "Id is required",
     }),
   }),

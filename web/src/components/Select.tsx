@@ -15,23 +15,26 @@ type InputProps<TFormValues extends FieldValues> = {
   required?: boolean
   children?: React.ReactNode
 
-  register: UseFormRegister<TFormValues>
+  register?: UseFormRegister<TFormValues>
   fieldName: Path<TFormValues>
   rules?: RegisterOptions
   errors?: Partial<FieldErrors<TFormValues>>
+
+  onChange?: React.ReactEventHandler<HTMLSelectElement>
 }
 
 export const Select = <TFormValues extends FieldValues>({
   id,
   label,
   className = '',
-  placeholder = 'input',
   register,
+  placeholder,
   fieldName,
   rules,
   errors,
   required,
   children,
+  onChange,
 }: InputProps<TFormValues>) => {
   return (
     <div className={`p-2 ${className}`}>
@@ -41,13 +44,14 @@ export const Select = <TFormValues extends FieldValues>({
       >
         {label}
         <select
-          {...register(fieldName, rules)}
+          defaultValue="0"
           id={id}
+          onChange={onChange || undefined}
+          {...(register && register(fieldName, rules))}
           required={required}
           className="relative mt-1 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-          aria-label="Default select example"
         >
-          <option selected disabled hidden value="">
+          <option value="0" disabled>
             {placeholder}
           </option>
           {children}

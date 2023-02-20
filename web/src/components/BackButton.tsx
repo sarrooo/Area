@@ -4,9 +4,11 @@ import { IoMdArrowBack } from 'react-icons/io'
 export const BackButton = () => {
   return (
     <Link to="/services">
-      <div className="w-fit p-4 bg-primary-900 rounded-full">
+      <div className="bg-primary-900 w-fit rounded-full p-4">
         <IoMdArrowBack size={24} />{' '}
       </div>
     </Link>
   )
 }
+
+export default BackButton

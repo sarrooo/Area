@@ -1,16 +1,19 @@
 export type TrireaTriggerInput = {
   id?: number
-  value?: string
-  trireaId: number
+  name: string
+  type: string
+  value: string
   triggerInputTypeId: number
+  trireaId?: number
 }
 
 export type TrireaReactionInput = {
   id?: number
-  value?: string
-  trireaId: number
-  triggerOutputTypeId?: number
+  name: string
+  type: string
+  value: string
   reactionInputTypeId: number
+  trireaId?: number
 }
 
 export type TrireaFormRequest = {
@@ -20,12 +23,6 @@ export type TrireaFormRequest = {
   enabled: boolean
   triggerInputs: TrireaTriggerInput[]
   reactionInputs: TrireaReactionInput[]
-  triggerInput1?: string
-  triggerInput2?: string
-  triggerInput3?: string
-  reactionInput1?: string
-  reactionInput2?: string
-  reactionInput3?: string
 }
 
 export type Trirea = {
