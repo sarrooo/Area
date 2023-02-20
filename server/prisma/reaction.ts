@@ -36,6 +36,40 @@ export const reactionsPopulate :Prisma.ReactionCreateInput[] = [
             }
         }
     },
+    {
+        name: 'create_gist',
+        description: 'Create a gist',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'github',
+                },
+                create: {
+                    name: 'github',
+                    description: 'Github is a platform for developers',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    },
+    {
+        name: 'create_issue_comment',
+        description: 'Create a comment on an issue',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'github',
+                },
+                create: {
+                    name: 'github',
+                    description: 'Github is a platform for developers',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1200px-Octicons-mark-github.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    }
 ]
 
 // REACTIONS INPUTS TYPE
@@ -73,4 +107,81 @@ export const reactionsInputsPopulate:Prisma.ReactionInputTypeCreateInput[] = [
             }
         }
     },
+    {
+        name: 'create_gist.description',
+        description: 'Description of the gist',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_gist',
+            }
+        }
+    },
+    {
+        name: 'create_gist.content',
+        description: 'Content of the gist',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_gist',
+            }
+        }
+    },
+    {
+        name: 'create_gist.public',
+        description: 'Is the gist public',
+        type: 'Boolean',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_gist',
+            }
+        }
+    },
+    {
+        name: 'create_issue_comment.owner',
+        description: 'Owner of the repository',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_issue_comment',
+            }
+        }
+    },
+    {
+        name: 'create_issue_comment.repo',
+        description: 'Repository name',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_issue_comment',
+            }
+        }
+    },
+    {
+        name: 'create_issue_comment.issue',
+        description: 'Issue number',
+        type: 'Int',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_issue_comment',
+            }
+        }
+    },
+    {
+        name: 'create_issue_comment.comment',
+        description: 'Comment to add',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'create_issue_comment',
+            }
+        }
+    }
 ]
