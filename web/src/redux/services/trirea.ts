@@ -24,14 +24,14 @@ export const trireaApi = api.injectEndpoints({
     }),
     updateTrirea: build.mutation<void, Trirea>({
       query: (body) => ({
-        url: `/trirea/delete/ ${body.id ? body.id : ''}`,
+        url: `/trirea/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteTrirea: build.mutation<void, number>({
       query: (id) => ({
-        url: `/trirea/${id}`,
+        url: `/trirea/delete/${id}`,
         method: 'POST',
       }),
     }),

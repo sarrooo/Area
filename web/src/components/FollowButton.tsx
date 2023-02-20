@@ -8,7 +8,7 @@ export type FollowButtonProps = {
 export const FollowButton = ({ isFollowing }: FollowButtonProps) => {
   const text = isFollowing ? 'Following' : 'Follow'
   return (
-    <div className="flex space-x-2 items-center">
+    <div className="flex items-center space-x-2">
       <p>{text}</p>
       {isFollowing ? <FiCheck /> : <IoMdAdd />}
     </div>

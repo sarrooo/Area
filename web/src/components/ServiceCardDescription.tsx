@@ -11,7 +11,7 @@ export const ServiceCardDescription = ({
   name,
 }: ServiceCardDescriptionProps) => {
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex-rows flex items-center space-x-2">
       {isReaction ? (
         <IoMdSend className="text-primary-900" />
       ) : (

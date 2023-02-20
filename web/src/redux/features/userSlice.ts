@@ -5,19 +5,19 @@ import { RootState } from '@/redux/store'
 import { userApi } from '@/redux/services/user'
 import { Trirea } from '@/types/Trirea'
 import { Service } from '@/types/Service'
-import {
-  setTrireaReducer,
-  setTrireaNameReducer,
-  setTriggerIdReducer,
-  setReactionIdReducer,
-  addTriggerInputReducer,
-  addReactionInputReducer,
-  clearTrireaReducer,
-  clearTriggerInputsReducer,
-  clearReactionInputsReducer,
-  removeTriggerInputReducer,
-  removeReactionInputReducer,
-} from '@/redux/features/trireaReducers'
+// import {
+//   setTrireaReducer,
+//   setTrireaNameReducer,
+//   setTriggerIdReducer,
+//   setReactionIdReducer,
+//   addTriggerInputReducer,
+//   addReactionInputReducer,
+//   clearTrireaReducer,
+//   clearTriggerInputsReducer,
+//   clearReactionInputsReducer,
+//   removeTriggerInputReducer,
+//   removeReactionInputReducer,
+// } from '@/redux/features/trireaReducers'
 
 export interface UserState {
   user: User | null
@@ -68,17 +68,17 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     login: loginReducer,
-    setTrirea: setTrireaReducer,
-    setTrireaName: setTrireaNameReducer,
-    setTriggerId: setTriggerIdReducer,
-    setReactionId: setReactionIdReducer,
-    addTriggerInput: addTriggerInputReducer,
-    addReactionInput: addReactionInputReducer,
-    clearTrirea: clearTrireaReducer,
-    clearTriggerInputs: clearTriggerInputsReducer,
-    clearReactionInputs: clearReactionInputsReducer,
-    removeTriggerInput: removeTriggerInputReducer,
-    removeReactionInput: removeReactionInputReducer,
+    // setTrirea: setTrireaReducer,
+    // setTrireaName: setTrireaNameReducer,
+    // setTriggerId: setTriggerIdReducer,
+    // setReactionId: setReactionIdReducer,
+    // addTriggerInput: addTriggerInputReducer,
+    // addReactionInput: addReactionInputReducer,
+    // clearTrirea: clearTrireaReducer,
+    // clearTriggerInputs: clearTriggerInputsReducer,
+    // clearReactionInputs: clearReactionInputsReducer,
+    // removeTriggerInput: removeTriggerInputReducer,
+    // removeReactionInput: removeReactionInputReducer,
     logout: () => {
       return initialState
     },
@@ -110,17 +110,17 @@ export const {
   login,
   logout,
   refreshToken,
-  setTrirea,
-  clearTrirea,
-  setTrireaName,
-  setTriggerId,
-  setReactionId,
-  addTriggerInput,
-  addReactionInput,
-  clearTriggerInputs,
-  clearReactionInputs,
-  removeTriggerInput,
-  removeReactionInput,
+  // setTrirea,
+  // clearTrirea,
+  // setTrireaName,
+  // setTriggerId,
+  // setReactionId,
+  // addTriggerInput,
+  // addReactionInput,
+  // clearTriggerInputs,
+  // clearReactionInputs,
+  // removeTriggerInput,
+  // removeReactionInput,
 } = userSlice.actions
 
 export const selectUser = (state: RootState) => state.user

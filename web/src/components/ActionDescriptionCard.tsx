@@ -1,25 +1,40 @@
-import { triggerProps } from '@/components/ServiceCard'
+export type ActionDescriptionCardProps = {
+  name: string
+  description: string
+  inputs?: string[]
+  outputs?: string[]
+}
 
 export const ActionDescriptionCard = ({
   name,
   description,
-  options,
+  inputs,
   outputs = [],
-}: triggerProps) => {
+}: ActionDescriptionCardProps) => {
   return (
-    <div className="px-8 py-4 bg-white shadow-lg rounded-lg space-y-2">
+    <div className="space-y-2 rounded-lg bg-white px-8 py-4 shadow-lg">
       <h1 className="text-xl font-bold">{name}</h1>
       <h1 className="font-bold">
-        Params:
-        {options.map((option) => {
-          return <span> {option},</span>
+        Params:&nbsp;
+        {inputs?.map((input, index) => {
+          return (
+            <span key={input}>
+              {index !== 0 ? ', ' : ''}
+              {input.split('.')[1]}
+            </span>
+          )
         })}
       </h1>
       {outputs.length > 0 && (
         <h1 className="font-bold">
-          Outputs:
-          {outputs.map((output) => {
-            return <span> {output},</span>
+          Outputs:&nbsp;
+          {outputs.map((output, index) => {
+            return (
+              <span key={output}>
+                {index !== 0 ? ', ' : ''}
+                {output.split('.')[1]}
+              </span>
+            )
           })}
         </h1>
       )}

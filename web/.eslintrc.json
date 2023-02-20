@@ -11,6 +11,7 @@
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -64,7 +65,8 @@
         "forbidDefaultForRequired": false,
         "ignoreFunctionalComponents": true
       }
-    ]
+    ],
+    "tailwindcss/no-custom-classname": "off"
   },
   "plugins": ["react", "@typescript-eslint", "ban"]
 }
