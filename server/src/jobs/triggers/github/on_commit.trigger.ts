@@ -38,7 +38,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     }
 
     if (prevTriggerData !== data[0].sha) {
-        await saveTriggerData(trireaId, data.length.toString());
+        await saveTriggerData(trireaId, data[0].sha);
         return true
     }
 
