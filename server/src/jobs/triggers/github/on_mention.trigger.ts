@@ -5,6 +5,7 @@ import Logging from "~/lib/logging";
 
 export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string | null): Promise<boolean> => {
     if (userServicesTrigger.length === 0 || !userServicesTrigger[0].RefreshToken) {
+        Logging.warning('on_mention trigger: No user service token provided');
         return false;
     }
     const githubToken = userServicesTrigger[0].RefreshToken;
@@ -13,7 +14,6 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         Logging.warning('Trigger on mention fail: fail to fetch mention');
         return false;
     }
-
     if (data.length === 0) {
         if (!prevTriggerData) {
             await saveTriggerData(trireaId, data.length.toString());
@@ -28,7 +28,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     }
 
     if (prevTriggerData !== data[0].id) {
-        await saveTriggerData(trireaId, data.length.toString());
+        await saveTriggerData(trireaId, data[0].id);
         return true
     }
     return false;
@@ -36,8 +36,8 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 
 const getUserMention = async (githubToken: string): Promise<NewUserMention[]> => {
     try {
-     const { data } = await axios.get<any>(
-            `https://api.github.com/user/notifications?participating=true`,
+     const { data } = await axios.get<NewUserMention[]>(
+            `https://api.github.com/notifications?participating=true`,
             {
                 headers: {
                     Authorization: `Bearer ${githubToken}`,

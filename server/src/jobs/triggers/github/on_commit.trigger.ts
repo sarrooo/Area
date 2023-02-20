@@ -47,7 +47,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 
 const getCommitFromARepository = async (repository: string, owner: string, githubToken: string): Promise<Commit[]> => {
     try {
-        const {data} = await axios.get<any>(
+        const {data} = await axios.get<Commit[]>(
             `https://api.github.com/repos/${owner}/${repository}/commits`,
             {
                 headers: {
