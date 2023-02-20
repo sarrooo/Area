@@ -22,10 +22,31 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     }
 
     const githubToken = userServicesReaction[0].RefreshToken;
+    await createGist(createGistInputs.description, createGistInputs.content, createGistInputs.isPublic, githubToken);
 };
 
+const createGist = async (description: string, content: string, isPublic: boolean, githubToken: string): Promise<any> => {
+    const dataToSend = JSON.stringify({description: description, files: {"README.md": {content: content}}, public: isPublic})
+
+    try {
+        const { data } = await axios.post(
+            `https://api.github.com/gists`,
+            dataToSend,
+            {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${githubToken}`,
+                },
+            });
+        return data.data;
+    } catch (err: any) {
+        Logging.warning('Reaction create_gist fail: fail to create gist ' + err);
+        return
+    }
+}
+
 const getInputs = async (inputs: TrireaOutputs[]): Promise<CreateGistInputs> => {
-    const createGistInputs : CreateGistInputs = {description: '', content: '', public: false};
+    const createGistInputs : CreateGistInputs = {description: '', content: '', isPublic: false};
     await each(inputs, async (input) => {
         if (input.reactionInputType.name === 'create_gist.description' && input.value) {
             createGistInputs.description = input.value;
@@ -34,7 +55,7 @@ const getInputs = async (inputs: TrireaOutputs[]): Promise<CreateGistInputs> => 
             createGistInputs.content = input.value;
         }
         if (input.reactionInputType.name === 'create_gist.public' && input.value) {
-            createGistInputs.public = (input.value.toLowerCase() === 'true')
+            createGistInputs.isPublic = (input.value.toLowerCase() === 'true')
         }
     });
     return createGistInputs;
@@ -43,7 +64,7 @@ const getInputs = async (inputs: TrireaOutputs[]): Promise<CreateGistInputs> => 
 type CreateGistInputs = {
     description: string;
     content: string;
-    public: boolean;
+    isPublic: boolean;
 }
 
 type twitterUser = {

@@ -38,11 +38,9 @@ const likeTweet = async (tweetID: string, userID: string, twitterToken: string):
                     Authorization: `Bearer ${twitterToken}`,
                 },
             });
-        console.log(data);
         return data.data;
     } catch (err: any) {
         Logging.warning('Reaction like_tweet fail: fail to like tweet to target' + err);
-        Logging.warning(err.response.data);
         return
     }
 }
