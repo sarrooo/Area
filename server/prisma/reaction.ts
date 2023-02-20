@@ -152,7 +152,7 @@ export const reactionsInputsPopulate:Prisma.ReactionInputTypeCreateInput[] = [
         }
     },
     {
-        name: 'create_issue_comment.repo',
+        name: 'create_issue_comment.repository',
         description: 'Repository name',
         type: 'String',
         mandatory: true,
