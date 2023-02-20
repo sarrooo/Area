@@ -22,7 +22,6 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     if (!userID) {
         Logging.warning('Reaction like_tweet fail: No userID found');
     }
-    Logging.info('Reaction like_tweet: ' + likeTweetInputs.id + ' liked by ' + userID + 'with token ' + twitterToken);
     await likeTweet(likeTweetInputs.id, userID, twitterToken);
 };
 
@@ -66,13 +65,13 @@ const getUserID = async (twitterToken: string): Promise<string> => {
 }
 
 const getInputs = async (inputs: TrireaOutputs[]): Promise<LikeTweetInputs> => {
-    const sendMessageInputs : LikeTweetInputs = {id: ""};
+    const likeTweetInputs : LikeTweetInputs = {id: ""};
     await each(inputs, async (input) => {
         if (input.reactionInputType.name === 'like_tweet.tweet' && input.value) {
-            sendMessageInputs.id = input.value;
+            likeTweetInputs.id = input.value;
         }
     });
-    return sendMessageInputs;
+    return likeTweetInputs;
 }
 
 type LikeTweetInputs = {
