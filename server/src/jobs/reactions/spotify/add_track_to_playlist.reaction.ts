@@ -4,6 +4,7 @@ import {UserService} from "@prisma/client";
 import axios from "axios";
 import Logging from "~/lib/logging";
 import qs from "qs";
+import * as console from "console";
 
 export const start = async (trireaId: number, inputs: TrireaOutputs[], userServicesReaction: UserService[]) => {
 
@@ -28,11 +29,11 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
 
     const spotifyToken = userServicesReaction[0].RefreshToken;
     const trackURI = await getTrackURI(addTrackToPlaylistInputs.artist_name, addTrackToPlaylistInputs.track_name, spotifyToken)
-    if (!trackURI.uri) {
+    if (!trackURI) {
         Logging.warning('Reaction add_track_to_playlist fail: No trackURI found');
         return;
     }
-    await addTrackToPlaylist(addTrackToPlaylistInputs.playlist_id, trackURI.uri, spotifyToken);
+    await addTrackToPlaylist(addTrackToPlaylistInputs.playlist_id, trackURI, spotifyToken);
 };
 
 const addTrackToPlaylist = async (playlist_id: string, trackURI: string, spotifyToken: string): Promise<any> => {
@@ -53,7 +54,7 @@ const addTrackToPlaylist = async (playlist_id: string, trackURI: string, spotify
     }
 }
 
-const getTrackURI = async (artist_name: string, track_name: string, spotifyToken: string): Promise<TrackURI> => {
+const getTrackURI = async (artist_name: string, track_name: string, spotifyToken: string): Promise<string> => {
     try {
         const options = {
             q: 'artist:' + artist_name + ' track:' + track_name,
@@ -67,10 +68,11 @@ const getTrackURI = async (artist_name: string, track_name: string, spotifyToken
                     Authorization: `Bearer ${spotifyToken}`,
                 }
             });
-        return data.items[0].uri;
+        console.log(data.tracks.items[0].uri)
+        return data.tracks.items[0].uri;
     } catch (err: any) {
-        Logging.warning('Reaction like_tweet fail: fail to get user id' + err);
-        return {uri: ''}
+        Logging.warning('Reaction add track to playlist fail: get track URI' + err);
+        return ''
     }
 }
 
@@ -88,10 +90,6 @@ const getInputs = async (inputs: TrireaOutputs[]): Promise<AddTrackToPlaylistInp
         }
     });
     return addTrackToPlaylistInputs;
-}
-
-type TrackURI = {
-    uri: string;
 }
 
 type AddTrackToPlaylistInputs = {
