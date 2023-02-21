@@ -13,7 +13,7 @@ import {Section} from '../components/Section';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {MainButton} from '../components/MainButton';
 
-import { Button } from 'native-base';
+import {Button} from 'native-base';
 
 export const Landing = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -30,7 +30,7 @@ export const Landing = ({navigation}) => {
       <MainButton
         title="Login"
         onPress={() => {
-          navigation.navigate('Login');
+          navigation.navigate('Dashboard');
         }}
       />
       <Button size="sm" colorScheme="default">

@@ -1,0 +1,42 @@
+import React from 'react';
+
+import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+
+type TrireaCardProps = {
+  title: string;
+  backgroundColor?: string;
+  textColor?: string;
+  onPress?: () => void;
+};
+
+export const TrireaCard = ({
+  title,
+  backgroundColor = '#A6EAFF',
+  textColor = '#000',
+  onPress,
+}: TrireaCardProps) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.button, {backgroundColor: backgroundColor}]}>
+      <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    width: 200,
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+  },
+  buttonText: {
+    alignContent: 'center',
+    fontFamily: 'Poppins',
+    fontWeight: 'bold',
+    color: '#000',
+    fontSize: 18,
+  },
+});
