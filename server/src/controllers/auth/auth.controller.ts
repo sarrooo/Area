@@ -168,12 +168,6 @@ export const generateToken = async (
     process.env.JWT_SECRET as string,
     { expiresIn: `${config.get<number>("jwtConfig.expiresInSecret")}s` }
   );
-  res.cookie("jwtToken", token, {
-    httpOnly: true,
-    sameSite: "none",
-    maxAge: 1000 * config.get<number>("jwtConfig.expiresInSecret"),
-    secure: true,
-  });
   Logging.info(
     `Token generated for user ${config.get<number>(
       "jwtConfig.expiresInSecret"
