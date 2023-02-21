@@ -31,7 +31,7 @@ export const getSpotifyOauthToken = async ({code}: { code: string }): Promise<Sp
         );
         return data;
     } catch (err: any) {
-        Logging.error('Failed to get Google Oauth Token');
+        Logging.error('Failed to get Spotify Oauth Token');
         throw new Error(err);
     }
 };
