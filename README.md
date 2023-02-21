@@ -130,3 +130,6 @@ All objects mentioned here are defined in the [ServerTypes.ts file](./server/Ser
 ➡️ Search params :  
 &nbsp;&nbsp;&nbsp;&nbsp;⚫️ `max` : `number`  
 ⬅️ List of Output objects
+### Subscriptions routes :
+- **Desfine if subscribed** `POST /subscription`  
+➡️ In body : serviceId, and subscribed boolean  
