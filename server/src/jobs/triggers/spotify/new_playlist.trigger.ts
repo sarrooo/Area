@@ -1,4 +1,4 @@
-import {saveTriggerData, TrireaInputs} from "~/jobs/handler.job";
+import {saveTriggerData, transmitOutput, TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 import Logging from "~/lib/logging";
 import axios from "axios";
@@ -27,7 +27,8 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     }
 
     if (prevTriggerData !== playlists.total.toString()) {
-        await saveTriggerData(trireaId, playlists.total.toString());
+        await saveTriggerData(trireaId, playlists.total.toString())
+        await transmitOutput(trireaId, playlists.new_playlist_id, 'new_playlist.playlist_id')
         return true
     }
 
@@ -36,20 +37,21 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 
 const getCurrentUserPlaylist = async (spotifyToken: string): Promise<CountPlaylist> => {
     try {
-        const {data} = await axios.get<CountPlaylist>(
+        const {data} = await axios.get<any>(
             `https://api.spotify.com/v1/me/playlists`,
             {
                 headers: {
                     Authorization: `Bearer ${spotifyToken}`,
                 },
             });
-        return data;
+        return {new_playlist_id: data.items[0].id, total: data.total};
     } catch (err: any) {
         Logging.error('Trigger new playlist fail: fetch playlist' + err)
-        return {total: -1};
+        return {new_playlist_id: '', total: -1};
     }
 }
 
 type CountPlaylist = {
+    new_playlist_id: string,
     total: number;
 }

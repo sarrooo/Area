@@ -213,5 +213,15 @@ export const triggersOutputPopulate:Prisma.TriggerOutputTypeCreateInput[] = [
                 name: 'on_mention',
             }
         }
+    },
+    {
+        name: 'new_playlist.playlist_id',
+        description: 'Id of the new playlist',
+        type: 'String',
+        trigger: {
+            connect: {
+                name: 'new_playlist',
+            }
+        }
     }
 ]
