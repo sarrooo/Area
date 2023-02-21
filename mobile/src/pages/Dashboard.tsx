@@ -13,6 +13,8 @@ export const Dashboard = ({navigation}) => {
         rounded={'lg'}
         position={'absolute'}
         bottom={12}
+        zIndex={1}
+        shadow={2}
         right={8}
         onPress={() => {
           navigation.navigate('Services');
@@ -38,12 +40,39 @@ export const Dashboard = ({navigation}) => {
       </Button>
       <ScrollView style={styles.scrollContainer}>
         <TrireaCard
-          title="Trirea 1"
-          backgroundColor={'#A6EAFF'}
-          textColor={'#000'}
-          onPress={() => {
-            navigation.navigate('Service');
-          }}
+          id={1}
+          name={'The first one'}
+          triggerName={'poeapsd'}
+          reactionName={'lalala'}
+          isActive={true}
+        />
+        <TrireaCard
+          id={1}
+          name={'The first one'}
+          triggerName={'poeapsd'}
+          reactionName={'lalala'}
+          isActive={true}
+        />
+        <TrireaCard
+          id={1}
+          name={'The first one'}
+          triggerName={'poeapsd'}
+          reactionName={'lalala'}
+          isActive={true}
+        />
+        <TrireaCard
+          id={1}
+          name={'The first one'}
+          triggerName={'poeapsd'}
+          reactionName={'lalala'}
+          isActive={true}
+        />
+        <TrireaCard
+          id={1}
+          name={'The first one'}
+          triggerName={'poeapsd'}
+          reactionName={'lalala'}
+          isActive={true}
         />
       </ScrollView>
     </View>
@@ -57,10 +86,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+    height: '100%',
     marginTop: 12,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: 'center',
   },
 });

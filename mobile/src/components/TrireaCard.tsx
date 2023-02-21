@@ -1,42 +1,80 @@
+import {
+  Switch,
+  Menu,
+  Pressable,
+  ThreeDotsIcon,
+  DeleteIcon,
+  InfoIcon,
+} from 'native-base';
 import React from 'react';
 
-import {Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
 type TrireaCardProps = {
-  title: string;
-  backgroundColor?: string;
-  textColor?: string;
-  onPress?: () => void;
+  id: number;
+  name: string;
+  triggerName: string;
+  reactionName: string;
+  isActive: boolean;
 };
 
 export const TrireaCard = ({
-  title,
-  backgroundColor = '#A6EAFF',
-  textColor = '#000',
-  onPress,
+  id,
+  name,
+  triggerName,
+  reactionName,
+  isActive,
 }: TrireaCardProps) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.button, {backgroundColor: backgroundColor}]}>
-      <Text style={[styles.buttonText, {color: textColor}]}>{title}</Text>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{name}</Text>
+        <Menu
+          trigger={triggerProps => {
+            return (
+              <Pressable
+                accessibilityLabel="More options menu"
+                {...triggerProps}>
+                <ThreeDotsIcon />
+              </Pressable>
+            );
+          }}>
+          <Menu.Item>
+            <InfoIcon /> Edit
+          </Menu.Item>
+          <Menu.Item>
+            <DeleteIcon /> Delete
+          </Menu.Item>
+        </Menu>
+      </View>
+      <Text style={styles.text}>{triggerName}</Text>
+      <Text style={styles.text}>{reactionName}</Text>
+      <Switch isChecked={isActive} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    width: 200,
-    paddingVertical: 12,
-    paddingHorizontal: 30,
+  container: {
+    padding: 24,
+    backgroundColor: '#fff',
     borderRadius: 10,
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    marginBottom: 24,
   },
-  buttonText: {
-    alignContent: 'center',
-    fontFamily: 'Poppins',
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingBottom: 24,
+  },
+  title: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    fontFamily: 'Poppins',
+  },
+  text: {
     fontSize: 18,
+    fontFamily: 'Poppins',
   },
 });
