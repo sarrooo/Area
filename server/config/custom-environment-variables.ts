@@ -28,5 +28,10 @@ export default {
         clientId: 'TWITTER_OAUTH_CLIENT_ID',
         clientSecret: 'TWITTER_OAUTH_CLIENT_SECRET',
         redirectUri: 'TWITTER_OAUTH_REDIRECT_URL',
+    },
+    spotifyConfig: {
+        clientId: 'SPOTIFY_OAUTH_CLIENT_ID',
+        clientSecret: 'SPOTIFY_OAUTH_CLIENT_SECRET',
+        redirectUri: 'SPOTIFY_OAUTH_REDIRECT_URL',
     }
 }
