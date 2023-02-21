@@ -1,8 +1,9 @@
 import { ReactNode } from 'react'
-import { BsGithub, BsGoogle, BsTwitter } from 'react-icons/bs'
+import { BsGithub, BsGoogle, BsTwitter, BsSpotify } from 'react-icons/bs'
 import { getOauthGithubUrl } from './github'
 import { getOauthGoogleUrl } from './google'
 import { getOauthTwitterUrl } from './twitter'
+import {getOauthSpotifyUrl} from "@/utils/oauth/spotify";
 
 export type MappingOauth = {
   name: string
@@ -25,5 +26,10 @@ export const mappingOauth: MappingOauth[] = [
     name: 'google',
     url: getOauthGoogleUrl(),
     icon: <BsGoogle />,
+  },
+  {
+    name: 'spotify',
+    url: getOauthSpotifyUrl(),
+    icon: <BsSpotify />,
   },
 ]
