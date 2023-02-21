@@ -217,5 +217,38 @@ export const reactionsInputsPopulate:Prisma.ReactionInputTypeCreateInput[] = [
                 name: 'create_issue_comment',
             }
         }
+    },
+    {
+        name: 'add_track_to_playlist.playlist_id',
+        description: 'Playlist id',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'add_track_to_playlist',
+            }
+        }
+    },
+    {
+        name: 'add_track_to_playlist.artist_name',
+        description: 'Artist name',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'add_track_to_playlist',
+            }
+        }
+    },
+    {
+        name: 'add_track_to_playlist.track_name',
+        description: 'Track name',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'add_track_to_playlist',
+            }
+        }
     }
 ]
