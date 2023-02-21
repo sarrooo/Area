@@ -4,6 +4,7 @@ import Logging from "~/lib/logging";
 import axios from "axios";
 
 export const start = async (trireaId: number, inputs: TrireaInputs[], userServicesTrigger: UserService[], prevTriggerData: string | null): Promise<boolean> => {
+    Logging.info('Trigger new playlist start');
     if (userServicesTrigger.length === 0 || !userServicesTrigger[0].RefreshToken) {
         Logging.warning('Trigger new playlist fail: No user service token provided');
         return false;
