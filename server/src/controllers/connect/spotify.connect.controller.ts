@@ -1,17 +1,29 @@
 import { NextFunction, Request, Response } from "express";
 import Logging from "~/lib/logging";
-import { BadRequestException } from "~/utils/exceptions";
+import {BadRequestException, ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
 import {getSpotifyOauthToken} from "~~/services/spotify-session.service";
 import {prisma} from "~/lib/prisma";
+import {verify} from "jsonwebtoken";
 
 export const spotifyConnectHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
 ) => {
-    if (!req.user || !req.user.id) {
-        Logging.error("Spotify OAuth: No user provided");
-        throw new BadRequestException("No user provided");
+    const refreshToken = req.cookies["refreshToken"];
+    if (!refreshToken) {
+        throw new ForbiddenRequestException("No refresh token");
+    }
+
+    let payload: any;
+    try {
+        payload = verify(refreshToken, process.env.JWT_REFRESH_SECRET as string);
+    } catch (error) {
+        Logging.error(error);
+        throw new UnauthorizedRequestException("Invalid refresh token");
+    }
+    if (!payload) {
+        throw new ForbiddenRequestException("Invalid refresh token");
     }
 
     const code = req.query.code as string;
@@ -40,7 +52,7 @@ export const spotifyConnectHandler = async (
     await prisma.userService.upsert({
         where: {
             userId_serviceId: {
-                userId: req.user.id,
+                userId: payload.id,
                 serviceId: spotify.id
             }
         },
@@ -48,7 +60,7 @@ export const spotifyConnectHandler = async (
             RefreshToken: access_token
         },
         create: {
-            userId: req.user.id,
+            userId: payload.id,
             serviceId: spotify.id,
             RefreshToken: access_token
         }

@@ -16,6 +16,6 @@ sessionRouter.get('/oauth/github', githubOAuthHandler);
 sessionRouter.get('/oauth/twitter', twitterOAuthHandler);
 
 //CONNECT
-sessionRouter.get('/oauth/connect/spotify', verifyToken, spotifyConnectHandler)
+sessionRouter.get('/oauth/connect/spotify', spotifyConnectHandler)
 
 export default sessionRouter;
