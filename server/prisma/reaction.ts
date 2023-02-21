@@ -69,6 +69,40 @@ export const reactionsPopulate :Prisma.ReactionCreateInput[] = [
                 }
             }
         }
+    },
+    {
+        name: 'send_mail',
+        description: 'Send a mail',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'google',
+                },
+                create: {
+                    name: 'google',
+                    description: 'Google is a search engine',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Google-favicon-2015.png/1200px-Google-favicon-2015.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    },
+    {
+        name: 'add_track_to_playlist',
+        description: 'Add a track to a playlist',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'spotify',
+                },
+                create: {
+                    name: 'spotify',
+                    description: 'Spotify is a music streaming service',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1200px-Spotify_logo_without_text.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
     }
 ]
 
