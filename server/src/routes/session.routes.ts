@@ -4,6 +4,7 @@ import {githubOAuthHandler} from "~/controllers/auth/github.auth.controller";
 import {twitterOAuthHandler} from "~/controllers/auth/twitter.auth.controller";
 import {googleOAuthHandler} from "~/controllers/auth/google.auth.controller";
 import {spotifyConnectHandler} from "~/controllers/connect/spotify.connect.controller";
+import {verifyToken} from "~/middlewares/auth.handler";
 
 dotenv.config();
 
@@ -15,6 +16,6 @@ sessionRouter.get('/oauth/github', githubOAuthHandler);
 sessionRouter.get('/oauth/twitter', twitterOAuthHandler);
 
 //CONNECT
-sessionRouter.get('/oauth/connect/spotify', spotifyConnectHandler)
+sessionRouter.get('/oauth/connect/spotify', verifyToken, spotifyConnectHandler)
 
 export default sessionRouter;
