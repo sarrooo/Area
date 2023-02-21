@@ -3,7 +3,7 @@ import {prisma} from "~/lib/prisma";
 import {each} from "async";
 import Logging from "~/lib/logging";
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/5 * * * * *', async () => {
     const date = new Date();
     const trireas = await getTrireas();
     let triggered = false;
