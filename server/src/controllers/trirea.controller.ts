@@ -111,21 +111,23 @@ async function buildTrirea(trirea: Trirea) {
             trireaId: trirea.id
         }
     });
-    triggerInputs.forEach(async (trigger) => {
+    for (let i = 0; i < triggerInputs.length; i++) {
+        const trigger = triggerInputs[i];
         retTrirea.triggerInputs.push({
             id: trigger.id,
             value: trigger.value === null ? undefined : trigger.value,
             trireaId: trigger.trireaId,
             triggerInputTypeId: trigger.triggerInputTypeId
         });
-    });
+    }
     // Add reaction inputs
     const reactionInputs: TrireaReactionInput[] = await prisma.trireaReactionInput.findMany({
         where: {
             trireaId: trirea.id
         }
     });
-    reactionInputs.forEach(async (reaction) => {
+    for (let i = 0; i < reactionInputs.length; i++) {
+        const reaction = reactionInputs[i];
         retTrirea.reactionInputs.push({
             id: reaction.id,
             value: reaction.value === null ? undefined : reaction.value,
@@ -133,7 +135,7 @@ async function buildTrirea(trirea: Trirea) {
             triggerOutputTypeId: reaction.triggerOutputTypeId === null ? undefined : reaction.triggerOutputTypeId,
             reactionInputTypeId: reaction.reactionInputTypeId
         });
-    });
+    }
     return retTrirea;
 }
 
@@ -177,7 +179,8 @@ export const updateTrirea = async (req: Request, res: Response) => {
         if (/*!isAdmin(user)*/userId !== trirea.userId && req.user.id !== trirea.userId)
             throw new BadRequestException("You cannot update this trirea");
         // Add or update trigger inputs
-        triggerInputs.forEach(async (trigger) => {
+        for (let i = 0; i < triggerInputs.length; i++) {
+            const trigger = triggerInputs[i];
             await prisma.trireaTriggerInput.upsert({
                 where: {
                     id: trigger.id
@@ -193,9 +196,10 @@ export const updateTrirea = async (req: Request, res: Response) => {
                     triggerInputTypeId: trigger.triggerInputTypeId
                 },
             });
-        });
+        }
         // Add or update reaction inputs
-        reactionInputs.forEach(async (reaction) => {
+        for (let i = 0; i < reactionInputs.length; i++) {
+            const reaction = reactionInputs[i];
             await prisma.trireaReactionInput.upsert({
                 where: {
                     id: reaction.id
@@ -213,7 +217,7 @@ export const updateTrirea = async (req: Request, res: Response) => {
                     reactionInputTypeId: reaction.reactionInputTypeId
                 },
             });
-        });
+        }
         // Update trirea
         const updatedTrirea: Trirea = await prisma.trirea.update({
             where: {
@@ -277,10 +281,6 @@ export const searchTrirea = async (req: Request, res: Response) => {
         const retTrirea: ApiTrirea = await buildTrirea(trireas[i]);
         retTrireas.push(retTrirea);
     }
-    // trireas.forEach(async (trirea) => {
-    //     const retTrirea: ApiTrirea = await buildTrirea(trirea);
-    //     retTrireas.push(retTrirea);
-    // });
     Logging.info(`Searched trireas for user ${userId}`);
     return res.status(StatusCodes.OK).json(retTrireas);
 };

@@ -1,0 +1,121 @@
+[
+  {
+    "id": 1,
+    "name": "send_message",
+    "description": "Send a message to a user",
+    "serviceId": 2,
+    "inputs": [
+      {
+        "id": 1,
+        "name": "send_message.message",
+        "type": "String",
+        "description": "Message to send",
+        "mandatory": true,
+        "reactionId": 1
+      },
+      {
+        "id": 2,
+        "name": "send_message.username",
+        "type": "String",
+        "description": "Send message to",
+        "mandatory": true,
+        "reactionId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "like_tweet",
+    "description": "Like a tweet from a user",
+    "serviceId": 2,
+    "inputs": [
+      {
+        "id": 3,
+        "name": "like_tweet.tweet",
+        "type": "String",
+        "description": "Tweet to like",
+        "mandatory": true,
+        "reactionId": 2
+      }
+    ]
+  }
+]
+
+[
+  {
+    "id": 1,
+    "name": "time",
+    "description": "Time module",
+    "image": ".",
+    "requiredSubscription": false,
+    "subscribed": false
+  },
+  {
+    "id": 2,
+    "name": "twitter",
+    "description": "Twitter is a social network",
+    "image": "https://upload.wikimedia.org/wikipedia/fr/thumb/c/c8/Twitter_Bird.svg/langfr-220px-Twitter_Bird.svg.png",
+    "requiredSubscription": true,
+    "subscribed": false
+  }
+]
+
+[
+  {
+    "id": 1,
+    "name": "every",
+    "description": "triggers every X minutes",
+    "serviceId": 1,
+    "inputs": [
+      {
+        "id": 3,
+        "name": "every.freq",
+        "type": "Int",
+        "description": "frequency of the trigger",
+        "mandatory": true,
+        "triggerId": 1
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "at_time",
+    "description": "triggers at x time",
+    "serviceId": 1,
+    "inputs": [
+      {
+        "id": 1,
+        "name": "at_time.time",
+        "type": "String",
+        "description": "Time at which the trigger will be executed",
+        "mandatory": true,
+        "triggerId": 2
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "new_tweet_from",
+    "description": "trigger when a X user post a new tweet",
+    "serviceId": 2,
+    "inputs": [
+      {
+        "id": 2,
+        "name": "new_tweet_from.username",
+        "type": "String",
+        "description": "Username to watch",
+        "mandatory": true,
+        "triggerId": 3
+      }
+    ],
+    "outputs": [
+      {
+        "id": 1,
+        "name": "new_tweet_from.tweet_id",
+        "type": "String",
+        "description": "Tweet from the user",
+        "triggerId": 3
+      }
+    ]
+  }
+]

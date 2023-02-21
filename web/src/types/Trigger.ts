@@ -1,5 +1,5 @@
 export type TriggerInputType = {
-  id?: number
+  id: number
   name: string
   type: string
   description?: string
@@ -18,7 +18,7 @@ export type TriggerOutput = {
 }
 
 export type TriggerOutputType = {
-  id?: number
+  id: number
   name: string
   type: string
   description?: string

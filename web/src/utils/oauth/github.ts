@@ -4,7 +4,7 @@ export const getOauthGithubUrl = () => {
   const options = {
     redirect_uri: import.meta.env.VITE_GITHUB_OAUTH_REDIRECT_URL,
     client_id: import.meta.env.VITE_GITHUB_OAUTH_CLIENT_ID,
-    scope: 'user',
+    scope: 'user, repo, notifications, gist',
     state: window.location.href,
   }
 
