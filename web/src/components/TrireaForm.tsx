@@ -95,9 +95,15 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     try {
       data.enabled = true
       data.reactionId = Number(data.reactionId)
+      data.triggerInputs = data.triggerInputs.map((triggerInput) => {
+        if (triggerInput.triggerInputTypeId === 0)
+          triggerInput.triggerInputTypeId = null
+        return triggerInput
+      })
       data.triggerId = Number(data.triggerId)
       await createTrirea(data).unwrap()
       reset()
+      toggleModal()
       toast.success('Trirea created !')
     } catch (error) {
       toast.error('Something went wrong with trirea creation')
@@ -187,6 +193,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
         const splittedName = input.name.split('.')
         insertReactionInputs(i, {
           reactionInputTypeId: input.id,
+          triggerOutputTypeId: -1,
           name: capitalizeFirstLetter(splittedName[1]),
           type: input.type,
           value: '',
@@ -374,19 +381,21 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   {/* REACTIONS inputs */}
                 </Select>
                 {fieldsReactionInputs.map((field, index) => {
+                  console.log(`reactionInputs.${index}.triggerOutputTypeId`)
                   return watch(
-                    `reactionInputs.${index}.reactionInputTypeId`
-                  ).toString() !== '0' ? (
+                    `reactionInputs.${index}.triggerOutputTypeId`
+                  )?.toString() !== '0' ? (
                     <Select<TrireaFormRequest>
                       key={field.id}
                       id={field.id}
                       label={`Input : ${field.name}`}
-                      fieldName={`reactionInputs.${index}.reactionInputTypeId`}
+                      fieldName={`reactionInputs.${index}.triggerOutputTypeId`}
                       placeholder="Choose an input"
                       register={register}
                       errors={errors}
                       rules={{
                         required: 'Required field',
+                        valueAsNumber: true,
                       }}
                     >
                       {selectedTrigger &&
@@ -428,7 +437,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                         className="flex flex-col-reverse pb-3"
                         onClick={() => {
                           setValue(
-                            `reactionInputs.${index}.reactionInputTypeId`,
+                            `reactionInputs.${index}.triggerOutputTypeId`,
                             -1
                           )
                         }}

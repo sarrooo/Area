@@ -8,12 +8,14 @@ export const trireaApi = api.injectEndpoints({
         url: `/trirea`,
         method: 'GET',
       }),
+      providesTags: ['Trirea'],
     }),
     getTrirea: build.query<Trirea, number>({
       query: (id: number) => ({
         url: `/trirea/${id}`,
         method: 'GET',
       }),
+      providesTags: (result, error, arg) => [{ type: 'Trirea', id: arg }],
     }),
     createTrirea: build.mutation<void, Trirea>({
       query: (body) => ({
@@ -21,6 +23,7 @@ export const trireaApi = api.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['Trirea'],
     }),
     updateTrirea: build.mutation<void, Trirea>({
       query: (body) => ({
@@ -28,12 +31,14 @@ export const trireaApi = api.injectEndpoints({
         method: 'POST',
         body,
       }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Trirea', id: arg.id }],
     }),
     deleteTrirea: build.mutation<void, number>({
       query: (id) => ({
         url: `/trirea/delete/${id}`,
         method: 'POST',
       }),
+      invalidatesTags: (result, error, arg) => [{ type: 'Trirea', id: arg }],
     }),
   }),
 })
