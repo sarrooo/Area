@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
+import { GrClear } from 'react-icons/gr'
 import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
 import { TrireaFormRequest } from '@/types/Trirea'
@@ -30,6 +31,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     watch,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<TrireaFormRequest>({ reValidateMode: 'onSubmit' })
   const {
     fields: fieldsTriggerInputs,
@@ -371,24 +373,71 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   ))}
                   {/* REACTIONS inputs */}
                 </Select>
-                {fieldsReactionInputs.map((field, index) => (
-                  <Input<TrireaFormRequest>
-                    key={field.id}
-                    id={field.id}
-                    label={`Input : ${field.name}`}
-                    fieldName={`reactionInputs.${index}.value`}
-                    placeholder="Enter a value"
-                    register={register}
-                    rules={{
-                      min: {
-                        value: 1,
-                        message: 'Required field',
-                      },
-                    }}
-                    inputType={field.type === 'number' ? 'number' : 'text'}
-                    errors={errors}
-                  />
-                ))}
+                {fieldsReactionInputs.map((field, index) => {
+                  return watch(
+                    `reactionInputs.${index}.reactionInputTypeId`
+                  ).toString() !== '0' ? (
+                    <Select<TrireaFormRequest>
+                      key={field.id}
+                      id={field.id}
+                      label={`Input : ${field.name}`}
+                      fieldName={`reactionInputs.${index}.reactionInputTypeId`}
+                      placeholder="Choose an input"
+                      register={register}
+                      errors={errors}
+                      rules={{
+                        required: 'Required field',
+                      }}
+                    >
+                      {selectedTrigger &&
+                        selectedTrigger.outputs?.map((output) => {
+                          if (output.type === field.type) {
+                            return (
+                              <option key={output.name} value={output.id}>
+                                {output.name}
+                              </option>
+                            )
+                          }
+                          return null
+                        })}
+                      <option key="-1" value="0">
+                        custom
+                      </option>
+                    </Select>
+                  ) : (
+                    <div
+                      key={field.id}
+                      className="flex flex-row justify-between"
+                    >
+                      <Input<TrireaFormRequest>
+                        key={field.id}
+                        id={field.id}
+                        label={`Input : ${field.name}`}
+                        fieldName={`reactionInputs.${index}.value`}
+                        placeholder="Enter a value"
+                        register={register}
+                        rules={{
+                          required: 'Required field',
+                        }}
+                        inputType={field.type === 'number' ? 'number' : 'text'}
+                        errors={errors}
+                        className="w-full"
+                      />
+                      <button
+                        type="button"
+                        className="flex flex-col-reverse pb-3"
+                        onClick={() => {
+                          setValue(
+                            `reactionInputs.${index}.reactionInputTypeId`,
+                            -1
+                          )
+                        }}
+                      >
+                        <GrClear size={35} />
+                      </button>
+                    </div>
+                  )
+                })}
               </div>
             </div>
             <div className="items center flex w-full justify-end">
