@@ -241,6 +241,7 @@ export const updateTrirea = async (req: Request, res: Response) => {
 // Delete Trirea : POST /trirea/delete/:id
 export const deleteTrirea = async (req: Request, res: Response) => {
     const {id} = req.params;
+    Logging.info(`Deleting trirea ${parseInt(id)}`);
     try {
         const trirea: Trirea | null = await prisma.trirea.findUnique({
             where: {
@@ -248,15 +249,31 @@ export const deleteTrirea = async (req: Request, res: Response) => {
             },
         });
         // ? Check if user can access to this trirea
-        if (trirea === null)
+        if (trirea === null) {
             throw new BadRequestException("Trirea not found");
-        if (/*!isAdmin(user)*/req.user.id !== trirea.userId)
+        }
+        if (/*!isAdmin(user)*/req.user.id !== trirea.userId) {  
             throw new BadRequestException("You cannot delete this trirea");
+        }
+        // Delete trigger inputs
+        await prisma.trireaTriggerInput.deleteMany({
+            where: {
+                trireaId: parseInt(id)
+            }
+        });
+        // Delete reaction inputs
+        await prisma.trireaReactionInput.deleteMany({
+            where: {
+                trireaId: parseInt(id)
+            }
+        });
+        // Delete trirea
         const deletedTrirea: Trirea = await prisma.trirea.delete({
             where: {
                 id: parseInt(id)
             }
         });
+        Logging.info(`skjhssn,slnk ${deletedTrirea?.id}`);
         Logging.info(`Deleted trirea ${deletedTrirea.id}`);
         return res.status(StatusCodes.OK).json(deletedTrirea);
     } catch (_) {
@@ -266,13 +283,12 @@ export const deleteTrirea = async (req: Request, res: Response) => {
 
 // Search Trirea : GET /trirea
 export const searchTrirea = async (req: Request, res: Response) => {
-    const {active, max, userId}: searchInfos = req.body;
+    const { max, userId}: searchInfos = req.body;
     if (/*!isAdmin(user)*/userId !== undefined && req.user.id !== userId)
         throw new BadRequestException("You search for others trireas");
     const trireas: Trirea[] = await prisma.trirea.findMany({
         where: {
             userId: req.user.id ? req.user.id : undefined,
-            enabled: active ? active : true
         },
         take: max
     });

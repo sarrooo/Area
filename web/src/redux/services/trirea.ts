@@ -8,7 +8,13 @@ export const trireaApi = api.injectEndpoints({
         url: `/trirea`,
         method: 'GET',
       }),
-      providesTags: ['Trirea'],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Trirea' as const, id })),
+              'Trirea',
+            ]
+          : ['Trirea'],
     }),
     getTrirea: build.query<Trirea, number>({
       query: (id: number) => ({

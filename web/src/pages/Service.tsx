@@ -2,11 +2,15 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { IoMdSend } from 'react-icons/io'
 import { AiFillEye } from 'react-icons/ai'
 import { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
 import { BackButton } from '@/components/BackButton'
 import { FollowButton } from '@/components/FollowButton'
 import { ActionDescriptionCard } from '@/components/ActionDescriptionCard'
 import { MainButton } from '@/components/MainButton'
-import { useGetServiceQuery } from '../redux/services/service'
+import {
+  useGetServiceQuery,
+  useSubscribeMutation,
+} from '../redux/services/service'
 import { MappingOauth, mappingOauth } from '../utils/oauth'
 import { LoginWithButton } from '../components/LoginWithButton'
 
@@ -16,6 +20,7 @@ const Service = () => {
   const { data: service, isLoading } = useGetServiceQuery(
     parseInt(id || '0', 10)
   )
+  const [subscribe] = useSubscribeMutation()
   const [oauthNeeded, setOauthNeeded] = useState<MappingOauth>()
 
   useEffect(() => {
@@ -61,7 +66,19 @@ const Service = () => {
                     {oauthNeeded.icon}
                   </LoginWithButton>
                 ) : (
-                  <FollowButton isFollowing={service.subscribed} />
+                  <FollowButton
+                    isFollowing={service.subscribed}
+                    onClick={() => {
+                      try {
+                        subscribe({
+                          serviceId: Number(id) || 0,
+                          subscribed: !service.subscribed,
+                        })
+                      } catch (error) {
+                        toast.error('Something went wrong')
+                      }
+                    }}
+                  />
                 )}
               </div>
               <p className="w-2/3 text-lg">{service.description}</p>
