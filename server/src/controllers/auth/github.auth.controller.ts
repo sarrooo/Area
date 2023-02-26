@@ -1,18 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import Logging from "~/lib/logging";
-import { BadRequestException } from "~/utils/exceptions";
+import {BadRequestException, ForbiddenRequestException} from "~/utils/exceptions";
 import {
   getGithubOauthToken,
   getGithubUser,
 } from "~~/services/github-session.service";
 import { prisma } from "~/lib/prisma";
 import { generateToken } from "~/controllers/auth/auth.controller";
+import {githubConnectHandler} from "~/controllers/connect/github.connect.controller";
 
 export const githubOAuthHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  const refreshToken = req.cookies["refreshToken"];
+  if (refreshToken) {
+    await githubConnectHandler(req, res, next)
+    return
+  }
+
   const code = req.query.code as string;
   const pathUrl = (req.query.state as string) || "/";
 

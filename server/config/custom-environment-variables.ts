@@ -24,7 +24,6 @@ export default {
         clientId: 'GITHUB_OAUTH_CLIENT_ID',
         clientSecret: 'GITHUB_OAUTH_CLIENT_SECRET',
         redirectUri: 'GITHUB_OAUTH_REDIRECT_URL',
-        redirectConnectUri: 'GITHUB_OAUTH_CONNECT_REDIRECT_URL',
     },
     twitterConfig: {
         clientId: 'TWITTER_OAUTH_CLIENT_ID',

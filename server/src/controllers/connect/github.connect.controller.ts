@@ -3,7 +3,7 @@ import Logging from "~/lib/logging";
 import {BadRequestException, ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
 import {verify} from "jsonwebtoken";
-import {getGithubConnectOauthToken} from "~~/services/github-session.service";
+import {getGithubOauthToken} from "~~/services/github-session.service";
 
 export const githubConnectHandler = async (
     req: Request,
@@ -33,7 +33,7 @@ export const githubConnectHandler = async (
         throw new BadRequestException("No code provided");
     }
 
-    const { access_token } = await getGithubConnectOauthToken({ code });
+    const { access_token } = await getGithubOauthToken({ code });
     if (!access_token) {
         Logging.error("Github Connect OAuth: getGithubConnectOauthToken failed");
         throw new BadRequestException("No access_token provided");
