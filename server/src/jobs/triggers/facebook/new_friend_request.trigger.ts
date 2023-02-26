@@ -1,1 +1,0 @@
-//https://developers.facebook.com/docs/graph-api/reference/v16.0/user/friendrequests
