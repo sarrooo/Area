@@ -26,24 +26,28 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     }
 
     const googleToken = userServicesReaction[0].RefreshToken;
+    await sendMail('me', sendMailInputs.to, sendMailInputs.subject, sendMailInputs.content, googleToken);
 };
 
-const sendMail = async (tweetID: string, userID: string, twitterToken: string): Promise<any> => {
-    const dataToSend = JSON.stringify({tweet_id: tweetID})
+const sendMail = async (from:string, to: string, subject: string, content: string, googleToken: string): Promise<any> => {
+    const dataToSend = "From: " + from + "\n" +
+        "To: " + to + "\n" +
+        "Subject: "  + subject + "\n" +
+        "\n" + content;
 
     try {
         const { data } = await axios.post(
-            `https://api.twitter.com/2/users/${userID}/likes`,
+            `https://gmail.googleapis.com/upload/gmail/v1/users/me/messages/send`,
             dataToSend,
             {
                 headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${twitterToken}`,
+                    "Content-type": "message/rfc822",
+                    Authorization: `Bearer ${googleToken}`,
                 },
             });
-        return data.data;
+        return data;
     } catch (err: any) {
-        Logging.warning('Reaction like_tweet fail: fail to like tweet to target' + err);
+        Logging.warning('Reaction send mail fail: fail to send ' + dataToSend);
         return
     }
 }
@@ -68,12 +72,4 @@ type SendMailsInputs = {
     to: string;
     subject: string;
     content: string;
-}
-
-type twitterUser = {
-    data: {
-        id: string;
-        name: string;
-        username: string;
-    }
 }
