@@ -10,6 +10,7 @@ export const getOauthGoogleUrl = () => {
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
+      'https//mail.google.com',
     ].join(' '),
     state: window.location.href,
   }
@@ -31,6 +32,7 @@ export const getOauthConnectGoogleUrl = () => {
     scope: [
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
+      'https://mail.google.com',
     ].join(' '),
     state: window.location.href,
   }
