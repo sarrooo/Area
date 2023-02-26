@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import { BsGithub, BsGoogle, BsTwitter, BsSpotify } from 'react-icons/bs'
-import { getOauthGithubUrl } from './github'
-import { getOauthGoogleUrl } from './google'
-import { getOauthTwitterUrl } from './twitter'
-import {getOauthSpotifyUrl} from "@/utils/oauth/spotify";
+import { getOauthGithubUrl} from './github'
+import { getOauthConnectGoogleUrl } from './google'
+import { getOauthConnectTwitterUrl } from './twitter'
+import { getOauthConnectSpotifyUrl } from '@/utils/oauth/spotify'
 
 export type MappingOauth = {
   name: string
@@ -19,17 +19,17 @@ export const mappingOauth: MappingOauth[] = [
   },
   {
     name: 'twitter',
-    url: getOauthTwitterUrl(),
+    url: getOauthConnectTwitterUrl(),
     icon: <BsTwitter />,
   },
   {
     name: 'google',
-    url: getOauthGoogleUrl(),
+    url: getOauthConnectGoogleUrl(),
     icon: <BsGoogle />,
   },
   {
     name: 'spotify',
-    url: getOauthSpotifyUrl(),
+    url: getOauthConnectSpotifyUrl(),
     icon: <BsSpotify />,
   },
 ]
