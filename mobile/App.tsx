@@ -1,44 +1,21 @@
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NativeBaseProvider} from 'native-base';
+import React from 'react'
+import {createNativeStackNavigator} from '@react-navigation/native-stack'
+import {NativeBaseProvider} from 'native-base'
 
-import {Landing} from './src/pages/Landing';
-import {Dashboard} from './src/pages/Dashboard';
-import {Services} from './src/pages/Services';
-import {Service} from './src/pages/Service';
+import {Provider} from 'react-redux'
+import {store} from './src/redux/store'
+import {Navigator} from './src/Navigator'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 const App = () => {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
       <NativeBaseProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Landing"
-            component={Landing}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Dashboard"
-            component={Dashboard}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Services"
-            component={Services}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Service"
-            component={Service}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
+        <Navigator />
       </NativeBaseProvider>
-    </NavigationContainer>
-  );
-};
+    </Provider>
+  )
+}
 
-export default App;
+export default App

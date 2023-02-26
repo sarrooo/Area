@@ -1,10 +1,19 @@
-import {AddIcon, Button, ScrollView} from 'native-base';
+import {
+  AddIcon,
+  Button,
+  ScrollView,
+  useDisclose,
+  Actionsheet,
+  Input,
+} from 'native-base';
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Section} from '../components/Section';
 import {TrireaCard} from '../components/TrireaCard';
 
 export const Dashboard = ({navigation}) => {
+  const {isOpen, onOpen, onClose} = useDisclose();
+
   return (
     <View style={styles.container}>
       <Section title="Dashboard">Create and find all your trireas here</Section>
@@ -27,7 +36,10 @@ export const Dashboard = ({navigation}) => {
         width={'24'}
         position={'absolute'}
         top={12}
-        right={8}>
+        right={8}
+        onPress={() => {
+          navigation.goBack();
+        }}>
         Logout
       </Button>
       <Button
@@ -35,9 +47,22 @@ export const Dashboard = ({navigation}) => {
         rightIcon={<AddIcon />}
         colorScheme={'success'}
         borderStyle={'dashed'}
-        borderColor={'black'}>
+        borderColor={'black'}
+        onPress={onOpen}>
         Create a trirea
       </Button>
+
+      <Actionsheet isOpen={isOpen} onClose={onClose}>
+        <Actionsheet.Content>
+          <Input placeholder="Trirea name" />
+          <Actionsheet.Item onPress={onClose}>Create a trirea</Actionsheet.Item>
+          <Actionsheet.Item onPress={onClose}>
+            Create a trirea from a template
+          </Actionsheet.Item>
+          <Actionsheet.Item onPress={onClose}>Submit</Actionsheet.Item>
+        </Actionsheet.Content>
+      </Actionsheet>
+
       <ScrollView style={styles.scrollContainer}>
         <TrireaCard
           id={1}

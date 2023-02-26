@@ -33,9 +33,6 @@ export const Landing = ({navigation}) => {
           navigation.navigate('Dashboard');
         }}
       />
-      <Button size="sm" colorScheme="default">
-        Default Small
-      </Button>
       <Image style={styles.image} source={require('../assets/universe.png')} />
     </SafeAreaView>
   );
