@@ -21,19 +21,14 @@ export const start = async (trireaId: number, inputs: TrireaOutputs[], userServi
     }
 
     if (userServicesReaction.length === 0 || !userServicesReaction[0].RefreshToken) {
-        Logging.warning('Reaction like_tweet fail: No user service token provided');
+        Logging.warning('Reaction send mail fail: No user service token provided');
         return;
     }
 
-    const twitterToken = userServicesReaction[0].RefreshToken;
-    const userID = await getUserID(twitterToken)
-    if (!userID) {
-        Logging.warning('Reaction like_tweet fail: No userID found');
-    }
-    await likeTweet(sendMailInputs.id, userID, twitterToken);
+    const googleToken = userServicesReaction[0].RefreshToken;
 };
 
-const likeTweet = async (tweetID: string, userID: string, twitterToken: string): Promise<any> => {
+const sendMail = async (tweetID: string, userID: string, twitterToken: string): Promise<any> => {
     const dataToSend = JSON.stringify({tweet_id: tweetID})
 
     try {
@@ -50,23 +45,6 @@ const likeTweet = async (tweetID: string, userID: string, twitterToken: string):
     } catch (err: any) {
         Logging.warning('Reaction like_tweet fail: fail to like tweet to target' + err);
         return
-    }
-}
-
-const getUserID = async (twitterToken: string): Promise<string> => {
-    try {
-        const { data } = await axios.get<twitterUser>(
-            `https://api.twitter.com/2/users/me`,
-            {
-                headers: {
-                    "Content-type": "application/json",
-                    Authorization: `Bearer ${twitterToken}`,
-                }
-            });
-        return data.data.id;
-    } catch (err: any) {
-        Logging.warning('Reaction like_tweet fail: fail to get user id' + err);
-        return ""
     }
 }
 
