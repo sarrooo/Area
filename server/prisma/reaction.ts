@@ -250,5 +250,38 @@ export const reactionsInputsPopulate:Prisma.ReactionInputTypeCreateInput[] = [
                 name: 'add_track_to_playlist',
             }
         }
-    }
+    },
+    {
+        name: 'send_mail.to',
+        description: 'Mail recipient',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'send_mail',
+            }
+        }
+    },
+    {
+        name: 'send_mail.subject',
+        description: 'Mail subject',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'send_mail',
+            }
+        }
+    },
+    {
+        name: 'send_mail.content',
+        description: 'Mail content',
+        type: 'String',
+        mandatory: true,
+        reaction: {
+            connect: {
+                name: 'send_mail',
+            }
+        }
+    },
 ]
