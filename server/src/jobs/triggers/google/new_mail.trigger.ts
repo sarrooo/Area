@@ -9,7 +9,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         return false;
     }
     const googleToken = userServicesTrigger[0].RefreshToken;
-    const data = await getUserMention(googleToken);
+    const data = await getNewMail(googleToken);
     if (!data) {
         Logging.warning('new_mail trigger fail: fail to fetch mention');
         return false;
@@ -21,7 +21,6 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         }
         return false;
     }
-
     if (!prevTriggerData) {
         await saveTriggerData(trireaId, data[0].id);
         return false;
@@ -34,25 +33,24 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     return false;
 };
 
-const getUserMention = async (githubToken: string): Promise<NewUserMention[]> => {
+const getNewMail = async (googleToken: string): Promise<NewMessagesGmail[]> => {
     try {
-        const { data } = await axios.get<NewUserMention[]>(
-            `https://api.github.com/notifications?participating=true`,
+        const { data } = await axios.get<any>(
+            `https://gmail.googleapis.com/gmail/v1/users/me/messages`,
             {
                 headers: {
-                    Authorization: `Bearer ${githubToken}`,
+                    Authorization: `Bearer ${googleToken}`,
                 },
             });
-        return data;
+        return data.messages;
     } catch (err: any) {
+        Logging.warning('new_mail trigger fail: fail to fetch new mail');
         return [];
     }
 }
 
-type NewUserMention = {
+type NewMessagesGmail = {
     id: string,
-    subject: {
-        url: string,
-    }
+    threadId: string,
 }
 
