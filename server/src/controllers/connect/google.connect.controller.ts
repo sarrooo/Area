@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import Logging from "~/lib/logging";
 import {BadRequestException, ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
-import {getSpotifyOauthToken} from "~~/services/spotify-session.service";
 import {prisma} from "~/lib/prisma";
 import {verify} from "jsonwebtoken";
+import {getGoogleConnectOauthToken} from "~~/services/google-session.service";
 
-export const spotifyConnectHandler = async (
+export const googleConnectHandler = async (
     req: Request,
     res: Response,
     next: NextFunction
@@ -29,31 +29,31 @@ export const spotifyConnectHandler = async (
     const code = req.query.code as string;
 
     if (!code) {
-        Logging.error("Spotify OAuth: No code provided");
+        Logging.error("Google Connect OAuth: No code provided");
         throw new BadRequestException("No code provided");
     }
 
-    const { access_token } = await getSpotifyOauthToken({ code });
+    const { access_token } = await getGoogleConnectOauthToken({ code });
     if (!access_token) {
-        Logging.error("Spotify OAuth: getSpotifyOauthToken failed");
+        Logging.error("Google Connect OAuth: getGoogleConnectOauthToken failed");
         throw new BadRequestException("No access_token provided");
     }
 
-    const spotify = await prisma.service.findUnique({
+    const google = await prisma.service.findUnique({
         where: {
-            name: "spotify"
+            name: "google"
         }
     });
-    if (!spotify) {
-        Logging.error("Spotify OAuth: No spotify service found");
-        throw new BadRequestException("No spotify service found");
+    if (!google) {
+        Logging.error("Google Connect OAuth: No google service found");
+        throw new BadRequestException("No google service found");
     }
 
     await prisma.userService.upsert({
         where: {
             userId_serviceId: {
                 userId: payload.id,
-                serviceId: spotify.id
+                serviceId: google.id
             }
         },
         update: {
@@ -61,7 +61,7 @@ export const spotifyConnectHandler = async (
         },
         create: {
             userId: payload.id,
-            serviceId: spotify.id,
+            serviceId: google.id,
             RefreshToken: access_token
         }
     });
