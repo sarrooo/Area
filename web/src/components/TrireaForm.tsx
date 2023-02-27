@@ -69,6 +69,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const [selectedTrigger, setSelectedTrigger] = useState<Trigger>()
   const [selectedReaction, setSelectedReaction] = useState<Reaction>()
 
+  const [servicesAvailable, setServicesAvailable] = useState<Service[]>([])
   const [triggersAvailable, setTriggersAvailable] = useState<Trigger[]>([])
   const [reactionsAvailable, setReactionsAvailable] = useState<Reaction[]>([])
 
@@ -109,6 +110,19 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       toast.error('Something went wrong with trirea creation')
     }
   }
+
+  // Use effect to set available SERVICES
+  useEffect(() => {
+    if (services.isError) {
+      toast.error('Something went wrong with services')
+    }
+    if (services.isSuccess) {
+      const servicesFiltered = services.data?.filter((service) => {
+        return service.subscribed
+      })
+      setServicesAvailable(servicesFiltered)
+    }
+  }, [services])
 
   // Use effect to handle selected TRIGGER SERVICE
   useEffect(() => {
@@ -277,13 +291,14 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a service"
                   onChange={(e) => {
                     const target = e.target as HTMLSelectElement
-                    const searchedSelectedTriggerService = services.data?.find(
-                      (service) => service.id === parseInt(target.value, 10)
-                    )
+                    const searchedSelectedTriggerService =
+                      servicesAvailable.find(
+                        (service) => service.id === parseInt(target.value, 10)
+                      )
                     setSelectedTriggerService(searchedSelectedTriggerService)
                   }}
                 >
-                  {services.data?.map(
+                  {servicesAvailable.map(
                     (service) =>
                       service.triggers && (
                         <option key={service.id} value={service.id}>
@@ -300,13 +315,14 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   placeholder="Choose a service"
                   onChange={(e) => {
                     const target = e.target as HTMLSelectElement
-                    const searchedSelectedReactionService = services.data?.find(
-                      (service) => service.id === parseInt(target.value, 10)
-                    )
+                    const searchedSelectedReactionService =
+                      servicesAvailable.find(
+                        (service) => service.id === parseInt(target.value, 10)
+                      )
                     setSelectedReactionService(searchedSelectedReactionService)
                   }}
                 >
-                  {services.data?.map(
+                  {servicesAvailable.map(
                     (service) =>
                       service.reactions && (
                         <option key={service.id} value={service.id}>
@@ -381,7 +397,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   {/* REACTIONS inputs */}
                 </Select>
                 {fieldsReactionInputs.map((field, index) => {
-                  console.log(`reactionInputs.${index}.triggerOutputTypeId`)
                   return watch(
                     `reactionInputs.${index}.triggerOutputTypeId`
                   )?.toString() !== '0' ? (
