@@ -3,7 +3,6 @@ import { toast } from 'react-toastify'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
 import { GrClear } from 'react-icons/gr'
-import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
 import { TrireaFormRequest } from '@/types/Trirea'
 import { Select } from '@/components/Select'
@@ -11,11 +10,9 @@ import { useGetServicesQuery } from '@/redux/services/service'
 import { useGetTriggersQuery } from '@/redux/services/trigger'
 import { useGetReactionsQuery } from '@/redux/services/reaction'
 import { useCreateTrireaMutation } from '@/redux/services/trirea'
-import { LoginWithButton } from '@/components/LoginWithButton'
 import { capitalizeFirstLetter } from '../utils/string'
 import { Trigger } from '../types/Trigger'
 import { Reaction } from '../types/Reaction'
-import { MappingOauth, mappingOauth } from '../utils/oauth'
 import { Service } from '../types/Service'
 
 type TrireaFormProps = {
@@ -59,8 +56,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const [createTrirea] = useCreateTrireaMutation()
 
   // States
-  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth[]>([])
-
   const [selectedTriggerService, setSelectedTriggerService] =
     useState<Service>()
   const [selectedReactionService, setSelectedReactionService] =
@@ -72,25 +67,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
   const [servicesAvailable, setServicesAvailable] = useState<Service[]>([])
   const [triggersAvailable, setTriggersAvailable] = useState<Trigger[]>([])
   const [reactionsAvailable, setReactionsAvailable] = useState<Reaction[]>([])
-
-  const handleServiceSubscription = (service: Service) => {
-    const filtredOauthNeeded = oauthNeeded.filter((oauth) => {
-      return !(
-        oauth.name !== selectedTriggerService?.name &&
-        oauth.name !== selectedReactionService?.name
-      )
-    })
-
-    if (service.requiredSubscription && !service.subscribed) {
-      const oauthMappingSelected = mappingOauth.find(
-        (oauth) => oauth.name === service.name
-      )
-      if (!oauthMappingSelected) throw new Error('Oauth not found')
-      if (oauthNeeded.includes(oauthMappingSelected)) return
-      filtredOauthNeeded.push(oauthMappingSelected)
-    }
-    setOauthNeeded(filtredOauthNeeded)
-  }
 
   const submitTrirea = async (data: TrireaFormRequest) => {
     try {
@@ -134,7 +110,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       }))
       setSelectedTrigger(undefined)
       setTriggersAvailable(selectedTriggerService.triggers || [])
-      handleServiceSubscription(selectedTriggerService)
     } catch (error) {
       toast.error('Something went wrong with selected trigger service')
     }
@@ -150,7 +125,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
       }))
       setSelectedReaction(undefined)
       setReactionsAvailable(selectedReactionService.reactions || [])
-      handleServiceSubscription(selectedReactionService)
     } catch (error) {
       toast.error('Something went wrong with selected reaction service')
     }
@@ -463,21 +437,6 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   )
                 })}
               </div>
-            </div>
-            <div className="items center flex w-full justify-end">
-              {oauthNeeded?.map((oauth) => {
-                return (
-                  <LoginWithButton
-                    text="Connect"
-                    key={oauth.name}
-                    url={oauth.url}
-                    className="mr-5 flex items-center space-x-4 rounded-xl py-4 px-8 text-xl font-bold shadow-md transition ease-in-out disabled:bg-gray-400"
-                  >
-                    {oauth.icon}
-                  </LoginWithButton>
-                )
-              })}
-              <MainButton submitter disabled={!oauthNeeded} text="Create" />
             </div>
           </form>
         </div>
