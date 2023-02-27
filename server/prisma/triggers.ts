@@ -139,8 +139,8 @@ export const triggersPopulate:Prisma.TriggerCreateInput[] = [
         }
     },
     {
-        name: 'new_friend_request',
-        description: 'trigger when a new friend request is received',
+        name: 'new_friend',
+        description: 'trigger when a new friend is added',
         service: {
             connectOrCreate: {
                 where: {
