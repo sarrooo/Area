@@ -8,8 +8,8 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         Logging.warning('new_friend trigger: No user service token provided');
         return false;
     }
-    const googleToken = userServicesTrigger[0].RefreshToken;
-    const data = await getNewMail(googleToken);
+    const facebookToken = userServicesTrigger[0].RefreshToken;
+    const data = await getNewFriend(facebookToken);
     if (!data || isNaN(data.summary.total_count)) {
         Logging.warning('new_friend trigger fail: fail to fetch new friends');
         return false;
@@ -28,7 +28,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
     return false;
 };
 
-const getNewMail = async (facebookToken: string): Promise<NewFriendFacebook> => {
+const getNewFriend = async (facebookToken: string): Promise<NewFriendFacebook> => {
     try {
         const { data } = await axios.get<NewFriendFacebook>(
             `https://graph.facebook.com/v16.0/me/friends`,
