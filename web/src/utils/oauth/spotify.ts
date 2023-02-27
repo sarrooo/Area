@@ -1,4 +1,4 @@
-export const getOauthSpotifyUrl = () => {
+export const getOauthConnectSpotifyUrl = () => {
   const rootUrl = `https://accounts.spotify.com/authorize`
 
   const options = {

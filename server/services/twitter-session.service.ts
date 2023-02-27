@@ -59,3 +59,38 @@ export async function getTwitterUser(access_token : string): Promise<TwitterUser
         throw new Error(err);
     }
 }
+
+export const getTwitterConnectOauthToken = async ({code}: { code: string }): Promise<TwitterOauthToken> => {
+    const rootUrl = 'https://api.twitter.com/2/oauth2/token';
+    const TWITTER_OAUTH_CLIENT_ID: string = config.get<string>('twitterConfig.clientId');
+    const TWITTER_OAUTH_CLIENT_SECRET: string = config.get<string>('twitterConfig.clientSecret');
+
+    const BasicAuthToken: string = Buffer.from(`${TWITTER_OAUTH_CLIENT_ID}:${TWITTER_OAUTH_CLIENT_SECRET}`, "utf8").toString(
+        "base64"
+    );
+
+    const options = {
+        client_id: TWITTER_OAUTH_CLIENT_ID,
+        code_verifier: "challenge",
+        redirect_uri: config.get<string>('twitterConfig.redirectConnectUri'),
+        grant_type: 'authorization_code',
+        code,
+    };
+    try {
+        const { data } = await axios.post<TwitterOauthToken>(
+            rootUrl,
+            qs.stringify(options),
+            {
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    Authorization: `Basic ${BasicAuthToken}`,
+                },
+            }
+        );
+
+        return data;
+    } catch (err: any) {
+        Logging.error('Failed to get Twitter Oauth Token');
+        throw new Error(err);
+    }
+};
