@@ -128,16 +128,16 @@ export const triggersPopulate:Prisma.TriggerCreateInput[] = [
             connectOrCreate: {
                 where: {
                     name: 'meteo',
+                },
+                create: {
+                    name: 'meteo',
+                    description: 'Meteo is a weather service',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Weather_icon.svg/1200px-Weather_icon.svg.png',
+                    requiredSubscription: false,
                 }
-            },
-            create: {
-                name: 'meteo',
-                description: 'Meteo is a weather service',
-                image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Weather_icon.svg/1200px-Weather_icon.svg.png',
-                requiredSubscription: false,
             }
         }
-    }
+    },
 ]
 
 // TRIGGERS INPUTS TYPE
