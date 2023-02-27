@@ -14,7 +14,6 @@ cron.schedule('*/5 * * * * *', async () => {
         const userServiceTrigger = await getUserServiceTrigger(trirea.userId, trirea.trigger.service.name);
         const userServiceReaction = await getUserServiceReaction(trirea.userId, trirea.reaction.service.name);
         triggered = await trigger.start(trirea.id, trirea.trireaTriggerInputs, userServiceTrigger, trirea.prevTriggerData);
-        Logging.success('Trirea triggered: ' + triggered)
         if (triggered) {
             const triggerOutputs = await getReactionsInputs(trirea.id);
             const reaction = await loadReaction(trirea.reaction);
