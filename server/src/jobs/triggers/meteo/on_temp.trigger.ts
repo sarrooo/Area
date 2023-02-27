@@ -17,11 +17,6 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
         return false;
     }
 
-    if (userServicesTrigger.length === 0 || !userServicesTrigger[0].RefreshToken) {
-        Logging.warning('Trigger on_temp fail: No user service token provided');
-        return false;
-    }
-
     const apiKey = config.get<string>('weatherConfig.apiKey');
     if (!apiKey) {
         Logging.warning('Trigger on_temp fail: No weather api key provided');
