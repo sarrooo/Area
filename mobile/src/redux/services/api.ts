@@ -8,10 +8,10 @@ import {
 import { RootState, store } from '../store'
 import { logout, refreshToken } from '../features/userSlice'
 import { RefreshResponse } from '../../types/Login'
-import Config from "react-native-config"
+import { API_BASE_URL } from '@env'
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: Config.API_BASE_URL,
+  baseUrl: API_BASE_URL,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).user.accessToken
     if (token) {

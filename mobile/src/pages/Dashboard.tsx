@@ -7,12 +7,24 @@ import {
   Input,
 } from 'native-base';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {View, StyleSheet} from 'react-native';
 import {Section} from '../components/Section';
 import {TrireaCard} from '../components/TrireaCard';
+import { useLogoutMutation } from '../redux/services/user';
 
-export const Dashboard = ({navigation}) => {
+export const Dashboard = () => {
+  const navigation = useNavigation();
   const {isOpen, onOpen, onClose} = useDisclose();
+  const [logoutMutation] = useLogoutMutation();
+
+  const logout = async () => {
+    try {
+      await logoutMutation().unwrap();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -37,9 +49,7 @@ export const Dashboard = ({navigation}) => {
         position={'absolute'}
         top={12}
         right={8}
-        onPress={() => {
-          navigation.goBack();
-        }}>
+        onPress={logout}>
         Logout
       </Button>
       <Button
