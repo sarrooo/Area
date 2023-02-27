@@ -138,6 +138,23 @@ export const triggersPopulate:Prisma.TriggerCreateInput[] = [
             }
         }
     },
+    {
+        name: 'new_friend_request',
+        description: 'trigger when a new friend request is received',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'facebook',
+                },
+                create: {
+                    name: 'facebook',
+                    description: 'Facebook is a social network',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/1200px-F_icon.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
+    }
 ]
 
 // TRIGGERS INPUTS TYPE
