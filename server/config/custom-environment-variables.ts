@@ -35,5 +35,8 @@ export default {
         clientId: 'SPOTIFY_OAUTH_CLIENT_ID',
         clientSecret: 'SPOTIFY_OAUTH_CLIENT_SECRET',
         redirectUri: 'SPOTIFY_OAUTH_REDIRECT_URL',
+    },
+    weatherConfig: {
+        apiKey: 'WEATHER_API_KEY',
     }
 }
