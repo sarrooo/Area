@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiX } from 'react-icons/hi'
+import { GrClear } from 'react-icons/gr'
 import { MainButton } from '@/components/MainButton'
 import { Input } from '@/components/Input'
 import { TrireaFormRequest } from '@/types/Trirea'
@@ -30,6 +31,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     watch,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<TrireaFormRequest>({ reValidateMode: 'onSubmit' })
   const {
     fields: fieldsTriggerInputs,
@@ -93,9 +95,15 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
     try {
       data.enabled = true
       data.reactionId = Number(data.reactionId)
+      data.triggerInputs = data.triggerInputs.map((triggerInput) => {
+        if (triggerInput.triggerInputTypeId === 0)
+          triggerInput.triggerInputTypeId = null
+        return triggerInput
+      })
       data.triggerId = Number(data.triggerId)
       await createTrirea(data).unwrap()
       reset()
+      toggleModal()
       toast.success('Trirea created !')
     } catch (error) {
       toast.error('Something went wrong with trirea creation')
@@ -185,6 +193,7 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
         const splittedName = input.name.split('.')
         insertReactionInputs(i, {
           reactionInputTypeId: input.id,
+          triggerOutputTypeId: -1,
           name: capitalizeFirstLetter(splittedName[1]),
           type: input.type,
           value: '',
@@ -371,24 +380,73 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   ))}
                   {/* REACTIONS inputs */}
                 </Select>
-                {fieldsReactionInputs.map((field, index) => (
-                  <Input<TrireaFormRequest>
-                    key={field.id}
-                    id={field.id}
-                    label={`Input : ${field.name}`}
-                    fieldName={`reactionInputs.${index}.value`}
-                    placeholder="Enter a value"
-                    register={register}
-                    rules={{
-                      min: {
-                        value: 1,
-                        message: 'Required field',
-                      },
-                    }}
-                    inputType={field.type === 'number' ? 'number' : 'text'}
-                    errors={errors}
-                  />
-                ))}
+                {fieldsReactionInputs.map((field, index) => {
+                  console.log(`reactionInputs.${index}.triggerOutputTypeId`)
+                  return watch(
+                    `reactionInputs.${index}.triggerOutputTypeId`
+                  )?.toString() !== '0' ? (
+                    <Select<TrireaFormRequest>
+                      key={field.id}
+                      id={field.id}
+                      label={`Input : ${field.name}`}
+                      fieldName={`reactionInputs.${index}.triggerOutputTypeId`}
+                      placeholder="Choose an input"
+                      register={register}
+                      errors={errors}
+                      rules={{
+                        required: 'Required field',
+                        valueAsNumber: true,
+                      }}
+                    >
+                      {selectedTrigger &&
+                        selectedTrigger.outputs?.map((output) => {
+                          if (output.type === field.type) {
+                            return (
+                              <option key={output.name} value={output.id}>
+                                {output.name}
+                              </option>
+                            )
+                          }
+                          return null
+                        })}
+                      <option key="-1" value="0">
+                        custom
+                      </option>
+                    </Select>
+                  ) : (
+                    <div
+                      key={field.id}
+                      className="flex flex-row justify-between"
+                    >
+                      <Input<TrireaFormRequest>
+                        key={field.id}
+                        id={field.id}
+                        label={`Input : ${field.name}`}
+                        fieldName={`reactionInputs.${index}.value`}
+                        placeholder="Enter a value"
+                        register={register}
+                        rules={{
+                          required: 'Required field',
+                        }}
+                        inputType={field.type === 'number' ? 'number' : 'text'}
+                        errors={errors}
+                        className="w-full"
+                      />
+                      <button
+                        type="button"
+                        className="flex flex-col-reverse pb-3"
+                        onClick={() => {
+                          setValue(
+                            `reactionInputs.${index}.triggerOutputTypeId`,
+                            -1
+                          )
+                        }}
+                      >
+                        <GrClear size={35} />
+                      </button>
+                    </div>
+                  )
+                })}
               </div>
             </div>
             <div className="items center flex w-full justify-end">

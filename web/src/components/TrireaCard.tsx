@@ -1,15 +1,19 @@
 import { useState } from 'react'
 import { IoMdMore } from 'react-icons/io'
-import { BiEdit, BiTrash } from 'react-icons/bi'
+import { BiTrash } from 'react-icons/bi'
 import { toast } from 'react-toastify'
-import { useDeleteTrireaMutation } from '../redux/services/trirea'
+import {
+  useDeleteTrireaMutation,
+  useUpdateTrireaMutation,
+} from '../redux/services/trirea'
+import { Trirea } from '@/types/Trirea'
 
 export type trireaProps = {
   id: number
   name: string
   triggerName: string
   reactionName: string
-  isActive: boolean
+  trirea: Trirea
 }
 
 export const TrireaCard = ({
@@ -17,15 +21,19 @@ export const TrireaCard = ({
   name,
   triggerName,
   reactionName,
-  isActive,
+  trirea,
 }: trireaProps) => {
   const [showMenu, setShowMenu] = useState(false)
-  const [activeState, setActiveState] = useState(isActive)
 
   const [deleteTrireaMutation] = useDeleteTrireaMutation()
+  const [updateTrireaMutation] = useUpdateTrireaMutation()
 
-  const toggleActive = () => {
-    setActiveState(!activeState)
+  const toggleActive = async () => {
+    try {
+      await updateTrireaMutation({ ...trirea, enabled: !trirea.enabled })
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
   }
 
   const toggleMenu = () => {
@@ -36,7 +44,7 @@ export const TrireaCard = ({
     if (showMenu) setShowMenu(false)
   }
 
-  const editTrirea = () => {}
+  // const editTrirea = () => {}
 
   const deleteTrirea = async () => {
     try {
@@ -80,7 +88,7 @@ export const TrireaCard = ({
         <input
           id="active"
           type="checkbox"
-          checked={activeState}
+          checked={trirea.enabled}
           className="peer sr-only"
           onChange={toggleActive}
         />
@@ -88,14 +96,14 @@ export const TrireaCard = ({
       </button>
       {showMenu && (
         <div className="absolute top-24 right-8 flex flex-col rounded-lg bg-white shadow-lg">
-          <button
+          {/* <button
             type="button"
             onClick={editTrirea}
             className="flex items-center space-x-4 rounded-t-lg px-6 py-4 transition ease-in-out hover:bg-gray-300"
           >
             <BiEdit size={18} />
             <span>edit</span>
-          </button>
+          </button> */}
           <button
             type="button"
             onClick={deleteTrirea}

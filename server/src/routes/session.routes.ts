@@ -6,6 +6,7 @@ import {googleOAuthHandler} from "~/controllers/auth/google.auth.controller";
 import {spotifyConnectHandler} from "~/controllers/connect/spotify.connect.controller";
 import {googleConnectHandler} from "~/controllers/connect/google.connect.controller";
 import {twitterConnectHandler} from "~/controllers/connect/twitter.connect.controller";
+import {facebookConnectHandler} from "~/controllers/connect/facebook.connect.controller";
 
 dotenv.config();
 
@@ -20,5 +21,6 @@ sessionRouter.get('/oauth/twitter', twitterOAuthHandler);
 sessionRouter.get('/oauth/connect/spotify', spotifyConnectHandler)
 sessionRouter.get('/oauth/connect/google', googleConnectHandler)
 sessionRouter.get('/oauth/connect/twitter', twitterConnectHandler)
+sessionRouter.get('/oauth/connect/facebook', facebookConnectHandler)
 
 export default sessionRouter;

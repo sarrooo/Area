@@ -2,7 +2,6 @@ import { toast } from 'react-toastify'
 import { TrireaCard } from '@/components/TrireaCard'
 import { CreateTrireaButton } from '@/components/CreateTrireaButton'
 import { useGetTrireasQuery } from '@/redux/services/trirea'
-
 import { Trirea } from '@/types/Trirea'
 
 export const Dashboard = () => {
@@ -24,7 +23,7 @@ export const Dashboard = () => {
                 name={trirea.name}
                 triggerName={trirea.triggerId.toString()}
                 reactionName={trirea.reactionId.toString()}
-                isActive={trirea.enabled}
+                trirea={trirea}
               />
             )
           })}

@@ -120,6 +120,40 @@ export const triggersPopulate:Prisma.TriggerCreateInput[] = [
                 }
             }
         }
+    },
+    {
+        name: 'on_temp',
+        description: 'trigger when the temperature is above X',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'meteo',
+                },
+                create: {
+                    name: 'meteo',
+                    description: 'Meteo is a weather service',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Weather_icon.svg/1200px-Weather_icon.svg.png',
+                    requiredSubscription: false,
+                }
+            }
+        }
+    },
+    {
+        name: 'new_friend',
+        description: 'trigger when a new friend is added',
+        service: {
+            connectOrCreate: {
+                where: {
+                    name: 'facebook',
+                },
+                create: {
+                    name: 'facebook',
+                    description: 'Facebook is a social network',
+                    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/1200px-F_icon.svg.png',
+                    requiredSubscription: true,
+                }
+            }
+        }
     }
 ]
 
@@ -180,6 +214,28 @@ export const triggersInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
             }
         }
     },
+    {
+        name: 'on_temp.treshold',
+        description: 'Treshold of the temperature',
+        type: 'Int',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'on_temp',
+            }
+        }
+    },
+    {
+        name: 'on_temp.city',
+        description: 'City to watch',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'on_temp',
+            }
+        }
+    }
 ]
 
 // TRIGGERS OUTPUT TYPE
