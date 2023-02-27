@@ -54,3 +54,31 @@ export async function getGoogleUser({
         throw new Error(err);
     }
 }
+
+export const getGoogleConnectOauthToken = async ({code}: { code: string }): Promise<GoogleOauthToken> => {
+    const rootUrl = 'https://oauth2.googleapis.com/token';
+
+    const options = {
+        code,
+        client_id: config.get<string>('googleConfig.clientId'),
+        client_secret: config.get<string>('googleConfig.clientSecret'),
+        redirect_uri: config.get<string>('googleConfig.redirectConnectUri'),
+        grant_type: 'authorization_code',
+    };
+    try {
+        const { data } = await axios.post<GoogleOauthToken>(
+            rootUrl,
+            qs.stringify(options),
+            {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            }
+        );
+
+        return data;
+    } catch (err: any) {
+        Logging.error('Failed to get Google Oauth Token');
+        throw new Error(err);
+    }
+};

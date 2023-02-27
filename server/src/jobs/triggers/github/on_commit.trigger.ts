@@ -1,4 +1,4 @@
-import {saveTriggerData, TrireaInputs} from "~/jobs/handler.job";
+import {saveTriggerData, transmitOutput, TrireaInputs} from "~/jobs/handler.job";
 import {UserService} from "@prisma/client";
 import {each} from "async";
 import Logging from "~/lib/logging";
@@ -39,6 +39,7 @@ export const start = async (trireaId: number, inputs: TrireaInputs[], userServic
 
     if (prevTriggerData !== data[0].sha) {
         await saveTriggerData(trireaId, data[0].sha);
+        await transmitOutput(trireaId, data[0].commit.message, 'on_commit.commit_message');
         return true
     }
 
@@ -80,4 +81,7 @@ type OnCommitInputs = {
 
 type Commit = {
     sha: string;
+    commit: {
+        message: string;
+    }
 }

@@ -6,9 +6,9 @@ import { BackButton } from '@/components/BackButton'
 import { FollowButton } from '@/components/FollowButton'
 import { ActionDescriptionCard } from '@/components/ActionDescriptionCard'
 import { MainButton } from '@/components/MainButton'
-import { useGetServiceQuery } from '../redux/services/service'
-import { MappingOauth, mappingOauth } from '../utils/oauth'
-import { LoginWithButton } from '../components/LoginWithButton'
+import { useGetServiceQuery } from '@/redux/services/service'
+import { MappingOauth, mappingOauth } from '@/utils/oauth'
+import { LoginWithButton } from '@/components/LoginWithButton'
 
 const Service = () => {
   const navigate = useNavigate()

@@ -9,6 +9,7 @@ import serviceRoutes from './service.routes';
 import triggerRoutes from './trigger.routes';
 import trireaRoutes from './trirea.routes';
 import reactionRoutes from '~/routes/reaction.routes';
+import subscriptionRoutes from './subscription.routes';
 
 const routes = Router();
 
@@ -22,5 +23,6 @@ routes.use('/sessions', sessionRoutes);
 routes.use('/service', serviceRoutes);
 routes.use('/trigger', triggerRoutes);
 routes.use('/trirea', trireaRoutes);
+routes.use('/subscription', subscriptionRoutes);
 
 export default routes;

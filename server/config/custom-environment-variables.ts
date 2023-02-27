@@ -18,6 +18,7 @@ export default {
         clientId: 'GOOGLE_OAUTH_CLIENT_ID',
         clientSecret: 'GOOGLE_OAUTH_CLIENT_SECRET',
         redirectUri: 'GOOGLE_OAUTH_REDIRECT_URL',
+        redirectConnectUri: 'GOOGLE_OAUTH_CONNECT_REDIRECT_URL',
     },
     githubConfig: {
         clientId: 'GITHUB_OAUTH_CLIENT_ID',
@@ -28,5 +29,11 @@ export default {
         clientId: 'TWITTER_OAUTH_CLIENT_ID',
         clientSecret: 'TWITTER_OAUTH_CLIENT_SECRET',
         redirectUri: 'TWITTER_OAUTH_REDIRECT_URL',
+        redirectConnectUri: 'TWITTER_OAUTH_CONNECT_REDIRECT_URL',
+    },
+    spotifyConfig: {
+        clientId: 'SPOTIFY_OAUTH_CLIENT_ID',
+        clientSecret: 'SPOTIFY_OAUTH_CLIENT_SECRET',
+        redirectUri: 'SPOTIFY_OAUTH_REDIRECT_URL',
     }
 }
