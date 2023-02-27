@@ -207,6 +207,17 @@ export const triggersInputsPopulate:Prisma.TriggerInputTypeCreateInput[] = [
                 name: 'on_temp',
             }
         }
+    },
+    {
+        name: 'on_temp.city',
+        description: 'City to watch',
+        type: 'String',
+        mandatory: true,
+        trigger: {
+            connect: {
+                name: 'on_temp',
+            }
+        }
     }
 ]
 
