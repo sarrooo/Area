@@ -6,7 +6,7 @@ export const getOauthConnectFacebookUrl = () => {
     client_id: import.meta.env.VITE_FACEBOOK_OAUTH_CONNECT_CLIENT_ID,
     state: window.location.href,
     response_type: 'code',
-    scope: 'email public_profile',
+    scope: 'email public_profile user_friends',
   }
 
   const qs = new URLSearchParams(options)
