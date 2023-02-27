@@ -31,7 +31,7 @@ export const createTrireaSchema = object({
       object({
         id: number().optional(),
         value: string().optional(),
-        triggerOutputTypeId: string({
+        triggerOutputTypeId: number({
           required_error: "trigger Output Id is required in reaction inputs",
         }).optional(),
         trireaId: number().optional(),
@@ -56,7 +56,7 @@ export const readTrireaSchema = object({
 // Update Trirea : POST /trirea/:id
 export const updateTrireaSchema = object({
   params: object({
-    id: number({
+    id: string({
       required_error: "Id is required",
     }),
   }),
@@ -75,7 +75,7 @@ export const updateTrireaSchema = object({
       object({
         id: number().optional(),
         value: string().optional(),
-        trireadId: number({
+        trireaId: number({
           required_error: "Trirea Id is required in trigger inputs",
         }),
         triggerInputTypeId: number({
@@ -87,9 +87,9 @@ export const updateTrireaSchema = object({
       object({
         id: number().optional(),
         value: string().optional(),
-        triggerOutputTypeId: string({
+        triggerOutputTypeId: number({
           required_error: "trigger Output Id is required in reaction inputs",
-        }),
+        }).optional(),
         trireaId: number({
           required_error: "Trirea Id is required in reaction inputs",
         }),

@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { FollowButton } from '@/components/FollowButton'
 import { ServiceCardDescription } from '@/components/ServiceCardDescription'
 import { Reaction } from '../types/Reaction'
 import { Trigger } from '../types/Trigger'
+import { useSubscribeMutation } from '@/redux/services/service'
 
 export type ServiceCardProps = {
   name: string
@@ -19,6 +21,7 @@ export const ServiceCard = ({
   triggers,
   reactions,
 }: ServiceCardProps) => {
+  const [subscribe] = useSubscribeMutation()
   const navigate = useNavigate()
 
   return (
@@ -29,7 +32,16 @@ export const ServiceCard = ({
     >
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
-        <FollowButton isFollowing={isFollowing} />
+        <FollowButton
+          isFollowing={isFollowing}
+          onClick={() => {
+            try {
+              subscribe({ serviceId: id, subscribed: !isFollowing })
+            } catch (error) {
+              toast.error('Something went wrong')
+            }
+          }}
+        />
       </div>
       <div className="grid grid-cols-2 gap-2 ">
         {triggers.map((trigger) => {
