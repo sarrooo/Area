@@ -15,7 +15,7 @@ import {Section} from '../components/Section'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {Button, FormControl, Modal} from 'native-base'
 
-import {MainInput} from '../components/Input'
+import {MainInput} from '../components/MainInput'
 
 export interface LoginRequest {
   email: string
