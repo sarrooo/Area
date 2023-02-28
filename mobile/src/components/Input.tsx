@@ -1,52 +1,63 @@
 import React from 'react'
-import {Input as NativeInput} from 'native-base'
+import {FormControl, Input} from 'native-base'
 import {
   FieldErrors,
   FieldValues,
   Path,
   RegisterOptions,
   UseFormRegister,
+  Controller,
+  Control,
 } from 'react-hook-form'
 
 type InputProps<TFormValues extends FieldValues> = {
   id: string
   className?: string
   placeholder?: string
-  required?: boolean
+  isRequired?: boolean
+  label: string
   inputType?: 'text' | 'password'
 
-  register: UseFormRegister<TFormValues>
   fieldName: Path<TFormValues>
   rules?: RegisterOptions
+  control: Control<TFormValues>
   errors?: Partial<FieldErrors<TFormValues>>
 }
 
-import {View, Text, StyleSheet} from 'react-native'
+import {StyleSheet} from 'react-native'
 
-export const Input = <TFormValues extends FieldValues>({
+export const MainInput = <TFormValues extends FieldValues>({
   id,
   placeholder = 'input',
-  register,
-  fieldName,
   inputType = 'text',
+  fieldName,
+  control,
+  isRequired = false,
+  label,
   rules,
   errors,
 }: InputProps<TFormValues>) => {
-
-  console.log("Information given to input: ", id, placeholder, fieldName, inputType)
-
   return (
-    <View style={styles.container}>
-      <NativeInput
-        {...register(fieldName, rules)}
-        type={inputType}
-        placeholder={placeholder}
-        key={id}
+    <FormControl key={id} isRequired={isRequired} isInvalid={errors ? fieldName in errors : false}>
+      <FormControl.Label>{label}</FormControl.Label>
+      <Controller
+        control={control}
+        render={({field: {onChange, onBlur, value}}) => (
+          <Input
+            type={inputType}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            placeholder={placeholder}
+          />
+        )}
+        name={fieldName}
+        rules={rules}
       />
-      {errors && (
-        <Text style={{color: 'red'}}>{errors[fieldName]?.message}</Text>
-      )}
-    </View>
+      <FormControl.ErrorMessage>
+        {errors?.[fieldName]?.message}
+      </FormControl.ErrorMessage>
+    </FormControl>
   )
 }
 

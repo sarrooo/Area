@@ -14,6 +14,9 @@ import {
 import {Section} from '../components/Section'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {Button, FormControl, Modal} from 'native-base'
+
+import {MainInput} from '../components/Input'
+
 export interface LoginRequest {
   email: string
   password: string
@@ -88,55 +91,35 @@ export const Landing = () => {
           <Modal.CloseButton />
           <Modal.Header>Login</Modal.Header>
           <Modal.Body>
-            <FormControl isRequired isInvalid={'email' in errors}>
-              <FormControl.Label>Email</FormControl.Label>
-              <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="john.doe@email.com"
-                  />
-                )}
-                name="email"
-                rules={{
-                  required: 'Required Field',
-                  pattern: {
-                    value: emailRegex,
-                    message: 'Invalid format email',
-                  },
-                }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {errors.email?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <FormControl isRequired isInvalid={'password' in errors}>
-              <FormControl.Label>Password</FormControl.Label>
-              <Controller
-                control={control}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    type="password"
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="*******"
-                  />
-                )}
-                name="password"
-                rules={{
-                  required: 'Required Field',
-                }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {errors.password?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
+            <MainInput
+              id="email"
+              label="Email"
+              fieldName="email"
+              placeholder='john.doe@email.com'
+              control={control}
+              isRequired={true}
+              rules={{
+                required: 'Required Field',
+                pattern: {
+                  value: emailRegex,
+                  message: 'Invalid format email',
+                },
+              }}
+              errors={errors}
+            />
+            <MainInput
+              id="password"
+              label="Password"
+              fieldName="password"
+              placeholder="*******"
+              control={control}
+              isRequired={true}
+              inputType={'password'}
+              rules={{
+                required: 'Required Field',
+              }}
+              errors={errors}
+            />
             <Button
               style={styles.submitButton}
               variant={'subtle'}
@@ -156,130 +139,90 @@ export const Landing = () => {
           <Modal.CloseButton />
           <Modal.Header>Register</Modal.Header>
           <Modal.Body>
-            <FormControl isRequired isInvalid={'first_name' in registerErrors}>
-              <FormControl.Label>First name</FormControl.Label>
-              <Controller
-                control={registerControl}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="John"
-                  />
-                )}
-                name="first_name"
-                rules={{required: 'Required Field', minLength: 3}}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {registerErrors.first_name?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <FormControl isRequired isInvalid={'last_name' in registerErrors}>
-              <FormControl.Label>Last name</FormControl.Label>
-              <Controller
-                control={registerControl}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="Doe"
-                  />
-                )}
-                name="last_name"
-                rules={{required: 'Required Field', minLength: 3}}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {registerErrors.last_name?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <FormControl isRequired isInvalid={'email' in registerErrors}>
-              <FormControl.Label>Email</FormControl.Label>
-              <Controller
-                control={registerControl}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="email@email.com"
-                  />
-                )}
-                name="email"
-                rules={{
-                  required: 'Required Field',
-                  pattern: {
-                    value: emailRegex,
-                    message: 'Invalid format email',
-                  },
-                }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {registerErrors.email?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <FormControl isRequired isInvalid={'password' in registerErrors}>
-              <FormControl.Label>password</FormControl.Label>
-              <Controller
-                control={registerControl}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    type="password"
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="******"
-                  />
-                )}
-                name="password"
-                rules={{
-                  required: 'Required Field',
-                  pattern: {
-                    value: passwordRegex,
-                    message:
-                      'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
-                  },
-                }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {registerErrors.password?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
-            <FormControl
-              isRequired
-              isInvalid={'password_confirmation' in registerErrors}>
-              <FormControl.Label>Confirm password</FormControl.Label>
-              <Controller
-                control={registerControl}
-                render={({field: {onChange, onBlur, value}}) => (
-                  <Input
-                    type="password"
-                    onBlur={onBlur}
-                    onChangeText={value => onChange(value)}
-                    value={value}
-                    placeholder="******"
-                  />
-                )}
-                name="password_confirmation"
-                rules={{
-                  required: 'Required Field',
-                  pattern: {
-                    value: passwordRegex,
-                    message:
-                      'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
-                  },
-                }}
-                defaultValue=""
-              />
-              <FormControl.ErrorMessage>
-                {registerErrors.password_confirmation?.message}
-              </FormControl.ErrorMessage>
-            </FormControl>
+            <MainInput
+              id="first_name"
+              label="First Name"
+              fieldName="first_name"
+              placeholder="John"
+              isRequired={true}
+              control={registerControl}
+              rules={{
+                required: 'Required Field',
+                minLength: {
+                  value: 3,
+                  message: 'Minimum 3 characters',
+                },
+              }}
+              errors={registerErrors}
+            />
+            <MainInput
+              id="last_name"
+              label="Last Name"
+              fieldName="last_name"
+              placeholder="Doe"
+              isRequired={true}
+              control={registerControl}
+              rules={{
+                required: 'Required Field',
+                minLength: {
+                  value: 3,
+                  message: 'Minimum 3 characters',
+                },
+              }}
+              errors={registerErrors}
+            />
+            <MainInput
+              id="email"
+              label="Email"
+              fieldName="email"
+              placeholder='email@email.com'
+              isRequired={true}
+              control={registerControl}
+              rules={{
+                required: 'Required Field',
+                pattern: {
+                  value: emailRegex,
+                  message: 'Invalid format email',
+                },
+              }}
+              errors={registerErrors}
+            />
+            <MainInput
+              id="password"
+              label="Password"
+              fieldName="password"
+              placeholder="*******"
+              isRequired={true}
+              control={registerControl}
+              inputType={'password'}
+              rules={{
+                required: 'Required Field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
+              errors={registerErrors}
+            />
+            <MainInput
+              id="password_confirmation"
+              label="Confirm Password"
+              fieldName="password_confirmation"
+              placeholder="*******"
+              isRequired={true}
+              control={registerControl}
+              inputType={'password'}
+              rules={{
+                required: 'Required Field',
+                pattern: {
+                  value: passwordRegex,
+                  message:
+                    'Invalid format password (8 characters, 1 uppercase, 1 lowercase, 1 number)',
+                },
+              }}
+              errors={registerErrors}
+            />
             <Button
               style={styles.submitButton}
               variant={'subtle'}
