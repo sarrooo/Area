@@ -5,26 +5,54 @@ import {
   useDisclose,
   Actionsheet,
   Input,
-} from 'native-base';
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import {View, StyleSheet} from 'react-native';
-import {Section} from '../components/Section';
-import {TrireaCard} from '../components/TrireaCard';
-import { useLogoutMutation } from '../redux/services/user';
+} from 'native-base'
+import React from 'react'
+import {useEffect} from 'react'
+import {useNavigation} from '@react-navigation/native'
+import {View, StyleSheet} from 'react-native'
+import {Section} from '../components/Section'
+import {TrireaCard} from '../components/TrireaCard'
+import {useLogoutMutation} from '../redux/services/user'
+import {
+  useGetTrireasQuery,
+  useCreateTrireaMutation,
+} from '../redux/services/trirea'
+
+import {Trirea} from '../types/Trirea'
 
 export const Dashboard = () => {
-  const navigation = useNavigation();
-  const {isOpen, onOpen, onClose} = useDisclose();
-  const [logoutMutation] = useLogoutMutation();
+  const navigation = useNavigation()
+  const {isOpen, onOpen, onClose} = useDisclose()
+  const [logoutMutation] = useLogoutMutation()
+  const {data: trireas} = useGetTrireasQuery()
+  const [createTrireaMutation] = useCreateTrireaMutation()
 
   const logout = async () => {
     try {
-      await logoutMutation().unwrap();
+      await logoutMutation().unwrap()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
+
+  const createTrirea = async () => {
+    try {
+      await createTrireaMutation({
+        name: 'test',
+        triggerId: 1,
+        reactionId: 1,
+        triggerInputs: [],
+        reactionInputs: [],
+        enabled: true,
+      }).unwrap()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    console.log(trireas)
+  }, [trireas])
 
   return (
     <View style={styles.container}>
@@ -38,7 +66,7 @@ export const Dashboard = () => {
         shadow={2}
         right={8}
         onPress={() => {
-          navigation.navigate('Services');
+          navigation.navigate('Services')
         }}>
         Go to services
       </Button>
@@ -58,7 +86,7 @@ export const Dashboard = () => {
         colorScheme={'success'}
         borderStyle={'dashed'}
         borderColor={'black'}
-        onPress={onOpen}>
+        onPress={createTrirea}>
         Create a trirea
       </Button>
 
@@ -111,8 +139,8 @@ export const Dashboard = () => {
         />
       </ScrollView>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -124,4 +152,4 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: 12,
   },
-});
+})

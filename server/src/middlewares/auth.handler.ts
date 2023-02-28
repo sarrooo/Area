@@ -18,7 +18,7 @@ export const verifyToken = async (
   }
   try {
     const token = (authorization && authorization.split(" ")[1]) || "";
-
+    console.log("TOKEN => ", token)
     let payload: any = "";
     try {
       payload = verify(token, process.env.JWT_SECRET as string);
@@ -33,6 +33,7 @@ export const verifyToken = async (
         id: payload.id,
       },
     });
+    console.log("USER => ", user)
     if (!user) {
       throw new ForbiddenRequestException("Access denied (user)");
     }
