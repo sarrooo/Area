@@ -1,8 +1,8 @@
-import { api } from './api'
-import { Trigger, TriggerInputType, TriggerOutputType } from '../../types/Trigger'
+import {api} from './api'
+import {Trigger, TriggerInputType, TriggerOutputType} from '../../types/Trigger'
 
 export const triggerApi = api.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: build => ({
     getTriggers: build.query<Trigger[], void>({
       query: () => ({
         url: `/trigger`,
@@ -10,27 +10,27 @@ export const triggerApi = api.injectEndpoints({
       }),
     }),
     getTrigger: build.query<Trigger, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/trigger/${id}`,
         method: 'GET',
       }),
     }),
     createTrigger: build.mutation<void, Trigger>({
-      query: (body) => ({
+      query: body => ({
         url: `/trigger`,
         method: 'POST',
         body,
       }),
     }),
     updateTrigger: build.mutation<void, Trigger>({
-      query: (body) => ({
+      query: body => ({
         url: `/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteTrigger: build.mutation<void, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/trigger/${id}`,
         method: 'POST',
       }),
@@ -43,27 +43,27 @@ export const triggerApi = api.injectEndpoints({
       }),
     }),
     getTriggerOutput: build.query<TriggerOutputType, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/output/trigger/${id}`,
         method: 'GET',
       }),
     }),
     createTriggerOutput: build.mutation<void, TriggerOutputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/output/trigger`,
         method: 'POST',
         body,
       }),
     }),
     updateTriggerOutput: build.mutation<void, TriggerOutputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/output/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteTriggerOutput: build.mutation<void, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/output/trigger/${id}`,
         method: 'POST',
       }),
@@ -76,27 +76,27 @@ export const triggerApi = api.injectEndpoints({
       }),
     }),
     getTriggerInput: build.query<TriggerInputType, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/input/trigger/${id}`,
         method: 'GET',
       }),
     }),
     createTriggerInput: build.mutation<void, TriggerInputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/input/trigger`,
         method: 'POST',
         body,
       }),
     }),
     updateTriggerInput: build.mutation<void, TriggerInputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/input/trigger/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteTriggerInput: build.mutation<void, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/input/trigger/${id}`,
         method: 'POST',
       }),

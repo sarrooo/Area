@@ -9,16 +9,15 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 import {setupListeners} from '@reduxjs/toolkit/dist/query'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {userApi} from './services/user'
 import {trireaApi} from './services/trirea'
 import {triggerApi} from './services/trigger'
 import {reactionApi} from './services/reaction'
 import {serviceApi} from './services/service'
-import userSlice from './features/userSlice'
+import userSliceReducer from './features/userSlice'
 import {api} from './services/api'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const persistConfig = {
   key: 'root',
@@ -29,7 +28,7 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
-  user: userSlice,
+  user: userSliceReducer,
   [api.reducerPath]: api.reducer,
 })
 

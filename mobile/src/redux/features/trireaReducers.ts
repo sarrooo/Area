@@ -1,6 +1,10 @@
-import { PayloadAction } from '@reduxjs/toolkit'
-import { Trirea, TrireaReactionInput, TrireaTriggerInput } from '../../types/Trirea'
-import { UserState, emptyTrirea } from '../features/userSlice'
+import {PayloadAction} from '@reduxjs/toolkit'
+import {
+  Trirea,
+  TrireaReactionInput,
+  TrireaTriggerInput,
+} from '../../types/Trirea'
+import {UserState, emptyTrirea} from './userSlice'
 
 export const fillTrireasReducer = (
   state: UserState,
@@ -15,42 +19,42 @@ export const clearTrireaReducer = (state: UserState) => {
 
 export const setTrireaReducer = (
   state: UserState,
-  action: PayloadAction<{ trirea: Trirea }>
+  action: PayloadAction<{trirea: Trirea}>
 ) => {
   state.trirea = action.payload.trirea
 }
 
 export const setTrireaNameReducer = (
   state: UserState,
-  action: PayloadAction<{ name: string }>
+  action: PayloadAction<{name: string}>
 ) => {
   state.trirea.name = action.payload.name
 }
 
 export const setTriggerIdReducer = (
   state: UserState,
-  action: PayloadAction<{ id: number }>
+  action: PayloadAction<{id: number}>
 ) => {
   state.trirea.triggerId = action.payload.id
 }
 
 export const setReactionIdReducer = (
   state: UserState,
-  action: PayloadAction<{ id: number }>
+  action: PayloadAction<{id: number}>
 ) => {
   state.trirea.reactionId = action.payload.id
 }
 
 export const addTriggerInputReducer = (
   state: UserState,
-  action: PayloadAction<{ triggerInput: TrireaTriggerInput }>
+  action: PayloadAction<{triggerInput: TrireaTriggerInput}>
 ) => {
   state.trirea.triggerInputs.push(action.payload.triggerInput)
 }
 
 export const addReactionInputReducer = (
   state: UserState,
-  action: PayloadAction<{ triggerInput: TrireaReactionInput }>
+  action: PayloadAction<{triggerInput: TrireaReactionInput}>
 ) => {
   state.trirea.reactionInputs.push(action.payload.triggerInput)
 }
@@ -65,18 +69,18 @@ export const clearReactionInputsReducer = (state: UserState) => {
 
 export const removeTriggerInputReducer = (
   state: UserState,
-  action: PayloadAction<{ triggerInputId: number }>
+  action: PayloadAction<{triggerInputId: number}>
 ) => {
-  state.trirea.triggerInputs.filter((trirea) => {
+  state.trirea.triggerInputs.filter(trirea => {
     return trirea.trireaId !== action.payload.triggerInputId
   })
 }
 
 export const removeReactionInputReducer = (
   state: UserState,
-  action: PayloadAction<{ reactionInputId: number }>
+  action: PayloadAction<{reactionInputId: number}>
 ) => {
-  state.trirea.reactionInputs.filter((trirea) => {
+  state.trirea.reactionInputs.filter(trirea => {
     return trirea.trireaId !== action.payload.reactionInputId
   })
 }

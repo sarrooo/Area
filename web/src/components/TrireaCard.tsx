@@ -44,8 +44,6 @@ export const TrireaCard = ({
     if (showMenu) setShowMenu(false)
   }
 
-  // const editTrirea = () => {}
-
   const deleteTrirea = async () => {
     try {
       id = Number(id)

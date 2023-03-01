@@ -7,7 +7,10 @@ import { BackButton } from '@/components/BackButton'
 import { FollowButton } from '@/components/FollowButton'
 import { ActionDescriptionCard } from '@/components/ActionDescriptionCard'
 import { MainButton } from '@/components/MainButton'
-import { useGetServiceQuery, useSubscribeMutation } from '@/redux/services/service'
+import {
+  useGetServiceQuery,
+  useSubscribeMutation,
+} from '@/redux/services/service'
 import { MappingOauth, mappingOauth } from '@/utils/oauth'
 import { LoginWithButton } from '@/components/LoginWithButton'
 

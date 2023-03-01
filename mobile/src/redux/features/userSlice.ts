@@ -1,10 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import jwtDecode from 'jwt-decode'
-import { User } from '../../types/User'
-import { RootState } from '../store'
-import { userApi } from '../services/user'
-import { Trirea } from '../../types/Trirea'
-import { Service } from '../../types/Service'
+import {User} from '../../types/User'
+import {RootState} from '../store'
+import {userApi} from '../services/user'
+import {Trirea} from '../../types/Trirea'
+import {Service} from '../../types/Service'
 
 export interface UserState {
   user: User | null
@@ -42,7 +42,7 @@ export const initialState: UserState = {
 
 const loginReducer = (
   state: UserState,
-  action: PayloadAction<{ token: string }>
+  action: PayloadAction<{token: string}>
 ) => {
   const decoded = jwtDecode<User>(action.payload.token)
   state.user = decoded
@@ -62,7 +62,7 @@ export const userSlice = createSlice({
       state.accessToken = action.payload
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
       .addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
         loginReducer(state, action)
@@ -82,13 +82,9 @@ export const userSlice = createSlice({
   },
 })
 
-export const {
-  login,
-  logout,
-  refreshToken,
-} = userSlice.actions
+export const {login, logout, refreshToken} = userSlice.actions
 
-export const selectIsLogged = (state: RootState) => state.user.isLogged;
+export const selectIsLogged = (state: RootState) => state.user.isLogged
 export const selectUser = (state: RootState) => state.user
 
 export default userSlice.reducer

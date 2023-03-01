@@ -1,8 +1,8 @@
-import { api } from './api'
-import { Reaction, ReactionInputType } from '../../types/Reaction'
+import {api} from './api'
+import {Reaction, ReactionInputType} from '../../types/Reaction'
 
 export const reactionApi = api.injectEndpoints({
-  endpoints: (build) => ({
+  endpoints: build => ({
     getReactions: build.query<Reaction[], void>({
       query: () => ({
         url: `/reaction`,
@@ -10,27 +10,27 @@ export const reactionApi = api.injectEndpoints({
       }),
     }),
     getReaction: build.query<Reaction, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/reaction/${id}`,
         method: 'GET',
       }),
     }),
     createReaction: build.mutation<void, Reaction>({
-      query: (body) => ({
+      query: body => ({
         url: `/reaction`,
         method: 'POST',
         body,
       }),
     }),
     updateReaction: build.mutation<void, Reaction>({
-      query: (body) => ({
+      query: body => ({
         url: `/reaction/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteReaction: build.mutation<void, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/reaction/${id}`,
         method: 'POST',
       }),
@@ -43,27 +43,27 @@ export const reactionApi = api.injectEndpoints({
       }),
     }),
     getReactionInput: build.query<ReactionInputType, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/input/reaction/${id}`,
         method: 'GET',
       }),
     }),
     createReactionInput: build.mutation<void, ReactionInputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/input/reaction`,
         method: 'POST',
         body,
       }),
     }),
     updateReactionInput: build.mutation<void, ReactionInputType>({
-      query: (body) => ({
+      query: body => ({
         url: `/input/reaction/delete/${body.id ? body.id : ''}`,
         method: 'POST',
         body,
       }),
     }),
     deleteReactionInput: build.mutation<void, number>({
-      query: (id) => ({
+      query: id => ({
         url: `/input/reaction/${id}`,
         method: 'POST',
       }),
