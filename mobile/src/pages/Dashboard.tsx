@@ -19,6 +19,7 @@ import {
 } from '../redux/services/trirea'
 
 import {Trirea} from '../types/Trirea'
+import { LoginWithButton } from '../components/LoginWithButton'
 
 export const Dashboard = () => {
   const navigation = useNavigation()
@@ -56,6 +57,7 @@ export const Dashboard = () => {
 
   return (
     <View style={styles.container}>
+      <LoginWithButton />
       <Section title="Dashboard">Create and find all your trireas here</Section>
       <Button
         colorScheme={'primary'}

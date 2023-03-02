@@ -13,8 +13,9 @@ export const CallbackComponent = () => {
 
   useEffect(() => {
     const handleRedirect = async (event: any) => {
-      if (event.url.startsWith('https://myapp.com/callback')) {
+      if (event.url.startsWith('https://google.com')) {
         try {
+          console.log('result: ', result)
           const result = await InAppBrowser.close();
           const data = result[0];
           const token = data.split('=')[1];
