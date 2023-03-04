@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import {InfoIcon, PlayIcon, Pressable} from 'native-base'
-import {View, Text, StyleSheet, Button} from 'react-native'
+import {View, Text, StyleSheet, Button, Alert} from 'react-native'
 import {Reaction} from '../types/Reaction'
 import {Trigger} from '../types/Trigger'
 
@@ -96,7 +96,7 @@ export function ServiceCard({
               try {
                 subscribe({serviceId: id, subscribed: !isFollowing})
               } catch (error) {
-                // toast.error('Something went wrong')
+                Alert.alert('Error', 'Something went wrong')
               }
             }}
           />

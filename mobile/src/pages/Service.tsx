@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native'
 import {Button, ChevronLeftIcon} from 'native-base'
 import React, {useEffect, useState} from 'react'
-import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import ActionDescriptionCard from '../components/ActionDescriptionCard'
 import {FollowButton} from '../components/FollowButton'
@@ -80,7 +80,7 @@ export function Service({route, navigation}: ServiceProps) {
             try {
               subscribe({serviceId: id, subscribed: !service?.subscribed})
             } catch (error) {
-              // toast.error('Something went wrong')
+              Alert.alert('Error', 'Something went wrong')
             }
           }}
         />

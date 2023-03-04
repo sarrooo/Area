@@ -1,5 +1,5 @@
-import {getDeepLink} from './deeplink'
 import {GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CONNECT_REDIRECT_URL} from '@env'
+import {getDeepLink} from './deeplink'
 
 export const getOauthGoogleUrl = () => {
   const rootUrl = `https://accounts.google.com/o/oauth2/v2/auth`

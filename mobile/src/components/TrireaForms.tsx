@@ -1,7 +1,7 @@
 import {Button, Select} from 'native-base'
 import React, {useEffect, useState} from 'react'
 import {useForm, useFieldArray} from 'react-hook-form'
-import {StyleSheet, View} from 'react-native'
+import {Alert, StyleSheet, View} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {useGetReactionsQuery} from '../redux/services/reaction'
 import {useGetServicesQuery} from '../redux/services/service'
@@ -86,16 +86,16 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       await createTrirea(data).unwrap()
       reset()
       toggleModal()
-      //   toast.success('Trirea created !')
+      Alert.alert('Success', 'Trirea created !')
     } catch (error) {
-      //   toast.error('Something went wrong with trirea creation')
+      Alert.alert('Error', 'Something went wrong with trirea creation')
     }
   }
 
   // Use effect to set available SERVICES
   useEffect(() => {
     if (services.isError) {
-      // toast.error('Something went wrong with services')
+      Alert.alert('Error', 'Something went wrong with services')
     }
     if (services.isSuccess) {
       // TODO : UNCOMMENT THIS
@@ -118,7 +118,7 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       setSelectedTrigger(undefined)
       setTriggersAvailable(selectedTriggerService.triggers || [])
     } catch (error) {
-      // toast.error('Something went wrong with selected trigger service')
+      Alert.alert('Error', 'Something went wrong with selected trigger service')
     }
   }, [selectedTriggerService])
 
@@ -133,7 +133,10 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       setSelectedReaction(undefined)
       setReactionsAvailable(selectedReactionService.reactions || [])
     } catch (error) {
-      // toast.error('Something went wrong with selected reaction service')
+      Alert.alert(
+        'Error',
+        'Something went wrong with selected reaction service'
+      )
     }
   }, [selectedReactionService])
 
@@ -154,7 +157,7 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
         i += 1
       })
     } catch (error) {
-      // toast.error('Something went wrong with selected trigger')
+      Alert.alert('Error', 'Something went wrong with selected trigger')
     }
   }, [selectedTrigger])
 
@@ -174,7 +177,7 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       }
       setSelectedTrigger(searchedSelectedTrigger)
     } catch (error) {
-      // toast.error('Something went wrong with triggers')
+      Alert.alert('Error', 'Something went wrong with selected trigger')
     }
   }, [watchTrigger, triggers])
 
@@ -196,7 +199,7 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
         i += 1
       })
     } catch (error) {
-      // toast.error('Something went wrong with selected reaction')
+      Alert.alert('Error', 'Something went wrong with selected reaction')
     }
   }, [selectedReaction])
 
@@ -222,7 +225,7 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       }
       setSelectedReaction(searchedSelectedReaction)
     } catch (error) {
-      // toast.error('Something went wrong with reactions')
+      Alert.alert('Error', 'Something went wrong with reactions')
     }
   }, [watchReaction, reactions])
 

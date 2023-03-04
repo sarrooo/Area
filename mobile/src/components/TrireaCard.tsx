@@ -1,6 +1,6 @@
 import {Switch, Menu, Pressable, DeleteIcon} from 'native-base'
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {
   useDeleteTrireaMutation,
@@ -55,7 +55,7 @@ export function TrireaCard({
     try {
       await updateTrireaMutation({...trirea, enabled: !trirea.enabled})
     } catch (error) {
-      // toast.error('Something went wrong')
+      Alert.alert('Error', 'Something went wrong')
     }
   }
 
@@ -63,9 +63,9 @@ export function TrireaCard({
     try {
       id = Number(id)
       await deleteTrireaMutation(id).unwrap()
-      // toast.success('Trirea deleted')
+      Alert.alert('Success', 'Trirea deleted')
     } catch (error) {
-      // toast.error('Something went wrong')
+      Alert.alert('Error', 'Something went wrong')
     }
   }
 
