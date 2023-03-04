@@ -66,16 +66,19 @@ export function Landing() {
   const submitLogin = async (data: LoginRequest) => {
     try {
       await loginMutation(data).unwrap()
+      console.log('Login success')
     } catch (error) {
-      /* ... */
+      console.log(error)
     }
   }
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
+      console.log('Registering...')
       await registerMutation(data).unwrap()
+      console.log('Register success')
     } catch (error) {
-      /* ... */
+      console.log(error)
     }
   }
 
