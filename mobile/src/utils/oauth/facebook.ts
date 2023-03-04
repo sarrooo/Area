@@ -1,14 +1,17 @@
-import { FACEBOOK_OAUTH_CONNECT_REDIRECT_URL, FACEBOOK_OAUTH_CONNECT_CLIENT_ID } from "@env"
+import { getDeepLink } from './deeplink'
+import { FACEBOOK_CLIENT_ID } from '@env'
 
 export const getOauthConnectFacebookUrl = () => {
   const rootUrl = `https://www.facebook.com/v16.0/dialog/oauth`
 
   const options = {
-    redirect_uri: FACEBOOK_OAUTH_CONNECT_REDIRECT_URL,
-    client_id: FACEBOOK_OAUTH_CONNECT_CLIENT_ID,
-    state: undefined,
+    redirect_uri: 'https://www.facebook.com',
+    client_id: FACEBOOK_CLIENT_ID,
+    access_type: 'offline',
+    prompt: 'consent',
     response_type: 'code',
-    scope: 'email public_profile user_friends',
+    scope: ['email', 'public_profile', 'user_friends'].join(' '),
+    state: getDeepLink('callback'),
   }
 
   const qs = new URLSearchParams(options)

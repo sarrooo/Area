@@ -1,16 +1,9 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
-import {Platform} from 'react-native'
 import {Landing} from './pages/Landing'
 import {PathConfigMap} from '@react-navigation/native'
 import {CallbackComponent} from './components/CallbackComponent'
-
-export const getDeepLink = (path = '') => {
-  const scheme = 'my-scheme'
-  const prefix =
-    Platform.OS == 'android' ? `${scheme}://my-host/` : `${scheme}://`
-  return prefix + path
-}
+import { getDeepLink } from './utils/oauth/deeplink'
 
 type RootStackParamList = {
   Landing: undefined

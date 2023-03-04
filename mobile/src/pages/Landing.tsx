@@ -16,6 +16,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {Button, FormControl, Modal} from 'native-base'
 
 import {MainInput} from '../components/MainInput'
+import { LoginWithButton } from '../components/LoginWithButton'
 
 export interface LoginRequest {
   email: string
@@ -129,6 +130,7 @@ export const Landing = () => {
             <Button variant={'ghost'} onPress={openOtherModal}>
               Register Instead
             </Button>
+            <LoginWithButton/>
           </Modal.Body>
         </Modal.Content>
       </Modal>
