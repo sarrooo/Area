@@ -1,13 +1,31 @@
-import React, {type PropsWithChildren} from 'react';
-import {View, Text, useColorScheme, StyleSheet} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import React, {PropsWithChildren} from 'react'
+import {View, Text, useColorScheme, StyleSheet} from 'react-native'
+import {Colors} from 'react-native/Libraries/NewAppScreen'
 
-export const Section: React.FC<
-  PropsWithChildren<{
-    title: string;
-  }>
-> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const styles = StyleSheet.create({
+  sectionContainer: {
+    paddingVertical: 32,
+  },
+  sectionTitle: {
+    fontSize: 48,
+    fontWeight: '900',
+    fontFamily: 'Poppins',
+  },
+  sectionDescription: {
+    paddingTop: 8,
+    fontSize: 24,
+    fontWeight: '400',
+  },
+})
+
+type SectionProps = {
+  title: string
+  children: React.ReactNode
+}
+
+export const Section = ({children, title}: SectionProps) => {
+  const isDarkMode = useColorScheme() === 'dark'
+
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -29,21 +47,5 @@ export const Section: React.FC<
         {children}
       </Text>
     </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    paddingVertical: 32,
-  },
-  sectionTitle: {
-    fontSize: 48,
-    fontWeight: '900',
-    fontFamily: 'Poppins',
-  },
-  sectionDescription: {
-    paddingTop: 8,
-    fontSize: 24,
-    fontWeight: '400',
-  },
-});
+  )
+}

@@ -7,7 +7,7 @@ import {Service} from './pages/Service'
 
 const Stack = createNativeStackNavigator()
 
-export const AppNavigator = () => {
+export function AppNavigator() {
   return (
     <Stack.Navigator initialRouteName="Dashboard">
       <Stack.Screen

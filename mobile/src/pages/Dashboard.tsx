@@ -1,94 +1,85 @@
 import {
   AddIcon,
   Button,
-  ScrollView,
   useDisclose,
   Actionsheet,
   Input,
+  Modal,
+  ScrollView,
+  KeyboardAvoidingView,
+  Center,
 } from 'native-base'
 import React from 'react'
-import {useEffect} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import {View, StyleSheet} from 'react-native'
 import {Section} from '../components/Section'
 import {TrireaCard} from '../components/TrireaCard'
 import {useLogoutMutation} from '../redux/services/user'
-import {
-  useGetTrireasQuery,
-  useCreateTrireaMutation,
-} from '../redux/services/trirea'
-
+import {useGetTrireasQuery} from '../redux/services/trirea'
+import {TrireaForms} from '../components/TrireaForms'
 import {Trirea} from '../types/Trirea'
 import { LoginWithButton } from '../components/LoginWithButton'
 
-export const Dashboard = () => {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 24,
+  },
+  scrollContainer: {
+    flex: 1,
+    height: '100%',
+    marginTop: 12,
+  },
+})
+
+export function Dashboard() {
   const navigation = useNavigation()
-  const {isOpen, onOpen, onClose} = useDisclose()
+  const {isOpen, onClose} = useDisclose()
   const [logoutMutation] = useLogoutMutation()
   const {data: trireas} = useGetTrireasQuery()
-  const [createTrireaMutation] = useCreateTrireaMutation()
+
+  const [showTrireaModal, setShowTrireaModal] = React.useState(false)
 
   const logout = async () => {
     try {
       await logoutMutation().unwrap()
     } catch (error) {
-      console.log(error)
+      /* ... */
     }
   }
-
-  const createTrirea = async () => {
-    try {
-      await createTrireaMutation({
-        name: 'test',
-        triggerId: 1,
-        reactionId: 1,
-        triggerInputs: [],
-        reactionInputs: [],
-        enabled: true,
-      }).unwrap()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    console.log(trireas)
-  }, [trireas])
 
   return (
     <View style={styles.container}>
       <LoginWithButton />
       <Section title="Dashboard">Create and find all your trireas here</Section>
       <Button
-        colorScheme={'primary'}
-        rounded={'lg'}
-        position={'absolute'}
+        colorScheme="primary"
+        rounded="lg"
+        position="absolute"
         bottom={12}
         zIndex={1}
         shadow={2}
         right={8}
-        onPress={() => {
-          navigation.navigate('Services')
-        }}>
+        onPress={() => navigation.navigate('Services' as never)}>
         Go to services
       </Button>
       <Button
-        colorScheme={'danger'}
-        rounded={'lg'}
-        width={'24'}
-        position={'absolute'}
+        colorScheme="danger"
+        rounded="lg"
+        width="24"
+        position="absolute"
         top={12}
         right={8}
         onPress={logout}>
         Logout
       </Button>
       <Button
-        rounded={'lg'}
+        rounded="lg"
         rightIcon={<AddIcon />}
-        colorScheme={'success'}
-        borderStyle={'dashed'}
-        borderColor={'black'}
-        onPress={createTrirea}>
+        colorScheme="success"
+        borderStyle="dashed"
+        borderColor="black"
+        onPress={() => setShowTrireaModal(true)}>
         Create a trirea
       </Button>
 
@@ -104,54 +95,35 @@ export const Dashboard = () => {
       </Actionsheet>
 
       <ScrollView style={styles.scrollContainer}>
-        <TrireaCard
-          id={1}
-          name={'The first one'}
-          triggerName={'poeapsd'}
-          reactionName={'lalala'}
-          isActive={true}
-        />
-        <TrireaCard
-          id={1}
-          name={'The first one'}
-          triggerName={'poeapsd'}
-          reactionName={'lalala'}
-          isActive={true}
-        />
-        <TrireaCard
-          id={1}
-          name={'The first one'}
-          triggerName={'poeapsd'}
-          reactionName={'lalala'}
-          isActive={true}
-        />
-        <TrireaCard
-          id={1}
-          name={'The first one'}
-          triggerName={'poeapsd'}
-          reactionName={'lalala'}
-          isActive={true}
-        />
-        <TrireaCard
-          id={1}
-          name={'The first one'}
-          triggerName={'poeapsd'}
-          reactionName={'lalala'}
-          isActive={true}
-        />
+        {trireas &&
+          trireas.map((trirea: Trirea) => {
+            return (
+              <TrireaCard
+                key={trirea.id}
+                id={trirea.id ? trirea.id : -1}
+                name={trirea.name}
+                triggerName={trirea.triggerId.toString()}
+                reactionName={trirea.reactionId.toString()}
+                trirea={trirea}
+              />
+            )
+          })}
       </ScrollView>
+      <Modal isOpen={showTrireaModal}>
+        <KeyboardAvoidingView style={{width: '100%'}} behavior="position">
+          <Center>
+            <Modal.Content>
+              <Modal.CloseButton onPress={() => setShowTrireaModal(false)} />
+              <Modal.Header>Login</Modal.Header>
+              <Modal.Body>
+                <TrireaForms
+                  toggleModal={() => setShowTrireaModal(!showTrireaModal)}
+                />
+              </Modal.Body>
+            </Modal.Content>
+          </Center>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 24,
-  },
-  scrollContainer: {
-    flex: 1,
-    height: '100%',
-    marginTop: 12,
-  },
-})

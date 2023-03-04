@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button} from 'native-base'
 import {InAppBrowser} from 'react-native-inappbrowser-reborn'
-import {getDeepLink} from '../utils/oauth/deepLink'
+import {getDeepLink} from '../utils/oauth/deeplink'
 
 type LoginWithButtonProps = {
   url: string

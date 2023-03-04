@@ -22,7 +22,7 @@ const linking = {
   } as PathConfigMap<RootStackParamList>,
 }
 
-export const AuthNavigator = () => {
+export function AuthNavigator() {
   return (
     <Stack.Navigator initialRouteName="Landing" linking={linking}>
       <Stack.Screen

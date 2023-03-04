@@ -3,7 +3,7 @@ export type TrireaTriggerInput = {
   name: string
   type: string
   value: string
-  triggerInputTypeId: number
+  triggerInputTypeId: number | null
   trireaId?: number
 }
 
@@ -13,6 +13,7 @@ export type TrireaReactionInput = {
   type: string
   value: string
   reactionInputTypeId: number
+  triggerOutputTypeId?: number
   trireaId?: number
 }
 

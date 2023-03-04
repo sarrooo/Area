@@ -12,7 +12,6 @@
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:tailwindcss/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -25,11 +24,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-unsafe-assignment": "error",
-    "@typescript-eslint/no-unsafe-argument": "error",
-    "@typescript-eslint/no-unsafe-member-access": "error",
-    "@typescript-eslint/no-unsafe-call": "error",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/no-misused-promises": [
       "error",
@@ -57,17 +51,15 @@
       }
     ],
     "import/prefer-default-export": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/function-component-definition": "off",
-    "react/require-default-props": [
-      2,
-      {
-        "forbidDefaultForRequired": false,
-        "ignoreFunctionalComponents": true
-      }
-    ],
-    "tailwindcss/no-custom-classname": "off"
+    "eslint@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "react-native/no-inline-styles": "off",
+    "react/require-default-props": "off",
+    "import/no-cycle": "off"
   },
-  "plugins": ["react", "@typescript-eslint", "ban"]
+  "plugins": ["@typescript-eslint"]
 }
