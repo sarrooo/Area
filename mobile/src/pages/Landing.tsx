@@ -65,6 +65,7 @@ export function Landing() {
 
   const submitLogin = async (data: LoginRequest) => {
     try {
+      console.log('Logging in...')
       await loginMutation(data).unwrap()
       console.log('Login success')
     } catch (error) {

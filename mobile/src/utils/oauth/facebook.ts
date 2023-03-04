@@ -1,12 +1,12 @@
 import { getDeepLink } from './deeplink'
-import { FACEBOOK_CLIENT_ID } from '@env'
+import { FACEBOOK_OAUTH_CLIENT_ID } from '@env'
 
 export const getOauthConnectFacebookUrl = () => {
   const rootUrl = `https://www.facebook.com/v16.0/dialog/oauth`
 
   const options = {
     redirect_uri: 'https://www.facebook.com',
-    client_id: FACEBOOK_CLIENT_ID,
+    client_id: FACEBOOK_OAUTH_CLIENT_ID,
     access_type: 'offline',
     prompt: 'consent',
     response_type: 'code',
