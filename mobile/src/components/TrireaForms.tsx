@@ -82,6 +82,12 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
           triggerInput.triggerInputTypeId = null
         return triggerInput
       })
+      data.reactionInputs = data.reactionInputs.map(reactionInput => {
+        reactionInput.triggerOutputTypeId = Number(
+          reactionInput.triggerOutputTypeId
+        )
+        return reactionInput
+      })
       data.triggerId = Number(data.triggerId)
       await createTrirea(data).unwrap()
       reset()
@@ -430,20 +436,6 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
           </View>
         )
       })}
-      <MainInput
-        id="salut"
-        label="salut"
-        fieldName="reactionId"
-        placeholder="Enter a value"
-        control={control}
-        rules={{
-          required: 'Required field',
-        }}
-        // inputType={field.type === 'Int' ? 'number' : 'text'}
-        inputType="text"
-        errors={errors}
-        style={{flex: 1}}
-      />
       <Button
         style={styles.submitButton}
         variant="subtle"

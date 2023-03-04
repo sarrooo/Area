@@ -8,7 +8,7 @@ type LoginWithButtonProps = {
   title: string
 }
 
-export const LoginWithButton = ({url, title}: LoginWithButtonProps) => {
+export function LoginWithButton({url, title}: LoginWithButtonProps) {
   const handleLogin = async () => {
     const result = await InAppBrowser.openAuth(url, getDeepLink('callback'))
     if (result.type === 'success') {

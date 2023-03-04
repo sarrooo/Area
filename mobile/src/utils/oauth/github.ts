@@ -1,5 +1,5 @@
-import {getDeepLink} from './deeplink'
 import {GITHUB_OAUTH_CLIENT_ID} from '@env'
+import {getDeepLink} from './deeplink'
 
 export const getOauthGithubUrl = () => {
   const rootUrl = `https://github.com/login/oauth/authorize`

@@ -18,7 +18,6 @@ import {useLogoutMutation} from '../redux/services/user'
 import {useGetTrireasQuery} from '../redux/services/trirea'
 import {TrireaForms} from '../components/TrireaForms'
 import {Trirea} from '../types/Trirea'
-import { LoginWithButton } from '../components/LoginWithButton'
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +49,6 @@ export function Dashboard() {
 
   return (
     <View style={styles.container}>
-      <LoginWithButton />
       <Section title="Dashboard">Create and find all your trireas here</Section>
       <Button
         colorScheme="primary"

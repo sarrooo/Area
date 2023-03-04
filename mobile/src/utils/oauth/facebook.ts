@@ -1,5 +1,5 @@
-import { getDeepLink } from './deeplink'
-import { FACEBOOK_OAUTH_CLIENT_ID } from '@env'
+import {FACEBOOK_OAUTH_CLIENT_ID} from '@env'
+import {getDeepLink} from './deeplink'
 
 export const getOauthConnectFacebookUrl = () => {
   const rootUrl = `https://www.facebook.com/v16.0/dialog/oauth`

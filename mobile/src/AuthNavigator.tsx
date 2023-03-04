@@ -1,10 +1,8 @@
 import React from 'react'
 import {createStackNavigator} from '@react-navigation/stack'
-import {Landing} from './pages/Landing'
 import {PathConfigMap} from '@react-navigation/native'
+import {Landing} from './pages/Landing'
 import {CallbackComponent} from './components/CallbackComponent'
-import { getDeepLink } from './utils/oauth/deeplink'
-
 type RootStackParamList = {
   Landing: undefined
   Callback: {path: string}
@@ -12,19 +10,9 @@ type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>()
 
-const linking = {
-  prefixes: [getDeepLink()],
-  config: {
-    screens: {
-      Landing: 'Landing',
-      Callback: 'callback',
-    },
-  } as PathConfigMap<RootStackParamList>,
-}
-
 export function AuthNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Landing" linking={linking}>
+    <Stack.Navigator initialRouteName="Landing">
       <Stack.Screen
         name="Landing"
         component={Landing}

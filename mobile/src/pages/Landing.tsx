@@ -116,7 +116,7 @@ export function Landing() {
               fieldName="email"
               placeholder="john.doe@email.com"
               control={control}
-              isRequired={true}
+              isRequired
               rules={{
                 required: 'Required Field',
                 pattern: {
@@ -132,8 +132,8 @@ export function Landing() {
               fieldName="password"
               placeholder="*******"
               control={control}
-              isRequired={true}
-              inputType={'password'}
+              isRequired
+              inputType="password"
               rules={{
                 required: 'Required Field',
               }}
@@ -141,11 +141,11 @@ export function Landing() {
             />
             <Button
               style={styles.submitButton}
-              variant={'subtle'}
+              variant="subtle"
               onPress={handleSubmit(submitLogin)}>
               Login
             </Button>
-            <Button variant={'ghost'} onPress={openOtherModal}>
+            <Button variant="ghost" onPress={openOtherModal}>
               Register Instead
             </Button>
             <LoginWithButton

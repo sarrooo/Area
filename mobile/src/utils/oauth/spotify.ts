@@ -1,5 +1,5 @@
-import {getDeepLink} from './deeplink'
 import {SPOTIFY_OAUTH_CLIENT_ID} from '@env'
+import {getDeepLink} from './deeplink'
 
 export const getOauthConnectSpotifyUrl = () => {
   const rootUrl = `https://accounts.spotify.com/authorize`

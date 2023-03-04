@@ -1,5 +1,5 @@
-import {getDeepLink} from './deeplink'
 import {TWITTER_OAUTH_CLIENT_ID, TWITTER_OAUTH_CONNECT_REDIRECT_URL} from '@env'
+import {getDeepLink} from './deeplink'
 
 export const getOauthTwitterUrl = () => {
   const rootUrl = `https://twitter.com/i/oauth2/authorize`
