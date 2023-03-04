@@ -32,7 +32,8 @@
     "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.5",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "uri-scheme": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

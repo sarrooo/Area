@@ -9,13 +9,13 @@ type Props = {
   onError: () => void
 }
 
-export function CallbackComponent() {
+export const Callback = () => {
   useEffect(() => {
     const handleRedirect = async (event: any) => {
       if (event.url.startsWith('https://google.com')) {
         try {
-          console.log('result: ', result)
           const result = await InAppBrowser.close()
+          console.log('result: ', result)
           const data = result[0]
           const token = data.split('=')[1]
           // handleAuth(token);
