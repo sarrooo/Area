@@ -11,7 +11,7 @@ export function Callback(props: any) {
 
   useEffect(() => {
     try {
-      store.dispatch(login(token))
+      store.dispatch(login({token}))
     } catch (e) {
       console.log(e)
       Alert.alert('Error', 'Something went wrong could not connect')
