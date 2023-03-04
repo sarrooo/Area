@@ -15,6 +15,8 @@ import {emailRegex, passwordRegex} from '../utils/regex'
 import {Section} from '../components/Section'
 
 import {MainInput} from '../components/MainInput'
+import {LoginWithButton} from '../components/LoginWithButton'
+import {getOauthGoogleUrl} from '../utils/oauth/google'
 
 export interface LoginRequest {
   email: string
@@ -63,17 +65,21 @@ export function Landing() {
 
   const submitLogin = async (data: LoginRequest) => {
     try {
+      console.log('Logging in...')
       await loginMutation(data).unwrap()
+      console.log('Login success')
     } catch (error) {
-      /* ... */
+      console.log(error)
     }
   }
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
+      console.log('Registering...')
       await registerMutation(data).unwrap()
+      console.log('Register success')
     } catch (error) {
-      /* ... */
+      console.log(error)
     }
   }
 
@@ -100,54 +106,54 @@ export function Landing() {
       </Button>
       <Image style={styles.image} source={require('../assets/universe.png')} />
       <Modal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)}>
-        <KeyboardAvoidingView style={{width: '100%'}} behavior="position">
-          <Center>
-            <Modal.Content maxWidth="400px">
-              <Modal.CloseButton />
-              <Modal.Header>Login</Modal.Header>
-              <Modal.Body>
-                <MainInput
-                  id="email"
-                  label="Email"
-                  fieldName="email"
-                  placeholder="john.doe@email.com"
-                  control={control}
-                  isRequired
-                  rules={{
-                    required: 'Required Field',
-                    pattern: {
-                      value: emailRegex,
-                      message: 'Invalid format email',
-                    },
-                  }}
-                  errors={errors}
-                />
-                <MainInput
-                  id="password"
-                  label="Password"
-                  fieldName="password"
-                  placeholder="*******"
-                  control={control}
-                  isRequired
-                  inputType="password"
-                  rules={{
-                    required: 'Required Field',
-                  }}
-                  errors={errors}
-                />
-                <Button
-                  style={styles.submitButton}
-                  variant="subtle"
-                  onPress={handleSubmit(submitLogin)}>
-                  Login
-                </Button>
-                <Button variant="ghost" onPress={openOtherModal}>
-                  Register Instead
-                </Button>
-              </Modal.Body>
-            </Modal.Content>
-          </Center>
-        </KeyboardAvoidingView>
+        <Modal.Content maxWidth="400px">
+          <Modal.CloseButton />
+          <Modal.Header>Login</Modal.Header>
+          <Modal.Body>
+            <MainInput
+              id="email"
+              label="Email"
+              fieldName="email"
+              placeholder="john.doe@email.com"
+              control={control}
+              isRequired
+              rules={{
+                required: 'Required Field',
+                pattern: {
+                  value: emailRegex,
+                  message: 'Invalid format email',
+                },
+              }}
+              errors={errors}
+            />
+            <MainInput
+              id="password"
+              label="Password"
+              fieldName="password"
+              placeholder="*******"
+              control={control}
+              isRequired
+              inputType="password"
+              rules={{
+                required: 'Required Field',
+              }}
+              errors={errors}
+            />
+            <Button
+              style={styles.submitButton}
+              variant="subtle"
+              onPress={handleSubmit(submitLogin)}>
+              Login
+            </Button>
+            <Button variant="ghost" onPress={openOtherModal}>
+              Register Instead
+            </Button>
+            <LoginWithButton
+              url={getOauthGoogleUrl()}
+              title="Login with google"
+            />
+          </Modal.Body>
+        </Modal.Content>
       </Modal>
       <Modal
         isOpen={showRegisterModal}

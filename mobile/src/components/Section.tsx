@@ -23,11 +23,7 @@ type SectionProps = {
   children: React.ReactNode
 }
 
-export function Section({children, title}: SectionProps): React.FC<
-  PropsWithChildren<{
-    title: string
-  }>
-> {
+export function Section({children, title}: SectionProps) {
   const isDarkMode = useColorScheme() === 'dark'
 
   return (

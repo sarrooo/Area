@@ -1,11 +1,17 @@
+import {GITHUB_OAUTH_CLIENT_ID} from '@env'
+import {getDeepLink} from './deeplink'
+
 export const getOauthGithubUrl = () => {
   const rootUrl = `https://github.com/login/oauth/authorize`
 
   const options = {
-    // redirect_uri: import.meta.env.VITE_GITHUB_OAUTH_REDIRECT_URL,
-    // client_id: import.meta.env.VITE_GITHUB_OAUTH_CLIENT_ID,
-    // scope: 'user, repo, notifications, gist',
-    // state: window.location.href,
+    redirect_uri: 'https://www.github.com',
+    client_id: GITHUB_OAUTH_CLIENT_ID,
+    access_type: 'offline',
+    response_type: 'code',
+    prompt: 'consent',
+    scope: ['user', 'repo', 'notifications', 'gist'].join(' '),
+    state: getDeepLink('callback'),
   }
 
   const qs = new URLSearchParams(options)
