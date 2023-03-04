@@ -11,17 +11,18 @@ services:
       - ./postgres:/etc/postgresql/14/main
     ports:
       - "5432:5432"
-  # server:
-  #   build: ./server
-  #   container_name: area_server
-  #   restart: always
-  #   ports:
-  #     - "8080:8080"
-  #   env_file:
-  #     - "./server/.env"
-  #   network_mode: "host" NOT USE THIS FOR MAC
-  #   depends_on:
-  #     - "db"
+#  server:
+#    build: ./server
+#    container_name: area_server
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#       - "8443:8443"
+#    env_file:
+#      - "./server/.env"
+#    network_mode: "host"
+#    depends_on:
+#      - "db"
   # web:
   #   build: ./web
   #   container_name: area_web
