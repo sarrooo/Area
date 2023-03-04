@@ -9,20 +9,28 @@ import {Services} from './pages/Services'
 import {Service} from './pages/Service'
 import {Callback} from './pages/Callback'
 
+type RootStackParamList = {
+  Landing: undefined
+  Dashboard: undefined
+  Services: undefined
+  Service: {id: number}
+  Callback: {token: string}
+}
+
 const linking = {
-  prefixes: ['mobile://'],
+  prefixes: ['mobile://com.mobile/'],
   config: {
     screens: {
       Landing: 'Landing',
       Dashboard: 'Dashboard',
       Services: 'Services',
       Service: 'Service',
-      Callback: 'Callback',
+      Callback: 'Callback/:token',
     },
   },
 }
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export function Navigator() {
   const isLoggedIn = useSelector(selectIsLogged)

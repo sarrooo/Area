@@ -1,45 +1,28 @@
+import {View, Text, Alert} from 'react-native'
+import {useNavigation} from '@react-navigation/native'
 import React, {useEffect} from 'react'
-import {View, Text} from 'react-native'
-import {InAppBrowser} from 'react-native-inappbrowser-reborn'
 import {login} from '../redux/features/userSlice'
 import {store} from '../redux/store'
+import {Section} from '../components/Section'
 
-type Props = {
-  onSuccess: () => void
-  onError: () => void
-}
+export function Callback(props: any) {
+  const token = props?.route?.params?.token?.toString()
+  const navigation = useNavigation()
 
-export const Callback = () => {
   useEffect(() => {
-    const handleRedirect = async (event: any) => {
-      if (event.url.startsWith('https://google.com')) {
-        try {
-          const result = await InAppBrowser.close()
-          console.log('result: ', result)
-          const data = result[0]
-          const token = data.split('=')[1]
-          // handleAuth(token);
-          // onSuccess();
-          store.dispatch(login({token}))
-          console.log('Successfully connected')
-        } catch (error) {
-          // onError();
-          console.log('Failed to connect')
-          console.error(error)
-        }
-      }
-    }
-
-    InAppBrowser.events().subscribe(handleRedirect)
-
-    return () => {
-      InAppBrowser.events().unsubscribe(handleRedirect)
+    try {
+      store.dispatch(login(token))
+    } catch (e) {
+      console.log(e)
+      Alert.alert('Error', 'Something went wrong could not connect')
+      navigation.navigate('Landing')
     }
   }, [])
 
   return (
     <View>
-      <Text>Waiting for authentication...</Text>
+      <Section title="Authentication processing">Just a moment...</Section>
+      <Text>User token: {token}</Text>
     </View>
   )
 }
