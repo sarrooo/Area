@@ -5,14 +5,14 @@ import {
   BaseQueryFn,
   FetchArgs,
 } from '@reduxjs/toolkit/query/react'
-import { RootState, store } from '../store'
-import { logout, refreshToken } from '../features/userSlice'
-import { RefreshResponse } from '../../types/Login'
-import { API_BASE_URL } from '@env'
+import {API_BASE_URL} from '@env'
+import {RootState, store} from '../store'
+import {logout, refreshToken} from '../features/userSlice'
+import {RefreshResponse} from '../../types/Login'
 
 const baseQuery = fetchBaseQuery({
   baseUrl: API_BASE_URL,
-  prepareHeaders: (headers, { getState }) => {
+  prepareHeaders: (headers, {getState}) => {
     const token = (getState() as RootState).user.accessToken
     if (token) {
       headers.set('authorization', `Bearer ${token}`)
@@ -28,7 +28,7 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions)
-  if (result.error && result.error.status === 401) {
+  if (result.error !== undefined && result.error.status === 401) {
     const refreshResult = await baseQuery(
       {
         url: 'auth/refresh',
@@ -53,6 +53,6 @@ const baseQueryWithReauth: BaseQueryFn<
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: baseQueryWithReauth,
-  tagTypes: ['User'],
+  tagTypes: ['User', 'Trirea', 'Service'],
   endpoints: () => ({}),
 })

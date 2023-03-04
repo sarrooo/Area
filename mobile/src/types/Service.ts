@@ -1,5 +1,5 @@
-import {Trigger} from '../types/Trigger'
-import {Reaction} from '../types/Reaction'
+import {Trigger} from './Trigger'
+import {Reaction} from './Reaction'
 
 export type Service = {
   id?: number

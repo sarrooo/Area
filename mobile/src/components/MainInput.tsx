@@ -5,14 +5,14 @@ import {
   FieldValues,
   Path,
   RegisterOptions,
-  UseFormRegister,
   Controller,
   Control,
 } from 'react-hook-form'
 
+import {StyleProp, ViewStyle} from 'react-native'
+
 type InputProps<TFormValues extends FieldValues> = {
   id: string
-  className?: string
   placeholder?: string
   isRequired?: boolean
   label: string
@@ -22,11 +22,11 @@ type InputProps<TFormValues extends FieldValues> = {
   rules?: RegisterOptions
   control: Control<TFormValues>
   errors?: Partial<FieldErrors<TFormValues>>
+
+  style?: StyleProp<ViewStyle>
 }
 
-import {StyleSheet} from 'react-native'
-
-export const MainInput = <TFormValues extends FieldValues>({
+export function MainInput<TFormValues extends FieldValues>({
   id,
   placeholder = 'input',
   inputType = 'text',
@@ -36,9 +36,14 @@ export const MainInput = <TFormValues extends FieldValues>({
   label,
   rules,
   errors,
-}: InputProps<TFormValues>) => {
+  style,
+}: InputProps<TFormValues>) {
   return (
-    <FormControl key={id} isRequired={isRequired} isInvalid={errors ? fieldName in errors : false}>
+    <FormControl
+      style={style}
+      key={id}
+      isRequired={isRequired}
+      isInvalid={errors ? fieldName in errors : false}>
       <FormControl.Label>{label}</FormControl.Label>
       <Controller
         control={control}
@@ -46,7 +51,7 @@ export const MainInput = <TFormValues extends FieldValues>({
           <Input
             type={inputType}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
+            onChangeText={changedValue => onChange(changedValue)}
             value={value}
             placeholder={placeholder}
           />
@@ -60,9 +65,3 @@ export const MainInput = <TFormValues extends FieldValues>({
     </FormControl>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 0,
-  },
-})

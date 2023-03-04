@@ -1,5 +1,11 @@
 import { ReactNode } from 'react'
-import { BsGithub, BsGoogle, BsTwitter, BsSpotify, BsFacebook} from 'react-icons/bs'
+import {
+  BsGithub,
+  BsGoogle,
+  BsTwitter,
+  BsSpotify,
+  BsFacebook,
+} from 'react-icons/bs'
 import { getOauthGithubUrl } from './github'
 import { getOauthConnectGoogleUrl } from './google'
 import { getOauthConnectTwitterUrl } from './twitter'
