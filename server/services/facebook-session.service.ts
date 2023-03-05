@@ -26,7 +26,7 @@ export const getFacebookOauthToken = async ({code}: { code: string }): Promise<F
 
         return data;
     } catch (err: any) {
-        Logging.error('Failed to get Google Oauth Token');
+        Logging.error('Failed to get Facebook Oauth Token');
         throw new Error(err);
     }
 };
