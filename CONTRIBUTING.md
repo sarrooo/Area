@@ -19,7 +19,7 @@ that you share your intention to contribute with the team, based on the type of 
     and we shall discuss the design and implementation. Once we agree that the plan looks good,
     go ahead and implement it.
 2. You want to implement a feature or bug-fix for an outstanding issue.
-    - Search for your issue in the [R-Type issue list](https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-1-area-maxime.premont/issues).
+    - Search for your issue in the [AREA issue list](https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-1-area-maxime.premont/issues).
     - Pick an issue and comment that you'd like to work on the feature or bug-fix.
     - If you need more context on a particular issue, please ask and we shall provide.
 
