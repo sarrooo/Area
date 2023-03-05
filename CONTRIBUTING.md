@@ -3,28 +3,28 @@
 ## Table of Contents
 - [Contribution Guidelines](#contribution-guidelines)
   - [Table of Contents](#table-of-contents)
-  - [Contributing to R-Type](#contributing-to-r-type)
+  - [Contributing to AREA](#contributing-to-area)
   - [Discuss](#discuss)
   - [Code review](#code-review)
   - [Language](#language)
   - [Testing](#testing)
 
-## Contributing to R-Type
+## Contributing to AREA
 
 Thank you for your interest in contributing to R-Type! Before you begin writing code, it is important
 that you share your intention to contribute with the team, based on the type of contribution:
 
 1. You want to propose a new feature and implement it.
-    - Post about your intended feature in an [issue](https://github.com/EpitechPromo2025/B-CPP-500-LYN-5-1-rtype-maxime.premont/issues),
+    - Post about your intended feature in an [issue](https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-1-area-maxime.premont/issues),
     and we shall discuss the design and implementation. Once we agree that the plan looks good,
     go ahead and implement it.
 2. You want to implement a feature or bug-fix for an outstanding issue.
-    - Search for your issue in the [R-Type issue list](https://github.com/EpitechPromo2025/B-CPP-500-LYN-5-1-rtype-maxime.premont/issues).
+    - Search for your issue in the [R-Type issue list](https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-1-area-maxime.premont/issues).
     - Pick an issue and comment that you'd like to work on the feature or bug-fix.
     - If you need more context on a particular issue, please ask and we shall provide.
 
 Once you implement and test your feature or bug-fix, please submit a Pull Request to
-https://github.com/EpitechPromo2025/B-CPP-500-LYN-5-1-rtype-maxime.premont.
+https://github.com/EpitechPromo2025/B-DEV-500-LYN-5-1-area-maxime.premont.
 
 
 ## Discuss
@@ -46,4 +46,4 @@ All interactions on the project must be done in English.
 
 ## Testing
 
-When you propose an improvement, this one must come with tests, the project uses [Google Test](https://github.com/google/googletest), we ask you to also use this technology and to integrate your CI/CD in that of the project
+When you propose an improvement, this one must come with tests.
