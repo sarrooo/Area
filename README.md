@@ -64,6 +64,14 @@ We divided the project into two distinct categories, the back-end and the front-
 
 The whole project is containerized, the back-end is deployed on a VPS while the front-end is deployed on Vercel
 
+<p align="center">
+    <br/>
+  <img src=".github/assets/macro_schema.png" />
+  <br/>
+  <br/>
+</p>
+
+
 ### Database :bookmark_tabs:
 
 The database is a postgre SQL designated to allow authentication via the oauth flow but also to allow the actions to be chained with their output and the inputs of the reactions
