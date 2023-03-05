@@ -108,7 +108,7 @@ export function Landing() {
     try {
       await loginMutation(data).unwrap()
     } catch (error) {
-      Alert.alert('Error', error)
+      Alert.alert('Error', 'Error submitting login')
     }
   }
 
@@ -116,7 +116,7 @@ export function Landing() {
     try {
       await registerMutation(data).unwrap()
     } catch (error) {
-      Alert.alert('Error', error)
+      Alert.alert('Error', 'Error submitting register')
     }
   }
 

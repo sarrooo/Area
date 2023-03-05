@@ -135,12 +135,12 @@ export const generateToken = async (
     process.env.JWT_REFRESH_SECRET as string,
     { expiresIn: process.env.JWT_EXPIRES_IN_REFRESH_SECRET }
   );
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    sameSite: "none",
-    maxAge: 1000 * config.get<number>("jwtConfig.expiresInRefreshSecret"),
-    secure: true,
-  });
+  // res.cookie("refreshToken", refreshToken, {
+  //   httpOnly: true,
+  //   sameSite: "none",
+  //   maxAge: 1000 * config.get<number>("jwtConfig.expiresInRefreshSecret"),
+  //   secure: true,
+  // });
 
   const expiredAt = new Date();
   expiredAt.setDate(expiredAt.getDate() + 7);

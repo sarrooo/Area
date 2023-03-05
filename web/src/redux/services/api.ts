@@ -18,7 +18,6 @@ const baseQuery = fetchBaseQuery({
     }
     return headers
   },
-  credentials: 'include',
 })
 
 const baseQueryWithReauth: BaseQueryFn<
