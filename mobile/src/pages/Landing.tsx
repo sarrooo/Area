@@ -8,7 +8,9 @@ import {
   StatusBar,
   StyleSheet,
   useColorScheme,
+  Text,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/AntDesign'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {useLoginMutation, useRegisterMutation} from '../redux/services/user'
 import {emailRegex, passwordRegex} from '../utils/regex'
@@ -43,6 +45,12 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     marginTop: 12,
+  },
+  separator: {
+    marginBottom: 12,
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 })
 
@@ -98,7 +106,7 @@ export function Landing() {
         Welcome to trirea, change your world, your universe
       </Section>
       <Button
-        colorScheme="cyan"
+        bg="cyan.400"
         width="1/2"
         rounded="lg"
         onPress={() => setShowLoginModal(true)}>
@@ -141,17 +149,22 @@ export function Landing() {
             />
             <Button
               style={styles.submitButton}
-              variant="subtle"
+              bg="cyan.400"
               onPress={handleSubmit(submitLogin)}>
               Login
             </Button>
-            <Button variant="ghost" onPress={openOtherModal}>
+            <Button
+              variant="link"
+              style={styles.submitButton}
+              onPress={openOtherModal}>
               Register Instead
             </Button>
+            <Text style={styles.separator}>Or</Text>
             <LoginWithButton
               url={getOauthGoogleUrl()}
-              title="Login with google"
-            />
+              title="Login with google">
+              <Icon name="google" size={24} color="black" />
+            </LoginWithButton>
           </Modal.Body>
         </Modal.Content>
       </Modal>
@@ -250,11 +263,14 @@ export function Landing() {
                 />
                 <Button
                   style={styles.submitButton}
-                  variant="subtle"
+                  bg="cyan.400"
                   onPress={registerHandleSubmit(submitRegister)}>
                   Register
                 </Button>
-                <Button variant="ghost" onPress={openOtherModal}>
+                <Button
+                  variant="link"
+                  style={styles.submitButton}
+                  onPress={openOtherModal}>
                   Login Instead
                 </Button>
               </Modal.Body>

@@ -6,6 +6,7 @@ import Register from '@/pages/Register'
 import Service from '@/pages/Service'
 import Services from '@/pages/Services'
 import OauthCallback from '@/pages/OauthCallback'
+import NotFound from '@/pages/NotFound'
 
 const routes = (isLoggedIn: boolean) => [
   {
@@ -34,6 +35,7 @@ const routes = (isLoggedIn: boolean) => [
           { path: '/service/:id', element: <Service /> },
         ],
       },
+      { path: '/*', element: <NotFound /> },
     ],
   },
 ]
