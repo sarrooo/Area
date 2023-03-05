@@ -15,7 +15,7 @@ export const ActionDescriptionCard = ({
     <div className="space-y-2 rounded-lg bg-white px-8 py-4 shadow-lg">
       <h1 className="text-xl font-bold">{name}</h1>
       <h1 className="font-bold">
-        Params:&nbsp;
+        Inputs:&nbsp;
         {inputs?.map((input, index) => {
           return (
             <span key={input}>

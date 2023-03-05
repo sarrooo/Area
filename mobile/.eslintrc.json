@@ -1,0 +1,65 @@
+{
+  "root": true,
+  "ignorePatterns": ["*.config.js", "*.config.ts", "*.config.cjs"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "@react-native-community",
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": ["tsconfig.json"],
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": false
+      }
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["**/*.test.ts", "**/*.test.tsx"]
+      }
+    ],
+    "react-hooks/exhaustive-deps": "off",
+    "no-param-reassign": ["off"],
+    "import/extensions": ["off"],
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/require-await": "off",
+    "@typescript-eslint/naming-convention": [
+      "off",
+      {
+        "selector": "property",
+        "format": ["snake_case"]
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "eslint@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "react-native/no-inline-styles": "off",
+    "react/require-default-props": "off",
+    "import/no-cycle": "off"
+  },
+  "plugins": ["@typescript-eslint"]
+}

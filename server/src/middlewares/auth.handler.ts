@@ -18,7 +18,6 @@ export const verifyToken = async (
   }
   try {
     const token = (authorization && authorization.split(" ")[1]) || "";
-
     let payload: any = "";
     try {
       payload = verify(token, process.env.JWT_SECRET as string);
