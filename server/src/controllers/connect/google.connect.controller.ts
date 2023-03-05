@@ -9,7 +9,7 @@ export const googleConnectHandler = async (
     req: Request,
     res: Response,
 ) => {
-    Logging.info("req.cookies : ", req.cookies)
+    Logging.info(`req.cookies : ${req.cookies}`)
     const refreshToken = req.cookies["refreshToken"];
     if (!refreshToken) {
         throw new ForbiddenRequestException("No refresh token");

@@ -71,11 +71,7 @@ export const twitterConnectHandler = async (
     },
   });
 
-  if (platform === "mobile") {
-    res.redirect(`mobile://com.mobile/Callback/${token}`);
-  } else {
-    res.redirect(
-      `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
-    );
-  }
+  res.redirect(
+    `${process.env.CORS_FRONT_URL}/oauth_callback`
+  );
 };

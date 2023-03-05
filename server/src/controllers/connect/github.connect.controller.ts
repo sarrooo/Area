@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import Logging from "~/lib/logging";
 import {BadRequestException, ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
@@ -8,6 +8,7 @@ import {getGithubOauthToken} from "~~/services/github-session.service";
 export const githubConnectHandler = async (
     req: Request,
     res: Response,
+    next: NextFunction
 ) => {
     const refreshToken = req.cookies["refreshToken"];
     if (!refreshToken) {

@@ -7,7 +7,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import {ExceptionsHandler} from './middlewares/exception.handler';
 import {UnknowRoutesHandler} from './middlewares/unknowRoutes.handler';
-import Logging from "~/lib/logging";
 import Routes from "~/routes";
 import * as process from "process";
 import config from "config";
@@ -25,7 +24,7 @@ const certificate = fs.readFileSync('cert.pem', 'utf8');
 const credentials = {key: privateKey, cert: certificate};
 
 // Cross Origin Resource Sharing
-app.use(cors({ origin: process.env.CORS_FRONT_URL, credentials: true }));
+app.use(cors({ origin: '*' }));
 
 // Middleware for cookies
 app.use(cookieParser());
