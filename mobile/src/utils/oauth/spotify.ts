@@ -1,11 +1,10 @@
-import {SPOTIFY_OAUTH_CLIENT_ID} from '@env'
-import {getDeepLink} from './deeplink'
+import {SPOTIFY_OAUTH_CLIENT_ID, SPOTIFY_OAUTH_REDIRECT_URL} from '@env'
 
 export const getOauthConnectSpotifyUrl = () => {
   const rootUrl = `https://accounts.spotify.com/authorize`
 
   const options = {
-    redirect_uri: 'https://www.spotify.com',
+    redirect_uri: `${SPOTIFY_OAUTH_REDIRECT_URL as string}?platform=mobile`,
     client_id: SPOTIFY_OAUTH_CLIENT_ID,
     access_type: 'offline',
     prompt: 'consent',
@@ -28,7 +27,6 @@ export const getOauthConnectSpotifyUrl = () => {
       'user-follow-read',
       'user-follow-modify',
     ].join(' '),
-    state: getDeepLink('callback'),
   }
 
   const qs = new URLSearchParams(options)
