@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import Logging from "~/lib/logging";
 import { BadRequestException } from "~/utils/exceptions";
 import {
@@ -11,10 +11,9 @@ import { generateToken } from "~/controllers/auth/auth.controller";
 export const twitterOAuthHandler = async (
   req: Request,
   res: Response,
-  next: NextFunction
 ) => {
   const code = req.query.code as string;
-  const pathUrl = (req.query.state as string) || "/";
+  const platform = (req.query.platform as string) || "web";
 
   if (!code) {
     Logging.warning("Twitter OAuth: No code provided");
@@ -73,8 +72,15 @@ export const twitterOAuthHandler = async (
 
   const token = await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ Twitter`);
-  Logging.info(`Redirecting to ${pathUrl}`);
-  res.redirect(
-    `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
-  );
+  Logging.info(`Redirecting`);
+  
+  if (platform === "mobile") {
+    res.redirect(
+      `mobile://com.mobile/Callback/${token}`
+    );
+  } else {
+    res.redirect(
+      `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
+    );
+  }
 };

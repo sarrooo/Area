@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import Logging from "~/lib/logging";
 import {BadRequestException, ForbiddenRequestException, UnauthorizedRequestException} from "~/utils/exceptions";
 import {prisma} from "~/lib/prisma";
@@ -8,8 +8,8 @@ import {getGoogleConnectOauthToken} from "~~/services/google-session.service";
 export const googleConnectHandler = async (
     req: Request,
     res: Response,
-    next: NextFunction
 ) => {
+    Logging.info("req.cookies : ", req.cookies)
     const refreshToken = req.cookies["refreshToken"];
     if (!refreshToken) {
         throw new ForbiddenRequestException("No refresh token");
