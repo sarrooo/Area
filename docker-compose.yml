@@ -11,7 +11,7 @@ services:
       - ./postgres:/etc/postgresql/14/main
     ports:
       - "5432:5432"
- server:
+  server:
    build: ./server
    container_name: area_server
    restart: always
