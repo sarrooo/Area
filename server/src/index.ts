@@ -20,9 +20,6 @@ const app = express();
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const privateKey  = fs.readFileSync('key.pem', 'utf8');
-const certificate = fs.readFileSync('cert.pem', 'utf8');
-const credentials = {key: privateKey, cert: certificate};
 
 // Cross Origin Resource Sharing
 app.use(cors({ origin: process.env.CORS_FRONT_URL, credentials: true }));
@@ -46,9 +43,17 @@ app.all('*', UnknowRoutesHandler);
 app.use(ExceptionsHandler);
 
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(credentials, app);
-
 httpServer.listen(port);
-httpsServer.listen(8443);
+
+// Certs
+if (fs.existsSync("/app/certs/privkay.pem")) {
+    const privateKey  = fs.readFileSync('/app/certs/privkey.pem', 'utf8');
+    const certificate = fs.readFileSync('/app/certs/cert.pem', 'utf8');
+    const ca = fs.readFileSync('/app/certs/chain.pem', 'utf8');
+    const credentials = {key: privateKey, cert: certificate, ca: ca};
+    
+    const httpsServer = https.createServer(credentials, app);
+    httpsServer.listen(8443);
+}
 
 module.exports = app;
