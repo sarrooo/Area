@@ -1,4 +1,4 @@
-import { BsGithub } from 'react-icons/bs'
+import { BsGithub, BsTwitter } from 'react-icons/bs'
 import { FcGoogle } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
@@ -12,6 +12,7 @@ import { RegisterRequest } from '@/types/Login'
 import { useRegisterMutation } from '@/redux/services/user'
 import { getOauthGoogleUrl } from '@/utils/oauth/google'
 import { getOauthGithubUrl } from '@/utils/oauth/github'
+import { getOauthTwitterUrl } from '@/utils/oauth/twitter'
 
 const Register = () => {
   const {
@@ -141,6 +142,13 @@ const Register = () => {
               className="w-3/4"
             >
               <BsGithub />
+            </LoginWithButton>
+            <LoginWithButton
+              text="Twitter"
+              url={getOauthTwitterUrl()}
+              className="w-3/4"
+            >
+              <BsTwitter />
             </LoginWithButton>
           </div>
         </div>
