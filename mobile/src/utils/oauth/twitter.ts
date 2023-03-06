@@ -34,7 +34,9 @@ export const getOauthConnectTwitterUrl = () => {
   const rootUrl = `https://twitter.com/i/oauth2/authorize`
 
   const options = {
-    redirect_uri: TWITTER_OAUTH_CONNECT_REDIRECT_URL,
+    redirect_uri: `${
+      TWITTER_OAUTH_CONNECT_REDIRECT_URL as string
+    }?platform=mobile`,
     client_id: TWITTER_OAUTH_CLIENT_ID,
     response_type: 'code',
     code_challenge: 'challenge',

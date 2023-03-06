@@ -12,12 +12,13 @@ type LoginWithButtonProps = {
 
 export function LoginWithButton({url, title, children}: LoginWithButtonProps) {
   const handleLogin = async () => {
-    await InAppBrowser.openAuth(url, getDeepLink('callback'))
-    // if (result.type === 'success') {
-    //   const accessToken = result.params.code
-    // } else {
-    //   console.log(result)
-    // }
+    const result = await InAppBrowser.openAuth(url, getDeepLink('callback'))
+    if (result.type === 'success') {
+      const accessToken = result.params.code
+      console.log('SUCCESS', result)
+    } else {
+      console.log('FAILURE', result)
+    }
   }
 
   return (

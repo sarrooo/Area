@@ -106,8 +106,10 @@ export function Landing() {
 
   const submitLogin = async (data: LoginRequest) => {
     try {
+      console.log("logging in")
       await loginMutation(data).unwrap()
     } catch (error) {
+      console.log(error)
       Alert.alert('Error', 'Error submitting login')
     }
   }
