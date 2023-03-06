@@ -62,7 +62,7 @@ export const googleOAuthHandler = async (
   
   if (platform === "mobile") {
     res.redirect(
-      `mobile://com.mobile/Callback/${token}`
+      `mobile://com.mobile/CallbackLogin/${token}`
     );
   } else {
     res.redirect(

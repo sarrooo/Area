@@ -32,7 +32,6 @@ const baseQueryWithReauth: BaseQueryFn<
       {
         url: 'auth/refresh',
         method: 'POST',
-        credentials: 'include',
       },
       api,
       extraOptions

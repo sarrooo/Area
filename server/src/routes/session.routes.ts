@@ -7,6 +7,8 @@ import {spotifyConnectHandler} from "~/controllers/connect/spotify.connect.contr
 import {googleConnectHandler} from "~/controllers/connect/google.connect.controller";
 import {twitterConnectHandler} from "~/controllers/connect/twitter.connect.controller";
 import {facebookConnectHandler} from "~/controllers/connect/facebook.connect.controller";
+import { verifyToken } from "../middlewares/auth.handler";
+import { linkTokenConnectHandler } from "../controllers/connect/link_token.connect.controller";
 
 dotenv.config();
 
@@ -22,5 +24,8 @@ sessionRouter.get('/oauth/connect/spotify', spotifyConnectHandler)
 sessionRouter.get('/oauth/connect/google', googleConnectHandler)
 sessionRouter.get('/oauth/connect/twitter', twitterConnectHandler)
 sessionRouter.get('/oauth/connect/facebook', facebookConnectHandler)
+
+//LINK
+sessionRouter.post('/oauth/connect/link', verifyToken, linkTokenConnectHandler);
 
 export default sessionRouter;
