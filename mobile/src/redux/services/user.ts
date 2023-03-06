@@ -4,6 +4,7 @@ import {
   RefreshResponse,
   RegisterRequest,
   RegisterResponse,
+  IdentifyRequest,
 } from '../../types/Login'
 
 import {api} from './api'
@@ -47,6 +48,13 @@ export const userApi = api.injectEndpoints({
         body,
       }),
     }),
+    identify: build.mutation<void, IdentifyRequest>({
+      query: body => ({
+        url: `/auth/connect/link`,
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 })
 
@@ -56,4 +64,5 @@ export const {
   useLogoutMutation,
   useRefreshMutation,
   useMeQuery,
+  useIdentifyMutation,
 } = userApi

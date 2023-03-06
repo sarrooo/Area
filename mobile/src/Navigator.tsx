@@ -7,14 +7,16 @@ import {Landing} from './pages/Landing'
 import {Dashboard} from './pages/Dashboard'
 import {Services} from './pages/Services'
 import {Service} from './pages/Service'
-import {Callback} from './pages/Callback'
+import {CallbackLogin} from './pages/CallbackLogin'
+import {CallbackSubscribe} from './pages/CallbackSubscribe'
 
 type RootStackParamList = {
   Landing: undefined
   Dashboard: undefined
   Services: undefined
   Service: {id: number}
-  Callback: {token: string}
+  CallbackLogin: {token: string}
+  CallbackSubscribe: {token: string}
 }
 
 const linking = {
@@ -25,7 +27,8 @@ const linking = {
       Dashboard: 'Dashboard',
       Services: 'Services',
       Service: 'Service',
-      Callback: 'Callback/:token',
+      CallbackLogin: 'CallbackLogin/:token',
+      CallbackSubscribe: 'CallbackSubscribe/:token',
     },
   },
 }
@@ -46,7 +49,11 @@ export function Navigator() {
         ) : (
           <>
             <Stack.Screen name="Landing" component={Landing} />
-            <Stack.Screen name="Callback" component={Callback} />
+            <Stack.Screen name="CallbackLogin" component={CallbackLogin} />
+            <Stack.Screen
+              name="CallbackSubscribe"
+              component={CallbackSubscribe}
+            />
           </>
         )}
       </Stack.Navigator>

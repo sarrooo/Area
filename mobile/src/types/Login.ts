@@ -23,3 +23,7 @@ export interface RegisterResponse {
 export interface RefreshResponse {
   token: string
 }
+
+export interface IdentifyRequest {
+  token: string
+}
