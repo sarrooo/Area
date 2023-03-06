@@ -15,7 +15,8 @@ type RootStackParamList = {
   Dashboard: undefined
   Services: undefined
   Service: {id: number}
-  Callback: {token: string}
+  CallbackLogin: {token: string}
+  CallbackSubscribe: {token: string}
 }
 
 const linking = {
