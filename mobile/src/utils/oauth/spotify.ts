@@ -1,10 +1,12 @@
-import {SPOTIFY_OAUTH_CLIENT_ID, SPOTIFY_OAUTH_REDIRECT_URL} from '@env'
+import {SPOTIFY_OAUTH_CLIENT_ID, SPOTIFY_OAUTH_CONNECT_REDIRECT_URL} from '@env'
 
 export const getOauthConnectSpotifyUrl = () => {
   const rootUrl = `https://accounts.spotify.com/authorize`
 
   const options = {
-    redirect_uri: `${SPOTIFY_OAUTH_REDIRECT_URL as string}?platform=mobile`,
+    redirect_uri: `${
+      SPOTIFY_OAUTH_CONNECT_REDIRECT_URL as string
+    }?platform=mobile`,
     client_id: SPOTIFY_OAUTH_CLIENT_ID,
     access_type: 'offline',
     prompt: 'consent',

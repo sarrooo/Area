@@ -50,7 +50,7 @@ export const userApi = api.injectEndpoints({
     }),
     identify: build.mutation<void, IdentifyRequest>({
       query: body => ({
-        url: `/auth/connect/link`,
+        url: `/sessions/oauth/connect/link`,
         method: 'POST',
         body,
       }),

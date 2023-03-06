@@ -4,7 +4,6 @@ export const getOauthTwitterUrl = () => {
   const options = {
     redirect_uri: import.meta.env.VITE_TWITTER_OAUTH_REDIRECT_URL,
     client_id: import.meta.env.VITE_TWITTER_OAUTH_CLIENT_ID,
-    state: window.location.href,
     response_type: 'code',
     code_challenge: 'challenge',
     code_challenge_method: 'plain',
@@ -29,7 +28,6 @@ export const getOauthConnectTwitterUrl = () => {
   const options = {
     redirect_uri: import.meta.env.VITE_TWITTER_OAUTH_CONNECT_REDIRECT_URL,
     client_id: import.meta.env.VITE_TWITTER_OAUTH_CLIENT_ID,
-    state: window.location.href,
     response_type: 'code',
     code_challenge: 'challenge',
     code_challenge_method: 'plain',

@@ -6,7 +6,7 @@ import { ServiceCardDescription } from '@/components/ServiceCardDescription'
 import { Reaction } from '../types/Reaction'
 import { Trigger } from '../types/Trigger'
 import { useSubscribeMutation } from '@/redux/services/service'
-import { MappingOauth, mappingOauth } from '../utils/oauth'
+import { MappingConnectOauth, mappingConnectOauth } from '../utils/oauth'
 import { LoginWithButton } from './LoginWithButton'
 
 export type ServiceCardProps = {
@@ -27,10 +27,10 @@ export const ServiceCard = ({
   const [subscribe] = useSubscribeMutation()
   const navigate = useNavigate()
 
-  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth>()
+  const [oauthNeeded, setOauthNeeded] = useState<MappingConnectOauth>()
 
   useEffect(() => {
-    const oauthMappingSelected = mappingOauth.find(
+    const oauthMappingSelected = mappingConnectOauth.find(
       (oauth) => oauth.name === name
     )
     if (oauthMappingSelected) {
@@ -46,7 +46,7 @@ export const ServiceCard = ({
     >
       <div className="flex justify-between">
         <h1 className="text-xl font-bold">{name}</h1>
-        {oauthNeeded ? (
+        {oauthNeeded && !isFollowing ? (
           <div className="w-1/2">
             <LoginWithButton
               text="Connect"

@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {PathConfigMap} from '@react-navigation/native'
 import {Landing} from './pages/Landing'
 import {CallbackComponent} from './components/CallbackComponent'
+
 type RootStackParamList = {
   Landing: undefined
   Callback: {path: string}

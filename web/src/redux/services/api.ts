@@ -18,7 +18,6 @@ const baseQuery = fetchBaseQuery({
     }
     return headers
   },
-  credentials: 'include',
 })
 
 const baseQueryWithReauth: BaseQueryFn<
@@ -32,7 +31,6 @@ const baseQueryWithReauth: BaseQueryFn<
       {
         url: 'auth/refresh',
         method: 'POST',
-        credentials: 'include',
       },
       api,
       extraOptions

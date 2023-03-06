@@ -24,7 +24,10 @@ export const LoginWithButton = ({
       disabled={disabled}
       type="button"
       className={`flex items-center justify-center space-x-4 rounded-xl py-2 px-16 text-xl font-bold shadow-md transition ease-in-out disabled:bg-gray-400 ${color} ${className}`}
-      onClick={() => window.location.assign(url)}
+      onClick={(e) => {
+        e.stopPropagation()
+        window.location.assign(url)
+      }}
     >
       {children}
       <span>{text}</span>

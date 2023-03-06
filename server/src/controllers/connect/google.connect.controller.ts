@@ -2,11 +2,9 @@ import { Request, Response } from "express";
 import Logging from "~/lib/logging";
 import {
   BadRequestException,
-  ForbiddenRequestException,
-  UnauthorizedRequestException,
 } from "~/utils/exceptions";
 import { prisma } from "~/lib/prisma";
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 import { getGoogleConnectOauthToken } from "~~/services/google-session.service";
 
 export const googleConnectHandler = async (req: Request, res: Response) => {

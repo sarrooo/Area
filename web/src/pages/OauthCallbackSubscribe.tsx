@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { login } from '@/redux/features/userSlice'
-import { store } from '@/redux/store'
 import { useIdentifyMutation } from '@/redux/services/user'
 
 const OauthCallbackSubscribe = () => {
@@ -14,7 +12,6 @@ const OauthCallbackSubscribe = () => {
     if (!token) {
       return navigate('/login?error="Oauth failed"')
     }
-    store.dispatch(login({ token }))
     identify({ token })
     return navigate('/dashboard')
   }, [])

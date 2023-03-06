@@ -12,7 +12,6 @@ export const getOauthGoogleUrl = () => {
       'https://www.googleapis.com/auth/userinfo.email',
       'https://mail.google.com',
     ].join(' '),
-    state: window.location.href,
   }
 
   const qs = new URLSearchParams(options)
@@ -34,7 +33,6 @@ export const getOauthConnectGoogleUrl = () => {
       'https://www.googleapis.com/auth/userinfo.email',
       'https://mail.google.com',
     ].join(' '),
-    state: window.location.href,
   }
 
   const qs = new URLSearchParams(options)

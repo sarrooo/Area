@@ -3,7 +3,6 @@ import {
   GOOGLE_OAUTH_CONNECT_REDIRECT_URL,
   GOOGLE_OAUTH_REDIRECT_URL,
 } from '@env'
-import {getDeepLink} from './deeplink'
 
 export const getOauthGoogleUrl = () => {
   const rootUrl = `https://accounts.google.com/o/oauth2/v2/auth`
@@ -42,7 +41,6 @@ export const getOauthConnectGoogleUrl = () => {
       'https://www.googleapis.com/auth/userinfo.email',
       'https://mail.google.com',
     ].join(' '),
-    state: getDeepLink('callback'),
   }
 
   const qs = new URLSearchParams(options)
