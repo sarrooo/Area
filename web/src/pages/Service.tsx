@@ -11,7 +11,7 @@ import {
   useGetServiceQuery,
   useSubscribeMutation,
 } from '@/redux/services/service'
-import { MappingOauth, mappingOauth } from '@/utils/oauth'
+import { MappingConnectOauth, mappingConnectOauth } from '@/utils/oauth'
 import { LoginWithButton } from '@/components/LoginWithButton'
 
 const Service = () => {
@@ -21,11 +21,11 @@ const Service = () => {
     parseInt(id || '0', 10)
   )
   const [subscribe] = useSubscribeMutation()
-  const [oauthNeeded, setOauthNeeded] = useState<MappingOauth>()
+  const [oauthNeeded, setOauthNeeded] = useState<MappingConnectOauth>()
 
   useEffect(() => {
     if (!service || service.subscribed) return
-    const oauthMappingSelected = mappingOauth.find(
+    const oauthMappingSelected = mappingConnectOauth.find(
       (oauth) => oauth.name === service.name
     )
     if (oauthMappingSelected) {

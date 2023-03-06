@@ -6,22 +6,22 @@ import {
   BsSpotify,
   BsFacebook,
 } from 'react-icons/bs'
-import { getOauthGithubUrl } from './github'
+import { getOauthConnectGithubUrl } from './github'
 import { getOauthConnectGoogleUrl } from './google'
 import { getOauthConnectTwitterUrl } from './twitter'
 import { getOauthConnectSpotifyUrl } from '@/utils/oauth/spotify'
 import { getOauthConnectFacebookUrl } from '@/utils/oauth/facebook'
 
-export type MappingOauth = {
+export type MappingConnectOauth = {
   name: string
   url: string
   icon: ReactNode
 }
 
-export const mappingOauth: MappingOauth[] = [
+export const mappingConnectOauth: MappingConnectOauth[] = [
   {
     name: 'github',
-    url: getOauthGithubUrl(),
+    url: getOauthConnectGithubUrl(),
     icon: <BsGithub />,
   },
   {

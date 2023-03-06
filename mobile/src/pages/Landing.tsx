@@ -9,6 +9,7 @@ import {
   StyleSheet,
   useColorScheme,
   Text,
+  Alert,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
@@ -19,6 +20,10 @@ import {Section} from '../components/Section'
 import {MainInput} from '../components/MainInput'
 import {LoginWithButton} from '../components/LoginWithButton'
 import {getOauthGoogleUrl} from '../utils/oauth/google'
+import {getOauthGithubUrl} from '../utils/oauth/github'
+import {getOauthConnectFacebookUrl} from '../utils/oauth/facebook'
+import {getOauthTwitterUrl} from '../utils/oauth/twitter'
+import {getOauthConnectSpotifyUrl} from '../utils/oauth/spotify'
 
 export interface LoginRequest {
   email: string
@@ -54,6 +59,34 @@ const styles = StyleSheet.create({
   },
 })
 
+const AuthInfo = [
+  {
+    name: 'google',
+    url: getOauthGoogleUrl(),
+    iconName: 'google',
+  },
+  {
+    name: 'github',
+    url: getOauthGithubUrl(),
+    iconName: 'github',
+  },
+  {
+    name: 'facebook',
+    url: getOauthConnectFacebookUrl(),
+    iconName: 'facebook-square',
+  },
+  {
+    name: 'twitter',
+    url: getOauthTwitterUrl(),
+    iconName: 'twitter',
+  },
+  {
+    name: 'spotify',
+    url: getOauthConnectSpotifyUrl(),
+    iconName: 'sound',
+  },
+]
+
 export function Landing() {
   const isDarkMode = useColorScheme() === 'dark'
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -73,21 +106,19 @@ export function Landing() {
 
   const submitLogin = async (data: LoginRequest) => {
     try {
-      console.log('Logging in...')
+      console.log('logging in')
       await loginMutation(data).unwrap()
-      console.log('Login success')
     } catch (error) {
       console.log(error)
+      Alert.alert('Error', 'Error submitting login')
     }
   }
 
   const submitRegister = async (data: RegisterRequest) => {
     try {
-      console.log('Registering...')
       await registerMutation(data).unwrap()
-      console.log('Register success')
     } catch (error) {
-      console.log(error)
+      Alert.alert('Error', 'Error submitting register')
     }
   }
 
@@ -160,11 +191,14 @@ export function Landing() {
               Register Instead
             </Button>
             <Text style={styles.separator}>Or</Text>
-            <LoginWithButton
-              url={getOauthGoogleUrl()}
-              title="Login with google">
-              <Icon name="google" size={24} color="black" />
-            </LoginWithButton>
+            {AuthInfo.map(auth => (
+              <LoginWithButton
+                key={auth.name}
+                url={auth.url}
+                title={`Login with ${auth.name}`}>
+                <Icon name={auth.iconName} size={24} color="black" />
+              </LoginWithButton>
+            ))}
           </Modal.Body>
         </Modal.Content>
       </Modal>

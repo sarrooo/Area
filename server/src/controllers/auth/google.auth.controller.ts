@@ -1,5 +1,5 @@
 //TODO: Refacto the duplicata code
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import Logging from "~/lib/logging";
 import { BadRequestException } from "~/utils/exceptions";
 import {
@@ -11,11 +11,10 @@ import { generateToken } from "~/controllers/auth/auth.controller";
 
 export const googleOAuthHandler = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res: Response
 ) => {
   const code = req.query.code as string;
-  const pathUrl = (req.query.state as string) || "/";
+  const platform = (req.query.platform as string) || "web";
 
   if (!code) {
     Logging.warning("Google OAuth: No code provided");
@@ -59,8 +58,15 @@ export const googleOAuthHandler = async (
 
   const token = await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ google`);
-  Logging.info(`Redirecting to ${pathUrl}`);
-  res.redirect(
-    `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
-  );
+  Logging.info(`Redirecting`);
+  
+  if (platform === "mobile") {
+    res.redirect(
+      `mobile://com.mobile/CallbackLogin/${token}`
+    );
+  } else {
+    res.redirect(
+      `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
+    );
+  }
 };

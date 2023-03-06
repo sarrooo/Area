@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Logging from "~/lib/logging";
-import {BadRequestException, ForbiddenRequestException} from "~/utils/exceptions";
+import {BadRequestException} from "~/utils/exceptions";
 import {
   getGithubOauthToken,
   getGithubUser,

@@ -1,17 +1,19 @@
 import {View, Text, Alert} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import React, {useEffect} from 'react'
-import {login} from '../redux/features/userSlice'
-import {store} from '../redux/store'
 import {Section} from '../components/Section'
+import {useIdentifyMutation} from '../redux/services/user'
 
-export function Callback(props: any) {
+export function CallbackSubscribe(props: any) {
   const token = props?.route?.params?.token?.toString()
   const navigation = useNavigation()
+  const [identifyMutation] = useIdentifyMutation()
 
   useEffect(() => {
     try {
-      store.dispatch(login({token}))
+      console.log('token', token)
+      identifyMutation({token})
+      console.log('Finished flow subscribe')
     } catch (e) {
       console.log(e)
       Alert.alert('Error', 'Something went wrong could not connect')

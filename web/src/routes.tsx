@@ -7,6 +7,7 @@ import Service from '@/pages/Service'
 import Services from '@/pages/Services'
 import OauthCallback from '@/pages/OauthCallback'
 import NotFound from '@/pages/NotFound'
+import OauthCallbackSubscribe from '@/pages/OauthCallbackSubscribe'
 
 const routes = (isLoggedIn: boolean) => [
   {
@@ -14,6 +15,10 @@ const routes = (isLoggedIn: boolean) => [
     children: [
       { path: '/', element: <Landing /> },
       { path: '/oauth_callback', element: <OauthCallback /> },
+      {
+        path: '/oauth_callback_subscribe',
+        element: <OauthCallbackSubscribe />,
+      },
       {
         path: '/',
         element: isLoggedIn ? <Navigate to="/dashboard" /> : <Outlet />,
