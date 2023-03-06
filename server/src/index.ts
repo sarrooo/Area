@@ -45,7 +45,7 @@ const httpServer = http.createServer(app);
 httpServer.listen(port);
 
 // Certs
-if (fs.existsSync("/app/certs/privkay.pem")) {
+if (fs.existsSync("/app/certs/privkey.pem")) {
     const privateKey  = fs.readFileSync('/app/certs/privkey.pem', 'utf8');
     const certificate = fs.readFileSync('/app/certs/cert.pem', 'utf8');
     const ca = fs.readFileSync('/app/certs/chain.pem', 'utf8');
