@@ -5,7 +5,7 @@ import {login} from '../redux/features/userSlice'
 import {store} from '../redux/store'
 import {Section} from '../components/Section'
 
-export function Callback(props: any) {
+export function CallbackLogin(props: any) {
   const token = props?.route?.params?.token?.toString()
   const navigation = useNavigation()
 
