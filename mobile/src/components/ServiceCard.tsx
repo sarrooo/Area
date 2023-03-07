@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import {InfoIcon, PlayIcon, Pressable} from 'native-base'
-import {View, Text, StyleSheet, Button, Alert} from 'react-native'
+import {View, Text, StyleSheet, Alert} from 'react-native'
 import {Reaction} from '../types/Reaction'
 import {Trigger} from '../types/Trigger'
 
 import {FollowButton} from './FollowButton'
 import {useSubscribeMutation} from '../redux/services/service'
 import {MappingOauth, mappingOauth} from '../utils/oauth'
+import {LoginWithButton} from './LoginWithButton'
 
 export type ServiceCardProps = {
   name: string
@@ -78,17 +79,14 @@ export function ServiceCard({
       onPress={() => navigation.navigate('Service' as never, {id} as never)}>
       <View style={styles.header}>
         <Text>{name}</Text>
-        {oauthNeeded ? (
-          // TODO : Add a button to connect to the service
-          <Button title="Replace this" />
+        {oauthNeeded && !isFollowing ? (
+          <LoginWithButton
+            key={oauthNeeded.name}
+            url={oauthNeeded.urlConnect}
+            title={`Login with ${oauthNeeded.name}`}>
+            {oauthNeeded.icon}
+          </LoginWithButton>
         ) : (
-          // <LoginWithButton
-          //   text="Connect"
-          //   key={oauthNeeded.name}
-          //   url={oauthNeeded.url}
-          // >
-          //   {oauthNeeded.icon}
-          // </LoginWithButton>
           <FollowButton
             fontSize={20}
             isFollowing={isFollowing}

@@ -1,15 +1,16 @@
 import IconAntDesign from 'react-native-vector-icons/AntDesign'
 import IconEntypo from 'react-native-vector-icons/Entypo'
 import React from 'react'
-import {getOauthGithubUrl} from './github'
-import {getOauthConnectGoogleUrl} from './google'
-import {getOauthConnectTwitterUrl} from './twitter'
+import {getOauthConnectGithubUrl, getOauthGithubUrl} from './github'
+import {getOauthConnectGoogleUrl, getOauthGoogleUrl} from './google'
+import {getOauthConnectTwitterUrl, getOauthTwitterUrl} from './twitter'
 import {getOauthConnectSpotifyUrl} from './spotify'
 import {getOauthConnectFacebookUrl} from './facebook'
 
 export type MappingOauth = {
   name: string
-  url: string
+  url?: string
+  urlConnect: string
   icon: React.ReactElement
 }
 
@@ -17,26 +18,29 @@ export const mappingOauth: MappingOauth[] = [
   {
     name: 'github',
     url: getOauthGithubUrl(),
+    urlConnect: getOauthConnectGithubUrl(),
     icon: <IconAntDesign name="github" size={24} />,
   },
   {
     name: 'twitter',
-    url: getOauthConnectTwitterUrl(),
+    url: getOauthTwitterUrl(),
+    urlConnect: getOauthConnectTwitterUrl(),
     icon: <IconAntDesign name="twitter" size={24} />,
   },
   {
     name: 'google',
-    url: getOauthConnectGoogleUrl(),
+    url: getOauthGoogleUrl(),
+    urlConnect: getOauthConnectGoogleUrl(),
     icon: <IconAntDesign name="google" size={24} />,
   },
   {
     name: 'spotify',
-    url: getOauthConnectSpotifyUrl(),
+    urlConnect: getOauthConnectSpotifyUrl(),
     icon: <IconEntypo name="spotify" size={24} />,
   },
   {
     name: 'facebook',
-    url: getOauthConnectFacebookUrl(),
+    urlConnect: getOauthConnectFacebookUrl(),
     icon: <IconEntypo name="facebook" size={24} />,
   },
 ]

@@ -7,21 +7,13 @@ import {
 } from "~~/services/github-session.service";
 import { prisma } from "~/lib/prisma";
 import { generateToken } from "~/controllers/auth/auth.controller";
-import {githubConnectHandler} from "~/controllers/connect/github.connect.controller";
 
 export const githubOAuthHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const refreshToken = req.cookies["refreshToken"];
-  if (refreshToken) {
-    await githubConnectHandler(req, res, next)
-    return
-  }
-
   const code = req.query.code as string;
-  const pathUrl = (req.query.state as string) || "/";
 
   if (!code) {
     Logging.warning("Github OAuth: No code provided");
@@ -59,7 +51,7 @@ export const githubOAuthHandler = async (
 
   const token = await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ github`);
-  Logging.info(`Redirecting to ${pathUrl}`);
+  Logging.info(`Redirecting`);
   res.redirect(
     `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
   );

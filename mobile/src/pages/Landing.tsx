@@ -11,7 +11,6 @@ import {
   Text,
   Alert,
 } from 'react-native'
-import Icon from 'react-native-vector-icons/AntDesign'
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 import {useLoginMutation, useRegisterMutation} from '../redux/services/user'
 import {emailRegex, passwordRegex} from '../utils/regex'
@@ -19,11 +18,7 @@ import {Section} from '../components/Section'
 
 import {MainInput} from '../components/MainInput'
 import {LoginWithButton} from '../components/LoginWithButton'
-import {getOauthGoogleUrl} from '../utils/oauth/google'
-import {getOauthGithubUrl} from '../utils/oauth/github'
-import {getOauthConnectFacebookUrl} from '../utils/oauth/facebook'
-import {getOauthTwitterUrl} from '../utils/oauth/twitter'
-import {getOauthConnectSpotifyUrl} from '../utils/oauth/spotify'
+import {mappingOauth} from '../utils/oauth'
 
 export interface LoginRequest {
   email: string
@@ -58,34 +53,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 })
-
-const AuthInfo = [
-  {
-    name: 'google',
-    url: getOauthGoogleUrl(),
-    iconName: 'google',
-  },
-  {
-    name: 'github',
-    url: getOauthGithubUrl(),
-    iconName: 'github',
-  },
-  {
-    name: 'facebook',
-    url: getOauthConnectFacebookUrl(),
-    iconName: 'facebook-square',
-  },
-  {
-    name: 'twitter',
-    url: getOauthTwitterUrl(),
-    iconName: 'twitter',
-  },
-  {
-    name: 'spotify',
-    url: getOauthConnectSpotifyUrl(),
-    iconName: 'sound',
-  },
-]
 
 export function Landing() {
   const isDarkMode = useColorScheme() === 'dark'
@@ -191,14 +158,17 @@ export function Landing() {
               Register Instead
             </Button>
             <Text style={styles.separator}>Or</Text>
-            {AuthInfo.map(auth => (
-              <LoginWithButton
-                key={auth.name}
-                url={auth.url}
-                title={`Login with ${auth.name}`}>
-                <Icon name={auth.iconName} size={24} color="black" />
-              </LoginWithButton>
-            ))}
+            {mappingOauth.map(
+              auth =>
+                auth.url && (
+                  <LoginWithButton
+                    key={auth.name}
+                    url={auth.url}
+                    title={`Login with ${auth.name}`}>
+                    {auth.icon}
+                  </LoginWithButton>
+                )
+            )}
           </Modal.Body>
         </Modal.Content>
       </Modal>
