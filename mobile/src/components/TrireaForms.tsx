@@ -104,12 +104,10 @@ export function TrireaForms({toggleModal}: TrireaFormProps) {
       Alert.alert('Error', 'Something went wrong with services')
     }
     if (services.isSuccess) {
-      // TODO : UNCOMMENT THIS
-      // const servicesFiltered = services.data?.filter((service) => {
-      //     return service.subscribed
-      // })
-      // setServicesAvailable(servicesFiltered)
-      setServicesAvailable(services.data || [])
+      const servicesFiltered = services.data?.filter(service => {
+        return service.subscribed
+      })
+      setServicesAvailable(servicesFiltered)
     }
   }, [services])
 

@@ -5,6 +5,7 @@ import {View, Text, StyleSheet, ScrollView, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import ActionDescriptionCard from '../components/ActionDescriptionCard'
 import {FollowButton} from '../components/FollowButton'
+import {LoginWithButton} from '../components/LoginWithButton'
 import {Section} from '../components/Section'
 import {
   useGetServiceQuery,
@@ -63,16 +64,13 @@ export function Service({route, navigation}: ServiceProps) {
       </Button>
       <Section title={service?.name || ''}>{service?.description}</Section>
       {oauthNeeded ? (
-        // TODO : Add a button to connect to the service
-        <Button>Replace this</Button>
+        <LoginWithButton
+          key={oauthNeeded.name}
+          url={oauthNeeded.urlConnect}
+          title={`Login with ${oauthNeeded.name}`}>
+          {oauthNeeded.icon}
+        </LoginWithButton>
       ) : (
-        // <LoginWithButton
-        //   text="Connect"
-        //   key={oauthNeeded.name}
-        //   url={oauthNeeded.url}
-        // >
-        //   {oauthNeeded.icon}
-        // </LoginWithButton>
         <FollowButton
           fontSize={20}
           isFollowing={service?.subscribed}
