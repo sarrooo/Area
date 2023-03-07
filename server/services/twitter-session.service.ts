@@ -1,5 +1,5 @@
 import config from 'config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import qs from 'qs';
 import Logging from "~/lib/logging";
 import {TwitterOauthToken, TwitterUserResult} from "~/types/twitter";
@@ -34,6 +34,7 @@ export const getTwitterOauthToken = async ({code, redirect_uri}: { code: string,
 
         return data;
     } catch (err: any) {
+        console.log((err as AxiosError).response);
         Logging.error('Failed to get Twitter Oauth Token');
         throw new Error(err);
     }
