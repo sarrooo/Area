@@ -28,7 +28,7 @@ export const getGoogleOauthToken = async ({code}: { code: string }): Promise<Goo
 
         return data;
     } catch (err: any) {
-        console.log('err', (err as AxiosError).response?.data)
+        console.log('err', (err as AxiosError).request)
         Logging.error('Failed to get Google Oauth Token');
         throw new Error(err);
     }
