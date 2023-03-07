@@ -14,6 +14,7 @@ import { capitalizeFirstLetter } from '../utils/string'
 import { Trigger } from '../types/Trigger'
 import { Reaction } from '../types/Reaction'
 import { Service } from '../types/Service'
+import { MainButton } from './MainButton'
 
 type TrireaFormProps = {
   toggleModal: () => void
@@ -437,6 +438,9 @@ export const TrireaForm = ({ toggleModal }: TrireaFormProps) => {
                   )
                 })}
               </div>
+            </div>
+            <div className="items center flex w-full justify-end">
+              <MainButton submitter text="Create" />
             </div>
           </form>
         </div>
