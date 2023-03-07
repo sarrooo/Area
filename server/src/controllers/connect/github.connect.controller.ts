@@ -8,7 +8,7 @@ import {
 import { prisma } from "~/lib/prisma";
 import { sign, verify } from "jsonwebtoken";
 import { getGithubOauthToken } from "~~/services/github-session.service";
-import { getUrl } from "../../utils/req";
+import { getRedirectUri } from "../../utils/req";
 
 export const githubConnectHandler = async (
   req: Request,
@@ -23,7 +23,7 @@ export const githubConnectHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getGithubOauthToken({ code, redirect_uri: getUrl(req) });
+  const { access_token } = await getGithubOauthToken({ code, redirect_uri: getRedirectUri(req) });
   if (!access_token) {
     Logging.error("Github Connect OAuth: getGithubConnectOauthToken failed");
     throw new BadRequestException("No access_token provided");

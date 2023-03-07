@@ -8,7 +8,7 @@ import {
 import { getSpotifyOauthToken } from "~~/services/spotify-session.service";
 import { prisma } from "~/lib/prisma";
 import { sign, verify } from "jsonwebtoken";
-import { getUrl } from "../../utils/req";
+import { getRedirectUri } from "../../utils/req";
 
 export const spotifyConnectHandler = async (
   req: Request,
@@ -23,7 +23,7 @@ export const spotifyConnectHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getSpotifyOauthToken({ code, redirect_uri: getUrl(req) });
+  const { access_token } = await getSpotifyOauthToken({ code, redirect_uri: getRedirectUri(req) });
   if (!access_token) {
     Logging.error("Spotify OAuth: getSpotifyOauthToken failed");
     throw new BadRequestException("No access_token provided");

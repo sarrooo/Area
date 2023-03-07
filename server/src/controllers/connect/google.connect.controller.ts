@@ -6,7 +6,7 @@ import {
 import { prisma } from "~/lib/prisma";
 import { sign } from "jsonwebtoken";
 import { getGoogleConnectOauthToken } from "~~/services/google-session.service";
-import { getUrl } from "../../utils/req";
+import { getRedirectUri } from "../../utils/req";
 
 export const googleConnectHandler = async (req: Request, res: Response) => {
   const platform = (req.query.platform as string) || "web";
@@ -17,7 +17,7 @@ export const googleConnectHandler = async (req: Request, res: Response) => {
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getGoogleConnectOauthToken({ code, redirect_uri: getUrl(req) });
+  const { access_token } = await getGoogleConnectOauthToken({ code, redirect_uri: getRedirectUri(req) });
   if (!access_token) {
     Logging.error("Google Connect OAuth: getGoogleConnectOauthToken failed");
     throw new BadRequestException("No access_token provided");
