@@ -7,8 +7,6 @@ import Logging from "~/lib/logging";
 export const getGoogleOauthToken = async ({code, redirect_uri}: { code: string, redirect_uri: string }): Promise<GoogleOauthToken> => {
     const rootUrl = 'https://oauth2.googleapis.com/token';
 
-    console.log('redirection_uri', redirect_uri)
-
     const options = {
         code,
         client_id: config.get<string>('googleConfig.clientId'),
@@ -16,7 +14,6 @@ export const getGoogleOauthToken = async ({code, redirect_uri}: { code: string, 
         redirect_uri: redirect_uri,
         grant_type: 'authorization_code',
     };
-    console.log('options', options)
     try {
         const { data } = await axios.post<GoogleOauthToken>(
             rootUrl,

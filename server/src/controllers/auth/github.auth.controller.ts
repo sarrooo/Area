@@ -15,6 +15,7 @@ export const githubOAuthHandler = async (
   next: NextFunction
 ) => {
   const code = req.query.code as string;
+  const platform = (req.query.platform as string) || "web";
 
   if (!code) {
     Logging.warning("Github OAuth: No code provided");
@@ -53,7 +54,13 @@ export const githubOAuthHandler = async (
   const token = await generateToken(user, res);
   Logging.info(`User ${user.first_name} logged in w/ github`);
   Logging.info(`Redirecting`);
-  res.redirect(
-    `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
-  );
+  if (platform === "mobile") {
+    res.redirect(
+      `mobile://com.mobile/CallbackLogin/${token}`
+    );
+  } else {
+    res.redirect(
+      `${process.env.CORS_FRONT_URL}/oauth_callback?access_token=${token}`
+    );
+  }
 };
