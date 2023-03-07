@@ -4,7 +4,7 @@ import qs from 'qs';
 import Logging from "~/lib/logging";
 import {SpotifyOauthToken} from "~/types/spotify";
 
-export const getSpotifyOauthToken = async ({code}: { code: string }): Promise<SpotifyOauthToken> => {
+export const getSpotifyOauthToken = async ({code, redirect_uri}: { code: string, redirect_uri: string }): Promise<SpotifyOauthToken> => {
     const rootUrl = 'https://accounts.spotify.com/api/token';
     const SPOTIFY_OAUTH_CLIENT_ID: string = config.get<string>('spotifyConfig.clientId');
     const SPOTIFY_OAUTH_CLIENT_SECRET: string = config.get<string>('spotifyConfig.clientSecret');
@@ -15,7 +15,7 @@ export const getSpotifyOauthToken = async ({code}: { code: string }): Promise<Sp
 
     const options = {
         code,
-        redirect_uri: config.get<string>('spotifyConfig.redirectUri'),
+        redirect_uri: redirect_uri,
         grant_type: 'authorization_code',
     };
     try {

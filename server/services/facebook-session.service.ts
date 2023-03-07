@@ -4,14 +4,14 @@ import qs from 'qs';
 import Logging from "~/lib/logging";
 import {FacebookOauthToken} from "~/types/facebook";
 
-export const getFacebookOauthToken = async ({code}: { code: string }): Promise<FacebookOauthToken> => {
+export const getFacebookOauthToken = async ({code, redirect_uri}: { code: string, redirect_uri: string }): Promise<FacebookOauthToken> => {
     const rootUrl = 'https://graph.facebook.com/v16.0/oauth/access_token';
 
     const options = {
         code,
         client_id: config.get<string>('facebookConfig.clientId'),
         client_secret: config.get<string>('facebookConfig.clientSecret'),
-        redirect_uri: config.get<string>('facebookConfig.redirectUri'),
+        redirect_uri: redirect_uri,
     };
     try {
         const { data } = await axios.post<FacebookOauthToken>(

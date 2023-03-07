@@ -6,6 +6,7 @@ import {
 import { prisma } from "~/lib/prisma";
 import { sign } from "jsonwebtoken";
 import { getFacebookOauthToken } from "~~/services/facebook-session.service";
+import { getUrl } from "../../utils/req";
 
 export const facebookConnectHandler = async (
   req: Request,
@@ -20,7 +21,7 @@ export const facebookConnectHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getFacebookOauthToken({ code });
+  const { access_token } = await getFacebookOauthToken({ code, redirect_uri: getUrl(req) });
   if (!access_token) {
     Logging.error("Facebook OAuth: getFacebookOauthToken failed");
     throw new BadRequestException("No access_token provided");
@@ -51,3 +52,4 @@ export const facebookConnectHandler = async (
     res.redirect(`${process.env.CORS_FRONT_URL}/oauth_callback_subscribe?access_token=${token}`);
   }
 };
+

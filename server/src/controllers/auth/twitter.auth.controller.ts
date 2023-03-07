@@ -7,6 +7,7 @@ import {
 } from "~~/services/twitter-session.service";
 import { prisma } from "~/lib/prisma";
 import { generateToken } from "~/controllers/auth/auth.controller";
+import { getUrl } from "../../utils/req";
 
 export const twitterOAuthHandler = async (
   req: Request,
@@ -20,7 +21,7 @@ export const twitterOAuthHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getTwitterOauthToken({ code });
+  const { access_token } = await getTwitterOauthToken({ code, redirect_uri: getUrl() });
 
   if (!access_token) {
     Logging.error("Twitter OAuth: getTwitterhubOauthToken failed");

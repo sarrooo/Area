@@ -4,14 +4,14 @@ import qs from 'qs';
 import Logging from "~/lib/logging";
 import {GithubOauthToken, GithubUserResult} from "~/types/github";
 
-export const getGithubOauthToken = async ({code}: { code: string }): Promise<GithubOauthToken> => {
+export const getGithubOauthToken = async ({code, redirect_uri}: { code: string, redirect_uri: string }): Promise<GithubOauthToken> => {
     const rootUrl = 'https://github.com/login/oauth/access_token?';
 
     const options = {
         code,
         client_id: config.get<string>('githubConfig.clientId'),
         client_secret: config.get<string>('githubConfig.clientSecret'),
-        redirect_uri: config.get<string>('githubConfig.redirectUri'),
+        redirect_uri: redirect_uri,
     };
 
     try {

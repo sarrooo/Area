@@ -7,6 +7,7 @@ import {
 } from "~~/services/github-session.service";
 import { prisma } from "~/lib/prisma";
 import { generateToken } from "~/controllers/auth/auth.controller";
+import { getUrl } from "../../utils/req";
 
 export const githubOAuthHandler = async (
   req: Request,
@@ -20,7 +21,7 @@ export const githubOAuthHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getGithubOauthToken({ code });
+  const { access_token } = await getGithubOauthToken({ code, redirect_uri: getUrl(req) });
   if (!access_token) {
     Logging.error("Github OAuth: getGithubOauthToken failed");
     throw new BadRequestException("No access_token provided");

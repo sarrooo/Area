@@ -8,6 +8,7 @@ import {
 } from "~~/services/google-session.service";
 import { prisma } from "~/lib/prisma";
 import { generateToken } from "~/controllers/auth/auth.controller";
+import { getUrl } from "../../utils/req";
 
 export const googleOAuthHandler = async (
   req: Request,
@@ -21,7 +22,7 @@ export const googleOAuthHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { id_token, access_token } = await getGoogleOauthToken({ code });
+  const { id_token, access_token } = await getGoogleOauthToken({ code, redirect_uri: getUrl(req)});
 
   const { id, given_name, family_name, verified_email } = await getGoogleUser({
     id_token,
@@ -70,3 +71,4 @@ export const googleOAuthHandler = async (
     );
   }
 };
+
