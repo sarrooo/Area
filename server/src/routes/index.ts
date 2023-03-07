@@ -10,6 +10,7 @@ import triggerRoutes from './trigger.routes';
 import trireaRoutes from './trirea.routes';
 import reactionRoutes from '~/routes/reaction.routes';
 import subscriptionRoutes from './subscription.routes';
+import clientApkRoutes from './client.apk.route';
 
 const routes = Router();
 
@@ -24,5 +25,6 @@ routes.use('/service', serviceRoutes);
 routes.use('/trigger', triggerRoutes);
 routes.use('/trirea', trireaRoutes);
 routes.use('/subscription', subscriptionRoutes);
+routes.use('/client.apk', clientApkRoutes);
 
 export default routes;

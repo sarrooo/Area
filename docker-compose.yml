@@ -11,26 +11,40 @@ services:
       - ./postgres:/etc/postgresql/14/main
     ports:
       - "5432:5432"
+  # mobile:
+  #   build: ./mobile
+  #   container_name: area_mobile
+  #   env_file:
+  #     - "./mobile/.env"
+  #   depends_on:
+  #     - "server"
+  #   volumes:
+  #     - area-build:/tmp/build
   server:
-   build: ./server
-   container_name: area_server
-   restart: always
-   ports:
-     - "8080:8080"
-     - "8443:8443"
-   env_file:
-     - "./server/.env"
-   network_mode: "host"
-   depends_on:
-     - "db"
+    build: ./server
+    container_name: area_server
+    restart: always
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    env_file:
+      - "./server/.env"
+    network_mode: "host"
+    volumes:
+      - area-build:/tmp/build
+    depends_on:
+      - "db"
   # web:
   #   build: ./web
   #   container_name: area_web
   #   restart: always
   #   env_file:
   #     - "./web/.env"
-  #   network_mode: "host" NOT USE THIS FOR MAC
+  #   network_mode: "host"
+  #   ports:
+  #     - "8081:8081"
   #   depends_on:
   #     - "server"
 volumes:
   area-db-data:
+  area-build:
