@@ -21,7 +21,7 @@ export const twitterOAuthHandler = async (
     throw new BadRequestException("No code provided");
   }
 
-  const { access_token } = await getTwitterOauthToken({ code, redirect_uri: getRedirectUri() });
+  const { access_token } = await getTwitterOauthToken({ code, redirect_uri: getRedirectUri(req) });
 
   if (!access_token) {
     Logging.error("Twitter OAuth: getTwitterhubOauthToken failed");
