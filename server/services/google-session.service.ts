@@ -1,5 +1,5 @@
 import config from 'config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import qs from 'qs';
 import {GoogleOauthToken, GoogleUserResult} from "~/types/google";
 import Logging from "~/lib/logging";
@@ -28,6 +28,7 @@ export const getGoogleOauthToken = async ({code}: { code: string }): Promise<Goo
 
         return data;
     } catch (err: any) {
+        console.log('err', (err as AxiosError).response?.data)
         Logging.error('Failed to get Google Oauth Token');
         throw new Error(err);
     }
