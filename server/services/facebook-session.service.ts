@@ -1,5 +1,5 @@
 import config from 'config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import qs from 'qs';
 import Logging from "~/lib/logging";
 import {FacebookOauthToken} from "~/types/facebook";
@@ -26,6 +26,7 @@ export const getFacebookOauthToken = async ({code, redirect_uri}: { code: string
 
         return data;
     } catch (err: any) {
+        console.log((err as AxiosError).response);
         Logging.error('Failed to get Facebook Oauth Token');
         throw new Error(err);
     }
